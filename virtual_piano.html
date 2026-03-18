@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Indian Classical Virtual Piano - Carnatic Svaras</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@700&family=Poppins:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --saffron: #FF9933;
+            --deep-saffron: #E67300;
+            --gold: #FFD700;
+            --deep-gold: #DAA520;
+            --maroon: #800000;
+            --deep-maroon: #4A0000;
+            --cream: #FFF8DC;
+            --dark-bg: #1a0a00;
+            --key-white: linear-gradient(180deg, #FFFFF0 0%, #F5F5DC 100%);
+            --key-black: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #2d1810 50%, var(--deep-maroon) 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Poppins', sans-serif;
+            padding: 20px;
+            overflow-x: auto;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+            animation: fadeInDown 1s ease-out;
+        }
+
+        .header h1 {
+            font-family: 'Tangerine', cursive;
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 
+                         0 0 40px rgba(255, 153, 51, 0.3);
+            margin-bottom: 10px;
+        }
+
+        .header .subtitle {
+            color: var(--saffron);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            opacity: 0.9;
+        }
+
+        .piano-wrapper {
+            background: linear-gradient(145deg, #3d2817 0%, #2a1a0f 100%);
+            border-radius: 20px;
+            padding: 30px 20px 20px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                inset 0 2px 10px rgba(255, 153, 51, 0.1),
+                0 0 30px rgba(255, 153, 51, 0.15);
+            position: relative;
+            animation: fadeInUp 1s ease-out 0.3s both;
+        }
+
+        .piano-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            border-radius: 2px;
+        }
+
+        #piano-container {
+            display: flex;
+            position: relative;
+            user-select: none;
+            padding: 10px;
+        }
+
+        .octave {
+            display: flex;
+            position: relative;
+        }
+
+        .key {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 15px;
+        }
+
+        .key.white {
+            width: clamp(45px, 6vw, 65px);
+            height: clamp(180px, 28vh, 240px);
+            background: var(--key-white);
+            border: 1px solid #d4d4d4;
+            border-radius: 0 0 8px 8px;
+            margin: 0 2px;
+            box-shadow: 
+                0 5px 10px rgba(0, 0, 0, 0.3),
+                inset 0 -5px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .key.white::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            width: 80%;
+            height: 85%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, transparent 100%);
+            border-radius: 0 0 5px 5px;
+            pointer-events: none;
+        }
+
+        .key.black {
+            width: clamp(28px, 3.5vw, 40px);
+            height: clamp(110px, 18vh, 150px);
+            background: var(--key-black);
+            border-radius: 0 0 5px 5px;
+            position: absolute;
+            z-index: 2;
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.5),
+                inset 0 -3px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .key.black::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 15%;
+            width: 70%;
+            height: 10px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+            border-radius: 2px;
+            pointer-events: none;
+        }
+
+        /* Black key positions within octave */
+        .octave .key.black[data-note="r1"] { left: calc(16.66% - 14px); }
+        .octave .key.black[data-note="r2"] { left: calc(33.33% - 14px); }
+        .octave .key.black[data-note="m1"] { left: calc(50% - 14px); }
+        .octave .key.black[data-note="d1"] { left: calc(66.66% - 14px); }
+        .octave .key.black[data-note="d2"] { left: calc(83.33% - 14px); }
+
+        /* Hover effects */
+        .key.white:hover {
+            background: linear-gradient(180deg, #FFFEF5 0%, #FAFAD2 100%);
+            transform: translateY(2px);
+            box-shadow: 
+                0 3px 8px rgba(0, 0, 0, 0.3),
+                inset 0 -3px 8px rgba(255, 153, 51, 0.2);
+        }
+
+        .key.black:hover {
+            background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%);
+            transform: translateY(2px);
+            box-shadow: 
+                0 3px 10px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 5px rgba(255, 215, 0, 0.1);
+        }
+
+        /* Active/Pressed states */
+        .key.white.active {
+            background: linear-gradient(180deg, #FFF8DC 0%, var(--saffron) 100%);
+            transform: scale(0.98) translateY(3px);
+            box-shadow: 
+                0 2px 5px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(255, 153, 51, 0.6),
+                inset 0 -5px 15px rgba(255, 215, 0, 0.4);
+            border-color: var(--deep-saffron);
+        }
+
+        .key.black.active {
+            background: linear-gradient(180deg, #4a3a20 0%, #2a2000 100%);
+            transform: scale(0.97) translateY(3px);
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.6),
+                0 0 25px rgba(255, 215, 0, 0.5),
+                inset 0 -3px 10px rgba(255, 153, 51, 0.3);
+        }
+
+        /* Glow animation for active keys */
+        @keyframes keyGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 153, 51, 0.6),
+                            0 0 40px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 153, 51, 0.8),
+                            0 0 60px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        .key.active {
+            animation: keyGlow 0.5s ease-in-out infinite;
+        }
+
+        /* Svara labels */
+        .svara-label {
+            font-family: 'Poppins', sans-serif;
+            font-weight: 600;
+            font-size: clamp(0.85rem, 1.5vw, 1.1rem);
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+
+        .key.white .svara-label {
+            color: var(--maroon);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .key.black .svara-label {
+            color: var(--gold);
+            font-size: clamp(0.7rem, 1.2vw, 0.9rem);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .key.active .svara-label {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Octave indicator */
+        .octave-marker {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.75rem;
+            color: var(--saffron);
+            opacity: 0.7;
+        }
+
+        /* Instructions panel */
+        .instructions {
+            margin-top: 40px;
+            text-align: center;
+            color: var(--cream);
+            opacity: 0.8;
+            animation: fadeIn 1s ease-out 0.6s both;
+        }
+
+        .instructions p {
+            font-size: clamp(0.8rem, 1.5vw, 0.95rem);
+            margin: 5px 0;
+        }
+
+        .key-hint {
+            display: inline-block;
+            background: rgba(255, 153, 51, 0.2);
+            padding: 3px 10px;
+            border-radius: 4px;
+            margin: 2px;
+            font-size: 0.75rem;
+            color: var(--gold);
+        }
+
+        /* Decorative elements */
+        .decoration {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.1;
+        }
+
+        .decoration-1 {
+            top: 10%;
+            left: 5%;
+            font-size: 8rem;
+            color: var(--saffron);
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .decoration-2 {
+            bottom: 10%;
+            right: 5%;
+            font-size: 6rem;
+            color: var(--gold);
+            animation: float 8s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 0.8; }
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 768px) {
+            .piano-wrapper {
+                padding: 20px 10px 15px;
+            }
+
+            .key.white {
+                width: 40px;
+                height: 150px;
+            }
+
+            .key.black {
+                width: 24px;
+                height: 90px;
+            }
+
+            .octave .key.black[data-note="r1"] { left: calc(16.66% - 12px); }
+            .octave .key.black[data-note="r2"] { left: calc(33.33% - 12px); }
+            .octave .key.black[data-note="m1"] { left: calc(50% - 12px); }
+            .octave .key.black[data-note="d1"] { left: calc(66.66% - 12px); }
+            .octave .key.black[data-note="d2"] { left: calc(83.33% - 12px); }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 10px;
+            }
+
+            .key.white {
+                width: 32px;
+                height: 120px;
+                margin: 0 1px;
+            }
+
+            .key.black {
+                width: 20px;
+                height: 75px;
+            }
+
+            .octave .key.black[data-note="r1"] { left: calc(16.66% - 10px); }
+            .octave .key.black[data-note="r2"] { left: calc(33.33% - 10px); }
+            .octave .key.black[data-note="m1"] { left: calc(50% - 10px); }
+            .octave .key.black[data-note="d1"] { left: calc(66.66% - 10px); }
+            .octave .key.black[data-note="d2"] { left: calc(83.33% - 10px); }
+
+            .svara-label {
+                font-size: 0.7rem;
+            }
+
+            .key.black .svara-label {
+                font-size: 0.55rem;
+            }
+        }
+
+        /* Scrollbar styling for horizontal scroll */
+        ::-webkit-scrollbar {
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(90deg, var(--saffron), var(--gold));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(90deg, var(--deep-saffron), var(--deep-gold));
+        }
+
+        /* Ripple effect on click */
+        .ripple {
+            position: absolute;
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(255, 215, 0, 0.6) 0%, transparent 70%);
+            transform: scale(0);
+            animation: rippleEffect 0.6s ease-out;
+            pointer-events: none;
+        }
+
+        @keyframes rippleEffect {
+            to {
+                transform: scale(4);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Decorative elements -->
+    <div class="decoration decoration-1">&#9836;</div>
+    <div class="decoration decoration-2">&#9835;</div>
+
+    <div class="header">
+        <h1>Indian Classical Virtual Piano</h1>
+        <p class="subtitle">Carnatic Music - 12 Tone Chromatic Scale (2 Octaves)</p>
+    </div>
+
+    <div class="piano-wrapper">
+        <div id="piano-container">
+            <!-- Octave 1 (Lower) -->
+            <div class="octave" data-octave="1">
+                <!-- White keys -->
+                <div class="key white" data-note="s" data-octave="1">
+                    <span class="svara-label">స</span>
+                </div>
+                <div class="key white" data-note="r" data-octave="1">
+                    <span class="svara-label">రి</span>
+                </div>
+                <div class="key white" data-note="g" data-octave="1">
+                    <span class="svara-label">గ</span>
+                </div>
+                <div class="key white" data-note="m" data-octave="1">
+                    <span class="svara-label">మ</span>
+                </div>
+                <div class="key white" data-note="p" data-octave="1">
+                    <span class="svara-label">ప</span>
+                </div>
+                <div class="key white" data-note="d" data-octave="1">
+                    <span class="svara-label">ద</span>
+                </div>
+                <div class="key white" data-note="n" data-octave="1">
+                    <span class="svara-label">ని</span>
+                </div>
+                <!-- Black keys -->
+                <div class="key black" data-note="r1" data-octave="1">
+                    <span class="svara-label">రి₁</span>
+                </div>
+                <div class="key black" data-note="r2" data-octave="1">
+                    <span class="svara-label">రి₂</span>
+                </div>
+                <div class="key black" data-note="m1" data-octave="1">
+                    <span class="svara-label">మ₁</span>
+                </div>
+                <div class="key black" data-note="d1" data-octave="1">
+                    <span class="svara-label">ద₁</span>
+                </div>
+                <div class="key black" data-note="d2" data-octave="1">
+                    <span class="svara-label">ద₂</span>
+                </div>
+                <span class="octave-marker">Mandra</span>
+            </div>
+
+            <!-- Octave 2 (Middle) -->
+            <div class="octave" data-octave="2">
+                <!-- White keys -->
+                <div class="key white" data-note="s" data-octave="2">
+                    <span class="svara-label">స</span>
+                </div>
+                <div class="key white" data-note="r" data-octave="2">
+                    <span class="svara-label">రి</span>
+                </div>
+                <div class="key white" data-note="g" data-octave="2">
+                    <span class="svara-label">గ</span>
+                </div>
+                <div class="key white" data-note="m" data-octave="2">
+                    <span class="svara-label">మ</span>
+                </div>
+                <div class="key white" data-note="p" data-octave="2">
+                    <span class="svara-label">ప</span>
+                </div>
+                <div class="key white" data-note="d" data-octave="2">
+                    <span class="svara-label">ద</span>
+                </div>
+                <div class="key white" data-note="n" data-octave="2">
+                    <span class="svara-label">ని</span>
+                </div>
+                <!-- Black keys -->
+                <div class="key black" data-note="r1" data-octave="2">
+                    <span class="svara-label">రి₁</span>
+                </div>
+                <div class="key black" data-note="r2" data-octave="2">
+                    <span class="svara-label">రి₂</span>
+                </div>
+                <div class="key black" data-note="m1" data-octave="2">
+                    <span class="svara-label">మ₁</span>
+                </div>
+                <div class="key black" data-note="d1" data-octave="2">
+                    <span class="svara-label">ద₁</span>
+                </div>
+                <div class="key black" data-note="d2" data-octave="2">
+                    <span class="svara-label">ద₂</span>
+                </div>
+                <span class="octave-marker">Madhya</span>
+            </div>
+
+            <!-- Octave 3 (Upper - partial for completeness) -->
+            <div class="octave" data-octave="3">
+                <div class="key white" data-note="s" data-octave="3">
+                    <span class="svara-label">స</span>
+                </div>
+                <span class="octave-marker">Tara</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="instructions">
+        <p>Click or tap keys to play • Use keyboard shortcuts:</p>
+        <p>
+            <span class="key-hint">A S D F G H J</span> - Lower octave
+            <span class="key-hint">K L ; ' \ ]</span> - Upper octave
+        </p>
+        <p style="margin-top: 10px; font-size: 0.75rem; color: var(--saffron);">
+            External API: <code>highlightKey(note, octave, duration)</code> - Programmatically highlight keys
+        </p>
+    </div>
+
+    <script>
+        // Piano Key Manager
+        class IndianClassicalPiano {
+            constructor() {
+                this.keys = document.querySelectorAll('.key');
+                this.activeKeys = new Set();
+                this.keyboardMap = this.createKeyboardMap();
+                this.init();
+            }
+
+            createKeyboardMap() {
+                return {
+                    // Lower octave (octave 1)
+                    'a': { note: 's', octave: '1' },
+                    'w': { note: 'r1', octave: '1' },
+                    's': { note: 'r', octave: '1' },
+                    'e': { note: 'r2', octave: '1' },
+                    'd': { note: 'g', octave: '1' },
+                    'f': { note: 'm', octave: '1' },
+                    't': { note: 'm1', octave: '1' },
+                    'g': { note: 'p', octave: '1' },
+                    'y': { note: 'd1', octave: '1' },
+                    'h': { note: 'd', octave: '1' },
+                    'u': { note: 'd2', octave: '1' },
+                    'j': { note: 'n', octave: '1' },
+                    // Upper octave (octave 2)
+                    'k': { note: 's', octave: '2' },
+                    'o': { note: 'r1', octave: '2' },
+                    'l': { note: 'r', octave: '2' },
+                    'p': { note: 'r2', octave: '2' },
+                    ';': { note: 'g', octave: '2' },
+                    "'": { note: 'm', octave: '2' },
+                    ']': { note: 'm1', octave: '2' },
+                    '\\': { note: 'p', octave: '2' },
+                };
+            }
+
+            init() {
+                this.bindEvents();
+                this.createRippleEffect();
+            }
+
+            bindEvents() {
+                // Mouse/Touch events
+                this.keys.forEach(key => {
+                    // Mouse down
+                    key.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                        this.pressKey(key);
+                    });
+
+                    // Mouse up
+                    key.addEventListener('mouseup', () => {
+                        this.releaseKey(key);
+                    });
+
+                    // Mouse leave
+                    key.addEventListener('mouseleave', () => {
+                        this.releaseKey(key);
+                    });
+
+                    // Touch events
+                    key.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        this.pressKey(key);
+                    });
+
+                    key.addEventListener('touchend', () => {
+                        this.releaseKey(key);
+                    });
+                });
+
+                // Keyboard events
+                document.addEventListener('keydown', (e) => {
+                    if (e.repeat) return;
+                    const mapping = this.keyboardMap[e.key.toLowerCase()];
+                    if (mapping) {
+                        const key = this.findKey(mapping.note, mapping.octave);
+                        if (key) {
+                            this.pressKey(key);
+                        }
+                    }
+                });
+
+                document.addEventListener('keyup', (e) => {
+                    const mapping = this.keyboardMap[e.key.toLowerCase()];
+                    if (mapping) {
+                        const key = this.findKey(mapping.note, mapping.octave);
+                        if (key) {
+                            this.releaseKey(key);
+                        }
+                    }
+                });
+            }
+
+            findKey(note, octave) {
+                return document.querySelector(`.key[data-note="${note}"][data-octave="${octave}"]`);
+            }
+
+            pressKey(key) {
+                if (this.activeKeys.has(key)) return;
+                
+                this.activeKeys.add(key);
+                key.classList.add('active');
+                
+                // Trigger visual feedback
+                this.triggerVisualFeedback(key);
+                
+                // Dispatch custom event
+                key.dispatchEvent(new CustomEvent('pianoKeyDown', {
+                    bubbles: true,
+                    detail: {
+                        note: key.dataset.note,
+                        octave: key.dataset.octave,
+                        isBlack: key.classList.contains('black')
+                    }
+                }));
+            }
+
+            releaseKey(key) {
+                if (!this.activeKeys.has(key)) return;
+                
+                this.activeKeys.delete(key);
+                key.classList.remove('active');
+                
+                // Dispatch custom event
+                key.dispatchEvent(new CustomEvent('pianoKeyUp', {
+                    bubbles: true,
+                    detail: {
+                        note: key.dataset.note,
+                        octave: key.dataset.octave
+                    }
+                }));
+            }
+
+            triggerVisualFeedback(key) {
+                // Add ripple effect
+                const ripple = document.createElement('div');
+                ripple.className = 'ripple';
+                ripple.style.width = '50px';
+                ripple.style.height = '50px';
+                ripple.style.left = '50%';
+                ripple.style.top = '70%';
+                ripple.style.transform = 'translate(-50%, -50%)';
+                key.appendChild(ripple);
+                
+                setTimeout(() => ripple.remove(), 600);
+            }
+
+            createRippleEffect() {
+                // CSS animation handles the visual ripple
+            }
+
+            // External API: Highlight a specific key
+            highlightKey(note, octave, duration = 300) {
+                const key = this.findKey(note, octave);
+                if (key) {
+                    this.pressKey(key);
+                    setTimeout(() => {
+                        this.releaseKey(key);
+                    }, duration);
+                    return true;
+                }
+                return false;
+            }
+
+            // External API: Play a sequence of notes
+            playSequence(sequence, gap = 200) {
+                sequence.forEach((item, index) => {
+                    setTimeout(() => {
+                        this.highlightKey(item.note, item.octave, item.duration || 300);
+                    }, index * gap);
+                });
+            }
+
+            // External API: Get all available notes
+            getAvailableNotes() {
+                const notes = [];
+                this.keys.forEach(key => {
+                    notes.push({
+                        note: key.dataset.note,
+                        octave: key.dataset.octave,
+                        element: key
+                    });
+                });
+                return notes;
+            }
+        }
+
+        // Initialize piano
+        const piano = new IndianClassicalPiano();
+
+        // Expose highlightKey to global scope for external use
+        window.highlightKey = (note, octave, duration) => {
+            return piano.highlightKey(note, octave, duration);
+        };
+
+        // Expose playSequence for demo purposes
+        window.playDemoSequence = () => {
+            const demoSequence = [
+                { note: 's', octave: '2', duration: 400 },
+                { note: 'r', octave: '2', duration: 400 },
+                { note: 'g', octave: '2', duration: 400 },
+                { note: 'm', octave: '2', duration: 400 },
+                { note: 'p', octave: '2', duration: 500 },
+                { note: 'd', octave: '2', duration: 400 },
+                { note: 'n', octave: '2', duration: 400 },
+                { note: 's', octave: '3', duration: 600 },
+                { note: 'n', octave: '2', duration: 300 },
+                { note: 'd', octave: '2', duration: 300 },
+                { note: 'p', octave: '2', duration: 300 },
+                { note: 'm', octave: '2', duration: 300 },
+                { note: 'g', octave: '2', duration: 300 },
+                { note: 'r', octave: '2', duration: 300 },
+                { note: 's', octave: '2', duration: 800 },
+            ];
+            piano.playSequence(demoSequence, 250);
+        };
+
+        // Demo button (optional - can be triggered programmatically)
+        document.addEventListener('DOMContentLoaded', () => {
+            console.log('Indian Classical Piano initialized!');
+            console.log('Available API:');
+            console.log('  - highlightKey(note, octave, duration) - Highlight a specific key');
+            console.log('  - playDemoSequence() - Play a sample scale');
+            
+            // Optional: Auto-play demo on load (uncomment to enable)
+            // setTimeout(playDemoSequence, 1000);
+        });
+
+        // Listen for custom events
+        document.addEventListener('pianoKeyDown', (e) => {
+            console.log(`Key pressed: ${e.detail.note} (octave ${e.detail.octave})`);
+        });
+    </script>
+</body>
+</html>

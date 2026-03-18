@@ -1,0 +1,3089 @@
+/<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>పాడు గాజాల - Paadu Gajaala | Carnatic Music Player</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tangerine:wght@400;700&family=Poppins:wght@300;400;500;600;700&family=Noto+Sans+Telugu:wght@400;500;700&display=swap" rel="stylesheet">
+    <style>
+        /* ==========================================================================
+           CSS VARIABLES & ROOT STYLES
+           ========================================================================== */
+        :root {
+            /* Indian Classical Color Palette */
+            --saffron: #FF9933;
+            --deep-saffron: #E67300;
+            --gold: #FFD700;
+            --deep-gold: #DAA520;
+            --maroon: #800000;
+            --deep-maroon: #4A0000;
+            --cream: #FFF8DC;
+            --dark-bg: #1a0a00;
+            --darker-bg: #0d0500;
+            --card-bg: rgba(45, 24, 16, 0.9);
+            --card-border: rgba(255, 153, 51, 0.3);
+            
+            /* Key colors */
+            --key-white: linear-gradient(180deg, #FFFFF0 0%, #F5F5DC 100%);
+            --key-black: linear-gradient(180deg, #2a2a2a 0%, #1a1a1a 100%);
+            
+            /* Status colors */
+            --success: #4CAF50;
+            --warning: #FFC107;
+            --error: #f44336;
+            --info: #2196F3;
+            
+            /* Typography */
+            --font-display: 'Tangerine', cursive;
+            --font-body: 'Poppins', sans-serif;
+            --font-telugu: 'Noto Sans Telugu', sans-serif;
+            
+            /* Spacing */
+            --spacing-xs: 4px;
+            --spacing-sm: 8px;
+            --spacing-md: 16px;
+            --spacing-lg: 24px;
+            --spacing-xl: 32px;
+            
+            /* Border radius */
+            --radius-sm: 6px;
+            --radius-md: 12px;
+            --radius-lg: 20px;
+            
+            /* Shadows */
+            --shadow-sm: 0 2px 8px rgba(0, 0, 0, 0.3);
+            --shadow-md: 0 4px 16px rgba(0, 0, 0, 0.4);
+            --shadow-lg: 0 8px 32px rgba(0, 0, 0, 0.5);
+            --glow-saffron: 0 0 20px rgba(255, 153, 51, 0.4);
+            --glow-gold: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+
+        /* ==========================================================================
+           BASE STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, var(--dark-bg) 0%, #2d1810 50%, var(--deep-maroon) 100%);
+            background-attachment: fixed;
+            font-family: var(--font-body);
+            color: var(--cream);
+            line-height: 1.6;
+            overflow-x: hidden;
+        }
+
+        /* ==========================================================================
+           HEADER & NAVIGATION
+           ========================================================================== */
+        .header {
+            text-align: center;
+            padding: var(--spacing-lg) var(--spacing-md);
+            background: linear-gradient(180deg, rgba(26, 10, 0, 0.95) 0%, transparent 100%);
+            position: relative;
+            z-index: 100;
+        }
+
+        .header-content {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
+            margin-bottom: var(--spacing-sm);
+        }
+
+        .logo-icon {
+            font-size: 2.5rem;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .header h1 {
+            font-family: var(--font-display);
+            font-size: clamp(2.5rem, 6vw, 4rem);
+            color: var(--gold);
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.5), 
+                         0 0 40px rgba(255, 153, 51, 0.3);
+            letter-spacing: 2px;
+        }
+
+        .header .subtitle {
+            color: var(--saffron);
+            font-size: clamp(0.9rem, 2vw, 1.1rem);
+            opacity: 0.9;
+            font-weight: 300;
+        }
+
+        .header .telugu-title {
+            font-family: var(--font-telugu);
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            color: var(--saffron);
+            margin-top: var(--spacing-xs);
+        }
+
+        /* ==========================================================================
+           MAIN CONTAINER
+           ========================================================================== */
+        .main-container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: var(--spacing-md);
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: var(--spacing-lg);
+        }
+
+        @media (min-width: 1024px) {
+            .main-container {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        /* ==========================================================================
+           CARDS
+           ========================================================================== */
+        .card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: var(--radius-lg);
+            padding: var(--spacing-lg);
+            box-shadow: var(--shadow-md);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-lg), var(--glow-saffron);
+            border-color: var(--saffron);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+            margin-bottom: var(--spacing-md);
+            padding-bottom: var(--spacing-sm);
+            border-bottom: 1px solid rgba(255, 153, 51, 0.2);
+        }
+
+        .card-icon {
+            font-size: 1.5rem;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: var(--gold);
+        }
+
+        /* ==========================================================================
+           INPUT SECTION
+           ========================================================================== */
+        .input-section {
+            grid-column: 1 / -1;
+        }
+
+        .notation-input {
+            width: 100%;
+            min-height: 150px;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 153, 51, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            color: var(--cream);
+            font-family: var(--font-telugu), var(--font-body);
+            font-size: 1.1rem;
+            line-height: 1.8;
+            resize: vertical;
+            transition: all 0.3s ease;
+        }
+
+        .notation-input:focus {
+            outline: none;
+            border-color: var(--saffron);
+            box-shadow: 0 0 15px rgba(255, 153, 51, 0.2);
+        }
+
+        .notation-input::placeholder {
+            color: rgba(255, 248, 220, 0.4);
+        }
+
+        .input-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+            margin-top: var(--spacing-md);
+        }
+
+        /* ==========================================================================
+           BUTTONS
+           ========================================================================== */
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-sm);
+            padding: var(--spacing-sm) var(--spacing-md);
+            border: none;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--saffron) 0%, var(--deep-saffron) 100%);
+            color: var(--darker-bg);
+        }
+
+        .btn-primary:hover {
+            background: linear-gradient(135deg, var(--gold) 0%, var(--saffron) 100%);
+            transform: translateY(-2px);
+            box-shadow: var(--glow-saffron);
+        }
+
+        .btn-secondary {
+            background: rgba(255, 153, 51, 0.15);
+            color: var(--saffron);
+            border: 1px solid var(--saffron);
+        }
+
+        .btn-secondary:hover {
+            background: rgba(255, 153, 51, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .btn-success {
+            background: linear-gradient(135deg, var(--success) 0%, #388E3C 100%);
+            color: white;
+        }
+
+        .btn-success:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(76, 175, 80, 0.4);
+        }
+
+        .btn-danger {
+            background: linear-gradient(135deg, var(--error) 0%, #D32F2F 100%);
+            color: white;
+        }
+
+        .btn-danger:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(244, 67, 54, 0.4);
+        }
+
+        .btn-warning {
+            background: linear-gradient(135deg, var(--warning) 0%, #FFA000 100%);
+            color: var(--darker-bg);
+        }
+
+        .btn:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none !important;
+        }
+
+        .btn-lg {
+            padding: var(--spacing-md) var(--spacing-lg);
+            font-size: 1.1rem;
+        }
+
+        /* File upload styling */
+        .file-upload-wrapper {
+            position: relative;
+            display: inline-block;
+        }
+
+        .file-upload-wrapper input[type="file"] {
+            position: absolute;
+            left: 0;
+            top: 0;
+            opacity: 0;
+            cursor: pointer;
+            width: 100%;
+            height: 100%;
+        }
+
+        /* ==========================================================================
+           PLAYBACK CONTROLS
+           ========================================================================== */
+        .playback-controls {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: center;
+            gap: var(--spacing-md);
+            padding: var(--spacing-md);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .control-label {
+            font-size: 0.85rem;
+            color: var(--saffron);
+            white-space: nowrap;
+        }
+
+        .control-value {
+            font-weight: 600;
+            color: var(--gold);
+            min-width: 40px;
+            text-align: center;
+        }
+
+        /* Sliders */
+        input[type="range"] {
+            -webkit-appearance: none;
+            width: 120px;
+            height: 6px;
+            background: rgba(255, 153, 51, 0.2);
+            border-radius: 3px;
+            outline: none;
+        }
+
+        input[type="range"]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, var(--saffron) 0%, var(--gold) 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            box-shadow: 0 0 10px rgba(255, 153, 51, 0.5);
+            transition: all 0.2s ease;
+        }
+
+        input[type="range"]::-webkit-slider-thumb:hover {
+            transform: scale(1.2);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.6);
+        }
+
+        input[type="range"]::-moz-range-thumb {
+            width: 18px;
+            height: 18px;
+            background: linear-gradient(135deg, var(--saffron) 0%, var(--gold) 100%);
+            border-radius: 50%;
+            cursor: pointer;
+            border: none;
+            box-shadow: 0 0 10px rgba(255, 153, 51, 0.5);
+        }
+
+        /* ==========================================================================
+           VIRTUAL PIANO
+           ========================================================================== */
+        .piano-section {
+            grid-column: 1 / -1;
+        }
+
+        .piano-wrapper {
+            background: linear-gradient(145deg, #3d2817 0%, #2a1a0f 100%);
+            border-radius: var(--radius-lg);
+            padding: 30px 20px 20px;
+            box-shadow: 
+                0 20px 60px rgba(0, 0, 0, 0.6),
+                inset 0 2px 10px rgba(255, 153, 51, 0.1),
+                0 0 30px rgba(255, 153, 51, 0.15);
+            position: relative;
+            overflow-x: auto;
+        }
+
+        .piano-wrapper::before {
+            content: '';
+            position: absolute;
+            top: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 60%;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            border-radius: 2px;
+        }
+
+        #piano-container {
+            display: flex;
+            position: relative;
+            user-select: none;
+            padding: 10px;
+            min-width: max-content;
+        }
+
+        .octave {
+            display: flex;
+            position: relative;
+        }
+
+        .key {
+            position: relative;
+            cursor: pointer;
+            transition: all 0.1s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            padding-bottom: 15px;
+        }
+
+        .key.white {
+            width: clamp(40px, 5vw, 55px);
+            height: clamp(160px, 22vh, 200px);
+            background: var(--key-white);
+            border: 1px solid #d4d4d4;
+            border-radius: 0 0 8px 8px;
+            margin: 0 2px;
+            box-shadow: 
+                0 5px 10px rgba(0, 0, 0, 0.3),
+                inset 0 -5px 10px rgba(0, 0, 0, 0.1);
+            z-index: 1;
+        }
+
+        .key.white::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 10%;
+            width: 80%;
+            height: 85%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.8) 0%, transparent 100%);
+            border-radius: 0 0 5px 5px;
+            pointer-events: none;
+        }
+
+        .key.black {
+            width: clamp(24px, 3vw, 35px);
+            height: clamp(100px, 15vh, 130px);
+            background: var(--key-black);
+            border-radius: 0 0 5px 5px;
+            position: absolute;
+            z-index: 2;
+            box-shadow: 
+                0 5px 15px rgba(0, 0, 0, 0.5),
+                inset 0 -3px 8px rgba(255, 255, 255, 0.1);
+        }
+
+        .key.black::before {
+            content: '';
+            position: absolute;
+            top: 5px;
+            left: 15%;
+            width: 70%;
+            height: 10px;
+            background: linear-gradient(180deg, rgba(255,255,255,0.2) 0%, transparent 100%);
+            border-radius: 2px;
+            pointer-events: none;
+        }
+
+        /* Black key positions within octave */
+        .octave .key.black[data-note="r1"] { left: calc(16.66% - 12px); }
+        .octave .key.black[data-note="r2"] { left: calc(33.33% - 12px); }
+        .octave .key.black[data-note="m1"] { left: calc(50% - 12px); }
+        .octave .key.black[data-note="d1"] { left: calc(66.66% - 12px); }
+        .octave .key.black[data-note="d2"] { left: calc(83.33% - 12px); }
+
+        /* Hover effects */
+        .key.white:hover {
+            background: linear-gradient(180deg, #FFFEF5 0%, #FAFAD2 100%);
+            transform: translateY(2px);
+            box-shadow: 
+                0 3px 8px rgba(0, 0, 0, 0.3),
+                inset 0 -3px 8px rgba(255, 153, 51, 0.2);
+        }
+
+        .key.black:hover {
+            background: linear-gradient(180deg, #3a3a3a 0%, #2a2a2a 100%);
+            transform: translateY(2px);
+            box-shadow: 
+                0 3px 10px rgba(0, 0, 0, 0.5),
+                inset 0 -2px 5px rgba(255, 215, 0, 0.1);
+        }
+
+        /* Active/Pressed states */
+        .key.white.active {
+            background: linear-gradient(180deg, #FFF8DC 0%, var(--saffron) 100%);
+            transform: scale(0.98) translateY(3px);
+            box-shadow: 
+                0 2px 5px rgba(0, 0, 0, 0.3),
+                0 0 30px rgba(255, 153, 51, 0.6),
+                inset 0 -5px 15px rgba(255, 215, 0, 0.4);
+            border-color: var(--deep-saffron);
+        }
+
+        .key.black.active {
+            background: linear-gradient(180deg, #4a3a20 0%, #2a2000 100%);
+            transform: scale(0.97) translateY(3px);
+            box-shadow: 
+                0 2px 8px rgba(0, 0, 0, 0.6),
+                0 0 25px rgba(255, 215, 0, 0.5),
+                inset 0 -3px 10px rgba(255, 153, 51, 0.3);
+        }
+
+        /* Glow animation for active keys */
+        @keyframes keyGlow {
+            0%, 100% { 
+                box-shadow: 0 0 20px rgba(255, 153, 51, 0.6),
+                            0 0 40px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 30px rgba(255, 153, 51, 0.8),
+                            0 0 60px rgba(255, 215, 0, 0.5);
+            }
+        }
+
+        .key.active {
+            animation: keyGlow 0.5s ease-in-out infinite;
+        }
+
+        /* Svara labels */
+        .svara-label {
+            font-family: var(--font-telugu), var(--font-body);
+            font-weight: 600;
+            font-size: clamp(0.8rem, 1.3vw, 1rem);
+            pointer-events: none;
+            transition: all 0.2s ease;
+        }
+
+        .key.white .svara-label {
+            color: var(--maroon);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+        }
+
+        .key.black .svara-label {
+            color: var(--gold);
+            font-size: clamp(0.65rem, 1vw, 0.85rem);
+            text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+        }
+
+        .key.active .svara-label {
+            transform: scale(1.1);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.8);
+        }
+
+        /* Octave indicator */
+        .octave-marker {
+            position: absolute;
+            bottom: -25px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.7rem;
+            color: var(--saffron);
+            opacity: 0.7;
+        }
+
+        /* ==========================================================================
+           NOTATION DISPLAY
+           ========================================================================== */
+        .notation-display {
+            max-height: 300px;
+            overflow-y: auto;
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-md);
+            padding: var(--spacing-md);
+            font-family: var(--font-telugu), var(--font-body);
+            font-size: 1.3rem;
+            line-height: 2.2;
+        }
+
+        .notation-display .svara-token {
+            display: inline-block;
+            padding: 2px 6px;
+            margin: 2px;
+            border-radius: var(--radius-sm);
+            transition: all 0.2s ease;
+            cursor: default;
+        }
+
+        .notation-display .svara-token:hover {
+            background: rgba(255, 153, 51, 0.2);
+        }
+
+        .notation-display .svara-token.current {
+            background: var(--saffron);
+            color: var(--darker-bg);
+            font-weight: 600;
+            box-shadow: 0 0 15px rgba(255, 153, 51, 0.6);
+            animation: pulse 0.5s ease-in-out infinite alternate;
+        }
+
+        .notation-display .rhythm-marker {
+            color: var(--gold);
+            margin: 0 4px;
+        }
+
+        @keyframes pulse {
+            from { transform: scale(1); }
+            to { transform: scale(1.1); }
+        }
+
+        /* ==========================================================================
+           STATISTICS
+           ========================================================================== */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+            gap: var(--spacing-md);
+            margin-top: var(--spacing-md);
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: var(--spacing-md);
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: var(--radius-md);
+            border: 1px solid rgba(255, 153, 51, 0.2);
+        }
+
+        .stat-value {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--gold);
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: var(--saffron);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* ==========================================================================
+           SETTINGS
+           ========================================================================== */
+        .settings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: var(--spacing-md);
+        }
+
+        .setting-item {
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-xs);
+        }
+
+        .setting-label {
+            font-size: 0.85rem;
+            color: var(--saffron);
+        }
+
+        select, input[type="number"] {
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid rgba(255, 153, 51, 0.3);
+            border-radius: var(--radius-sm);
+            padding: var(--spacing-sm);
+            color: var(--cream);
+            font-family: var(--font-body);
+            font-size: 0.95rem;
+        }
+
+        select:focus, input[type="number"]:focus {
+            outline: none;
+            border-color: var(--saffron);
+        }
+
+        select option {
+            background: var(--dark-bg);
+            color: var(--cream);
+        }
+
+        /* ==========================================================================
+           STATUS INDICATOR
+           ========================================================================== */
+        .status-bar {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: rgba(0, 0, 0, 0.3);
+            border-radius: var(--radius-sm);
+            margin-top: var(--spacing-md);
+            font-size: 0.85rem;
+        }
+
+        .status-indicator {
+            display: flex;
+            align-items: center;
+            gap: var(--spacing-sm);
+        }
+
+        .status-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--success);
+            box-shadow: 0 0 10px var(--success);
+            animation: blink 1s ease-in-out infinite;
+        }
+
+        .status-dot.playing {
+            background: var(--saffron);
+            box-shadow: 0 0 10px var(--saffron);
+        }
+
+        .status-dot.paused {
+            background: var(--warning);
+            box-shadow: 0 0 10px var(--warning);
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* ==========================================================================
+           DECORATIVE ELEMENTS
+           ========================================================================== */
+        .decoration {
+            position: fixed;
+            pointer-events: none;
+            opacity: 0.08;
+            z-index: 0;
+            font-size: 15rem;
+            color: var(--saffron);
+        }
+
+        .decoration-1 {
+            top: 5%;
+            left: 2%;
+            animation: float 8s ease-in-out infinite;
+        }
+
+        .decoration-2 {
+            bottom: 5%;
+            right: 2%;
+            animation: float 10s ease-in-out infinite reverse;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-30px) rotate(5deg); }
+        }
+
+        /* ==========================================================================
+           SCROLLBAR STYLING
+           ========================================================================== */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: var(--dark-bg);
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, var(--saffron), var(--gold));
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: linear-gradient(180deg, var(--deep-saffron), var(--deep-gold));
+        }
+
+        /* ==========================================================================
+           ANIMATIONS
+           ========================================================================== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .animate-fade-in {
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        /* ==========================================================================
+           RESPONSIVE DESIGN
+           ========================================================================== */
+        @media (max-width: 768px) {
+            .header {
+                padding: var(--spacing-md) var(--spacing-sm);
+            }
+
+            .main-container {
+                padding: var(--spacing-sm);
+                gap: var(--spacing-md);
+            }
+
+            .card {
+                padding: var(--spacing-md);
+            }
+
+            .playback-controls {
+                flex-direction: column;
+                gap: var(--spacing-sm);
+            }
+
+            .piano-wrapper {
+                padding: 20px 10px 15px;
+            }
+
+            .key.white {
+                width: 35px;
+                height: 130px;
+            }
+
+            .key.black {
+                width: 22px;
+                height: 80px;
+            }
+
+            .octave .key.black[data-note="r1"] { left: calc(16.66% - 11px); }
+            .octave .key.black[data-note="r2"] { left: calc(33.33% - 11px); }
+            .octave .key.black[data-note="m1"] { left: calc(50% - 11px); }
+            .octave .key.black[data-note="d1"] { left: calc(66.66% - 11px); }
+            .octave .key.black[data-note="d2"] { left: calc(83.33% - 11px); }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .input-actions {
+                justify-content: center;
+            }
+
+            .btn {
+                padding: var(--spacing-sm);
+                font-size: 0.85rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .key.white {
+                width: 28px;
+                height: 100px;
+                margin: 0 1px;
+            }
+
+            .key.black {
+                width: 18px;
+                height: 65px;
+            }
+
+            .octave .key.black[data-note="r1"] { left: calc(16.66% - 9px); }
+            .octave .key.black[data-note="r2"] { left: calc(33.33% - 9px); }
+            .octave .key.black[data-note="m1"] { left: calc(50% - 9px); }
+            .octave .key.black[data-note="d1"] { left: calc(66.66% - 9px); }
+            .octave .key.black[data-note="d2"] { left: calc(83.33% - 9px); }
+
+            .svara-label {
+                font-size: 0.65rem;
+            }
+
+            .key.black .svara-label {
+                font-size: 0.5rem;
+            }
+
+            .notation-display {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* ==========================================================================
+           LOADING OVERLAY
+           ========================================================================== */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(26, 10, 0, 0.95);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            transition: opacity 0.5s ease;
+        }
+
+        .loading-overlay.hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .loading-spinner {
+            width: 60px;
+            height: 60px;
+            border: 4px solid rgba(255, 153, 51, 0.2);
+            border-top-color: var(--saffron);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+        }
+
+        .loading-text {
+            margin-top: var(--spacing-md);
+            color: var(--gold);
+            font-family: var(--font-display);
+            font-size: 2rem;
+        }
+
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+
+        /* ==========================================================================
+           TOAST NOTIFICATIONS
+           ========================================================================== */
+        .toast-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: var(--spacing-sm);
+        }
+
+        .toast {
+            padding: var(--spacing-md);
+            border-radius: var(--radius-md);
+            color: white;
+            font-size: 0.9rem;
+            animation: slideIn 0.3s ease-out;
+            max-width: 300px;
+            box-shadow: var(--shadow-lg);
+        }
+
+        .toast.success { background: var(--success); }
+        .toast.error { background: var(--error); }
+        .toast.warning { background: var(--warning); color: var(--darker-bg); }
+        .toast.info { background: var(--info); }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        /* ==========================================================================
+           INSTRUMENT PRESET BUTTONS
+           ========================================================================== */
+        .preset-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: var(--spacing-sm);
+        }
+
+        .preset-btn {
+            padding: var(--spacing-sm) var(--spacing-md);
+            background: rgba(255, 153, 51, 0.1);
+            border: 1px solid rgba(255, 153, 51, 0.3);
+            border-radius: var(--radius-sm);
+            color: var(--cream);
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover {
+            background: rgba(255, 153, 51, 0.25);
+            border-color: var(--saffron);
+        }
+
+        .preset-btn.active {
+            background: var(--saffron);
+            color: var(--darker-bg);
+            border-color: var(--saffron);
+        }
+    </style>
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div class="loading-overlay" id="loadingOverlay">
+        <div class="loading-spinner"></div>
+        <div class="loading-text">పాడు గాజాల</div>
+        <p style="color: var(--saffron); margin-top: 10px;">Loading Carnatic Music Engine...</p>
+    </div>
+
+    <!-- Decorative Elements -->
+    <div class="decoration decoration-1">&#9836;</div>
+    <div class="decoration decoration-2">&#9835;</div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toastContainer"></div>
+
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <span class="logo-icon">&#127926;</span>
+                <h1>Paadu Gajaala</h1>
+                <span class="logo-icon">&#127925;</span>
+            </div>
+            <p class="telugu-title">పాడు గాజాల</p>
+            <p class="subtitle">Carnatic Music Notation Player & Visualizer</p>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="main-container">
+        <!-- Input Section -->
+        <section class="card input-section animate-fade-in">
+            <div class="card-header">
+                <span class="card-icon">&#128221;</span>
+                <h2 class="card-title">Notation Input</h2>
+            </div>
+            <textarea 
+                class="notation-input" 
+                id="notationInput" 
+                placeholder="Paste your Telugu svara notation here...&#10;&#10;Example:&#10;స రి గ మ । ప ద ని ॥&#10;స̇ ని ద ప । మ గ రి ॥"
+            ></textarea>
+            <div class="input-actions">
+                <button class="btn btn-primary" id="parseBtn">
+                    <span>&#128269;</span> Parse
+                </button>
+                <button class="btn btn-secondary" id="exampleBtn">
+                    <span>&#128161;</span> Load Example
+                </button>
+                <div class="file-upload-wrapper">
+                    <button class="btn btn-secondary">
+                        <span>&#128193;</span> Upload File
+                    </button>
+                    <input type="file" id="fileUpload" accept=".txt">
+                </div>
+                <button class="btn btn-danger" id="clearBtn">
+                    <span>&#128465;</span> Clear
+                </button>
+            </div>
+            <div class="status-bar">
+                <div class="status-indicator">
+                    <span class="status-dot" id="statusDot"></span>
+                    <span id="statusText">Ready</span>
+                </div>
+                <span id="parsedInfo"></span>
+            </div>
+        </section>
+
+        <!-- Playback Controls -->
+        <section class="card animate-fade-in">
+            <div class="card-header">
+                <span class="card-icon">&#127911;</span>
+                <h2 class="card-title">Playback Controls</h2>
+            </div>
+            <div class="playback-controls">
+                <button class="btn btn-success btn-lg" id="playBtn">
+                    <span>&#9654;</span> Play
+                </button>
+                <button class="btn btn-warning" id="pauseBtn" disabled>
+                    <span>&#9208;</span> Pause
+                </button>
+                <button class="btn btn-danger" id="stopBtn" disabled>
+                    <span>&#9209;</span> Stop
+                </button>
+                <div class="control-group">
+                    <span class="control-label">Tempo:</span>
+                    <input type="range" id="tempoSlider" min="60" max="200" value="120">
+                    <span class="control-value" id="tempoValue">120</span>
+                    <span class="control-label">BPM</span>
+                </div>
+                <div class="control-group">
+                    <span class="control-label">Volume:</span>
+                    <input type="range" id="volumeSlider" min="0" max="100" value="70">
+                    <span class="control-value" id="volumeValue">70</span>
+                    <span class="control-label">%</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings -->
+        <section class="card animate-fade-in">
+            <div class="card-header">
+                <span class="card-icon">&#9881;</span>
+                <h2 class="card-title">Settings</h2>
+            </div>
+            <div class="settings-grid">
+                <div class="setting-item">
+                    <label class="setting-label">Waveform</label>
+                    <select id="waveformSelect">
+                        <option value="triangle">Triangle (Veena-like)</option>
+                        <option value="sine">Sine (Flute-like)</option>
+                        <option value="sawtooth">Sawtooth (Violin-like)</option>
+                        <option value="square">Square (Harmonium-like)</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label">Tuning System</label>
+                    <select id="tuningSelect">
+                        <option value="equal">Equal Temperament</option>
+                        <option value="just">Just Intonation</option>
+                    </select>
+                </div>
+                <div class="setting-item">
+                    <label class="setting-label">Instrument Preset</label>
+                    <div class="preset-buttons">
+                        <button class="preset-btn active" data-preset="veena">Veena</button>
+                        <button class="preset-btn" data-preset="flute">Flute</button>
+                        <button class="preset-btn" data-preset="violin">Violin</button>
+                        <button class="preset-btn" data-preset="harmonium">Harmonium</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Virtual Piano -->
+        <section class="card piano-section animate-fade-in">
+            <div class="card-header">
+                <span class="card-icon">&#127929;</span>
+                <h2 class="card-title">Virtual Piano</h2>
+            </div>
+            <div class="piano-wrapper">
+                <div id="piano-container">
+                    <!-- Octave 1 (Mandra - Lower) -->
+                    <div class="octave" data-octave="1">
+                        <div class="key white" data-note="s" data-octave="1">
+                            <span class="svara-label">స</span>
+                        </div>
+                        <div class="key white" data-note="r" data-octave="1">
+                            <span class="svara-label">రి</span>
+                        </div>
+                        <div class="key white" data-note="g" data-octave="1">
+                            <span class="svara-label">గ</span>
+                        </div>
+                        <div class="key white" data-note="m" data-octave="1">
+                            <span class="svara-label">మ</span>
+                        </div>
+                        <div class="key white" data-note="p" data-octave="1">
+                            <span class="svara-label">ప</span>
+                        </div>
+                        <div class="key white" data-note="d" data-octave="1">
+                            <span class="svara-label">ద</span>
+                        </div>
+                        <div class="key white" data-note="n" data-octave="1">
+                            <span class="svara-label">ని</span>
+                        </div>
+                        <div class="key black" data-note="r1" data-octave="1">
+                            <span class="svara-label">రి₁</span>
+                        </div>
+                        <div class="key black" data-note="r2" data-octave="1">
+                            <span class="svara-label">రి₂</span>
+                        </div>
+                        <div class="key black" data-note="m1" data-octave="1">
+                            <span class="svara-label">మ₁</span>
+                        </div>
+                        <div class="key black" data-note="d1" data-octave="1">
+                            <span class="svara-label">ద₁</span>
+                        </div>
+                        <div class="key black" data-note="d2" data-octave="1">
+                            <span class="svara-label">ద₂</span>
+                        </div>
+                        <span class="octave-marker">Mandra</span>
+                    </div>
+
+                    <!-- Octave 2 (Madhya - Middle) -->
+                    <div class="octave" data-octave="2">
+                        <div class="key white" data-note="s" data-octave="2">
+                            <span class="svara-label">స</span>
+                        </div>
+                        <div class="key white" data-note="r" data-octave="2">
+                            <span class="svara-label">రి</span>
+                        </div>
+                        <div class="key white" data-note="g" data-octave="2">
+                            <span class="svara-label">గ</span>
+                        </div>
+                        <div class="key white" data-note="m" data-octave="2">
+                            <span class="svara-label">మ</span>
+                        </div>
+                        <div class="key white" data-note="p" data-octave="2">
+                            <span class="svara-label">ప</span>
+                        </div>
+                        <div class="key white" data-note="d" data-octave="2">
+                            <span class="svara-label">ద</span>
+                        </div>
+                        <div class="key white" data-note="n" data-octave="2">
+                            <span class="svara-label">ని</span>
+                        </div>
+                        <div class="key black" data-note="r1" data-octave="2">
+                            <span class="svara-label">రి₁</span>
+                        </div>
+                        <div class="key black" data-note="r2" data-octave="2">
+                            <span class="svara-label">రి₂</span>
+                        </div>
+                        <div class="key black" data-note="m1" data-octave="2">
+                            <span class="svara-label">మ₁</span>
+                        </div>
+                        <div class="key black" data-note="d1" data-octave="2">
+                            <span class="svara-label">ద₁</span>
+                        </div>
+                        <div class="key black" data-note="d2" data-octave="2">
+                            <span class="svara-label">ద₂</span>
+                        </div>
+                        <span class="octave-marker">Madhya</span>
+                    </div>
+
+                    <!-- Octave 3 (Taara - Higher - partial) -->
+                    <div class="octave" data-octave="3">
+                        <div class="key white" data-note="s" data-octave="3">
+                            <span class="svara-label">స̇</span>
+                        </div>
+                        <span class="octave-marker">Taara</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Notation Display -->
+        <section class="card animate-fade-in">
+            <div class="card-header">
+                <span class="card-icon">&#128196;</span>
+                <h2 class="card-title">Parsed Notation</h2>
+            </div>
+            <div class="notation-display" id="notationDisplay">
+                <p style="color: rgba(255, 248, 220, 0.4); text-align: center; padding: 40px;">
+                    Parsed notation will appear here...<br>
+                    <small>Enter notation and click "Parse" to preview</small>
+                </p>
+            </div>
+        </section>
+
+        <!-- Statistics -->
+        <section class="card animate-fade-in">
+            <div class="card-header">
+                <span class="card-icon">&#128202;</span>
+                <h2 class="card-title">Statistics</h2>
+            </div>
+            <div class="stats-grid" id="statsGrid">
+                <div class="stat-item">
+                    <div class="stat-value" id="statNotes">0</div>
+                    <div class="stat-label">Notes</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statLines">0</div>
+                    <div class="stat-label">Lines</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statDuration">0s</div>
+                    <div class="stat-label">Duration</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-value" id="statOctaves">0</div>
+                    <div class="stat-label">Octaves</div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer style="text-align: center; padding: var(--spacing-lg); color: var(--saffron); opacity: 0.7; font-size: 0.85rem;">
+        <p>పాడు గాజాల - Carnatic Music Notation Player &copy; 2024</p>
+        <p style="margin-top: 5px;">Built with ♥ for Indian Classical Music</p>
+    </footer>
+
+    <!-- ==========================================================================
+         JAVASCRIPT - SVARA FREQUENCIES
+         ========================================================================== -->
+    <script>
+
+        // ============================================================================
+        // SVARA FREQUENCIES MODULE
+        // ============================================================================
+        
+        const REFERENCE_A4 = 440.0;
+        const BASE_SA_FREQUENCY = 261.6255653005986;
+        const SEMITONE_RATIO = 1.0594630943592953;
+
+        const JUST_INTONATION_RATIOS = {
+            sa:  { ratio: 1/1,    fraction: '1/1',    decimal: 1.000 },
+            ri1: { ratio: 16/15,  fraction: '16/15',  decimal: 1.067 },
+            ri2: { ratio: 9/8,    fraction: '9/8',    decimal: 1.125 },
+            ri3: { ratio: 6/5,    fraction: '6/5',    decimal: 1.200 },
+            ga2: { ratio: 81/64,  fraction: '81/64',  decimal: 1.266 },
+            ga3: { ratio: 5/4,    fraction: '5/4',    decimal: 1.250 },
+            ma1: { ratio: 4/3,    fraction: '4/3',    decimal: 1.333 },
+            ma2: { ratio: 45/32,  fraction: '45/32',  decimal: 1.406 },
+            pa:  { ratio: 3/2,    fraction: '3/2',    decimal: 1.500 },
+            da1: { ratio: 8/5,    fraction: '8/5',    decimal: 1.600 },
+            da2: { ratio: 5/3,    fraction: '5/3',    decimal: 1.667 },
+            da2_alt: { ratio: 27/16, fraction: '27/16', decimal: 1.688 },
+            ni2: { ratio: 16/9,   fraction: '16/9',   decimal: 1.778 },
+            ni3: { ratio: 15/8,   fraction: '15/8',   decimal: 1.875 },
+        };
+
+        const SVARA_FREQUENCIES = {
+            'స.': { frequency: 130.81, western: 'C3', semitones: 0, name: 'Shadjam (Mandra)', octave: 'mandara' },
+            'స': { frequency: 261.63, western: 'C4', semitones: 0, name: 'Shadjam (Madhya)', octave: 'madhya' },
+            'స̇': { frequency: 523.25, western: 'C5', semitones: 0, name: 'Shadjam (Taara)', octave: 'taara' },
+            'రి1.': { frequency: 138.59, western: 'C#3/Db3', semitones: 1, name: 'Shuddha Rishabham (Mandra)', octave: 'mandara' },
+            'రి1': { frequency: 277.18, western: 'C#4/Db4', semitones: 1, name: 'Shuddha Rishabham (Madhya)', octave: 'madhya' },
+            'రి1̇': { frequency: 554.37, western: 'C#5/Db5', semitones: 1, name: 'Shuddha Rishabham (Taara)', octave: 'taara' },
+            'రి2.': { frequency: 146.83, western: 'D3', semitones: 2, name: 'Chatusruti Rishabham (Mandra)', octave: 'mandara', equivalent: 'గ1.' },
+            'రి2': { frequency: 293.66, western: 'D4', semitones: 2, name: 'Chatusruti Rishabham (Madhya)', octave: 'madhya', equivalent: 'గ1' },
+            'రి2̇': { frequency: 587.33, western: 'D5', semitones: 2, name: 'Chatusruti Rishabham (Taara)', octave: 'taara', equivalent: 'గ1̇' },
+            'రి3.': { frequency: 155.56, western: 'D#3/Eb3', semitones: 3, name: 'Shatshruti Rishabham (Mandra)', octave: 'mandara', equivalent: 'గ2.' },
+            'రి3': { frequency: 311.13, western: 'D#4/Eb4', semitones: 3, name: 'Shatshruti Rishabham (Madhya)', octave: 'madhya', equivalent: 'గ2' },
+            'రి3̇': { frequency: 622.25, western: 'D#5/Eb5', semitones: 3, name: 'Shatshruti Rishabham (Taara)', octave: 'taara', equivalent: 'గ2̇' },
+            'గ1.': { frequency: 146.83, western: 'D3', semitones: 2, name: 'Shuddha Gandharam (Mandra)', octave: 'mandara', equivalent: 'రి2.' },
+            'గ1': { frequency: 293.66, western: 'D4', semitones: 2, name: 'Shuddha Gandharam (Madhya)', octave: 'madhya', equivalent: 'రి2' },
+            'గ1̇': { frequency: 587.33, western: 'D5', semitones: 2, name: 'Shuddha Gandharam (Taara)', octave: 'taara', equivalent: 'రి2̇' },
+            'గ2.': { frequency: 155.56, western: 'D#3/Eb3', semitones: 3, name: 'Sadharana Gandharam (Mandra)', octave: 'mandara', equivalent: 'రి3.' },
+            'గ2': { frequency: 311.13, western: 'D#4/Eb4', semitones: 3, name: 'Sadharana Gandharam (Madhya)', octave: 'madhya', equivalent: 'రి3' },
+            'గ2̇': { frequency: 622.25, western: 'D#5/Eb5', semitones: 3, name: 'Sadharana Gandharam (Taara)', octave: 'taara', equivalent: 'రి3̇' },
+            'గ3.': { frequency: 164.81, western: 'E3', semitones: 4, name: 'Antara Gandharam (Mandra)', octave: 'mandara' },
+            'గ3': { frequency: 329.63, western: 'E4', semitones: 4, name: 'Antara Gandharam (Madhya)', octave: 'madhya' },
+            'గ3̇': { frequency: 659.26, western: 'E5', semitones: 4, name: 'Antara Gandharam (Taara)', octave: 'taara' },
+            'మ1.': { frequency: 174.61, western: 'F3', semitones: 5, name: 'Shuddha Madhyamam (Mandra)', octave: 'mandara' },
+            'మ1': { frequency: 349.23, western: 'F4', semitones: 5, name: 'Shuddha Madhyamam (Madhya)', octave: 'madhya' },
+            'మ1̇': { frequency: 698.46, western: 'F5', semitones: 5, name: 'Shuddha Madhyamam (Taara)', octave: 'taara' },
+            'మ2.': { frequency: 185.00, western: 'F#3/Gb3', semitones: 6, name: 'Prati Madhyamam (Mandra)', octave: 'mandara' },
+            'మ2': { frequency: 369.99, western: 'F#4/Gb4', semitones: 6, name: 'Prati Madhyamam (Madhya)', octave: 'madhya' },
+            'మ2̇': { frequency: 739.99, western: 'F#5/Gb5', semitones: 6, name: 'Prati Madhyamam (Taara)', octave: 'taara' },
+            'ప.': { frequency: 196.00, western: 'G3', semitones: 7, name: 'Panchamam (Mandra)', octave: 'mandara' },
+            'ప': { frequency: 392.00, western: 'G4', semitones: 7, name: 'Panchamam (Madhya)', octave: 'madhya' },
+            'ప̇': { frequency: 783.99, western: 'G5', semitones: 7, name: 'Panchamam (Taara)', octave: 'taara' },
+            'ద1.': { frequency: 207.65, western: 'G#3/Ab3', semitones: 8, name: 'Shuddha Dhaivatam (Mandra)', octave: 'mandara' },
+            'ద1': { frequency: 415.30, western: 'G#4/Ab4', semitones: 8, name: 'Shuddha Dhaivatam (Madhya)', octave: 'madhya' },
+            'ద1̇': { frequency: 830.61, western: 'G#5/Ab5', semitones: 8, name: 'Shuddha Dhaivatam (Taara)', octave: 'taara' },
+            'ద2.': { frequency: 220.00, western: 'A3', semitones: 9, name: 'Chatusruti Dhaivatam (Mandra)', octave: 'mandara', equivalent: 'ని1.' },
+            'ద2': { frequency: 440.00, western: 'A4', semitones: 9, name: 'Chatusruti Dhaivatam (Madhya)', octave: 'madhya', equivalent: 'ని1' },
+            'ద2̇': { frequency: 880.00, western: 'A5', semitones: 9, name: 'Chatusruti Dhaivatam (Taara)', octave: 'taara', equivalent: 'ని1̇' },
+            'ద3.': { frequency: 233.08, western: 'A#3/Bb3', semitones: 10, name: 'Shatshruti Dhaivatam (Mandra)', octave: 'mandara', equivalent: 'ని2.' },
+            'ద3': { frequency: 466.16, western: 'A#4/Bb4', semitones: 10, name: 'Shatshruti Dhaivatam (Madhya)', octave: 'madhya', equivalent: 'ని2' },
+            'ద3̇': { frequency: 932.33, western: 'A#5/Bb5', semitones: 10, name: 'Shatshruti Dhaivatam (Taara)', octave: 'taara', equivalent: 'ని2̇' },
+            'ని1.': { frequency: 220.00, western: 'A3', semitones: 9, name: 'Shuddha Nishadham (Mandra)', octave: 'mandara', equivalent: 'ద2.' },
+            'ని1': { frequency: 440.00, western: 'A4', semitones: 9, name: 'Shuddha Nishadham (Madhya)', octave: 'madhya', equivalent: 'ద2' },
+            'ని1̇': { frequency: 880.00, western: 'A5', semitones: 9, name: 'Shuddha Nishadham (Taara)', octave: 'taara', equivalent: 'ద2̇' },
+            'ని2.': { frequency: 233.08, western: 'A#3/Bb3', semitones: 10, name: 'Kaisiki Nishadham (Mandra)', octave: 'mandara', equivalent: 'ద3.' },
+            'ని2': { frequency: 466.16, western: 'A#4/Bb4', semitones: 10, name: 'Kaisiki Nishadham (Madhya)', octave: 'madhya', equivalent: 'ద3' },
+            'ని2̇': { frequency: 932.33, western: 'A#5/Bb5', semitones: 10, name: 'Kaisiki Nishadham (Taara)', octave: 'taara', equivalent: 'ద3̇' },
+            'ని3.': { frequency: 246.94, western: 'B3', semitones: 11, name: 'Kakali Nishadham (Mandra)', octave: 'mandara' },
+            'ని3': { frequency: 493.88, western: 'B4', semitones: 11, name: 'Kakali Nishadham (Madhya)', octave: 'madhya' },
+            'ని3̇': { frequency: 987.77, western: 'B5', semitones: 11, name: 'Kakali Nishadham (Taara)', octave: 'taara' },
+        };
+
+        function normalizeOctaveName(octave = 'madhya') {
+            return octave === 'mandra' ? 'mandara' : octave;
+        }
+
+        function normalizeSvaraName(svara = 'స') {
+            const svaraMap = {
+                'స': 'స',
+                'రి': 'రి2',
+                'గ': 'గ3',
+                'మ': 'మ1',
+                'ప': 'ప',
+                'ద': 'ద2',
+                'ని': 'ని3'
+            };
+
+            return svaraMap[svara] || svara;
+        }
+
+        function getSvaraFrequency(svara, octave = 'madhya') {
+            svara = normalizeSvaraName(svara);
+            octave = normalizeOctaveName(octave);
+            const octaveSuffix = {
+                'mandara': '.',
+                'madhya': '',
+                'taara': '̇'
+            };
+            const key = svara + octaveSuffix[octave];
+            const svaraData = SVARA_FREQUENCIES[key];
+            if (!svaraData) {
+                console.warn(`Unknown svara: ${svara} in octave ${octave}`);
+                return null;
+            }
+            return svaraData.frequency;
+        }
+
+        // ============================================================================
+        // NOTATION PARSER MODULE
+        // ============================================================================
+
+        const SVARA_CHARS = {
+            'స': 'sa', 'రి': 'ri', 'గ': 'ga', 'మ': 'ma', 'ప': 'pa', 'ద': 'da', 'ని': 'ni'
+        };
+
+        const SVARA_NAMES = {
+            'sa': 'స', 'ri': 'రి', 'ga': 'గ', 'ma': 'మ', 'pa': 'ప', 'da': 'ద', 'ni': 'ని'
+        };
+
+        const OCTAVE_MARKERS = {
+            DOT_BELOW: '\u0323',
+            DOT_ABOVE: '\u0307',
+        };
+
+        const OCTAVE_NAMES = {
+            MANDRA: 'mandra',
+            MADHYA: 'madhya',
+            TAARA: 'taara'
+        };
+
+        const RHYTHM_MARKERS = {
+            SINGLE: '।',
+            DOUBLE: '॥',
+            SINGLE_LATIN: '|',
+            DOUBLE_LATIN: '||'
+        };
+
+        const TOKEN_TYPES = {
+            SVARA: 'svara',
+            RHYTHM_MARKER: 'rhythm_marker',
+            NEWLINE: 'newline',
+            WHITESPACE: 'whitespace',
+            UNKNOWN: 'unknown'
+        };
+
+        function isSvaraChar(char) {
+            return char in SVARA_CHARS;
+        }
+
+        function isSvaraBase(char) {
+            const baseChars = ['స', 'ర', 'ి', 'గ', 'మ', 'ప', 'ద', 'న'];
+            return baseChars.includes(char);
+        }
+
+        function isRhythmMarker(char) {
+            return char === RHYTHM_MARKERS.SINGLE || 
+                   char === RHYTHM_MARKERS.DOUBLE ||
+                   char === RHYTHM_MARKERS.SINGLE_LATIN ||
+                   char === RHYTHM_MARKERS.DOUBLE_LATIN;
+        }
+
+        function isWhitespace(char) {
+            return /\s/.test(char);
+        }
+
+        function isDotBelow(char) {
+            return char === OCTAVE_MARKERS.DOT_BELOW;
+        }
+
+        function isDotAbove(char) {
+            return char === OCTAVE_MARKERS.DOT_ABOVE;
+        }
+
+        function getOctave(hasDotBelow, hasDotAbove) {
+            if (hasDotBelow) return OCTAVE_NAMES.MANDRA;
+            if (hasDotAbove) return OCTAVE_NAMES.TAARA;
+            return OCTAVE_NAMES.MADHYA;
+        }
+
+        function normalizeInput(text) {
+            if (!text || typeof text !== 'string') {
+                return '';
+            }
+            return text
+                .replace(/\r\n/g, '\n')
+                .replace(/\r/g, '\n')
+                .replace(/\t/g, ' ')
+                .trim();
+        }
+
+        function extractSvara(text, startIndex) {
+            let i = startIndex;
+            let svaraBase = '';
+            let hasDotBelow = false;
+            let hasDotAbove = false;
+            let rawChars = '';
+
+            while (i < text.length) {
+                const char = text[i];
+                
+                if (!svaraBase && isSvaraBase(char)) {
+                    svaraBase += char;
+                    rawChars += char;
+                    i++;
+                    
+                    if (char === 'ర' && i < text.length && text[i] === 'ి') {
+                        svaraBase += text[i];
+                        rawChars += text[i];
+                        i++;
+                    }
+                    break;
+                } else if (!svaraBase) {
+                    break;
+                } else {
+                    break;
+                }
+            }
+
+            if (!svaraBase || !isSvaraChar(svaraBase)) {
+                return null;
+            }
+
+            while (i < text.length) {
+                const char = text[i];
+                if (isDotBelow(char)) {
+                    hasDotBelow = true;
+                    rawChars += char;
+                    i++;
+                } else if (isDotAbove(char)) {
+                    hasDotAbove = true;
+                    rawChars += char;
+                    i++;
+                } else {
+                    break;
+                }
+            }
+
+            return {
+                svara: svaraBase,
+                octave: getOctave(hasDotBelow, hasDotAbove),
+                raw: rawChars,
+                nextIndex: i
+            };
+        }
+
+        function tokenize(text) {
+            const normalizedText = normalizeInput(text);
+            const tokens = [];
+            let i = 0;
+            
+            while (i < normalizedText.length) {
+                const char = normalizedText[i];
+                const nextChar = normalizedText[i + 1] || '';
+                
+                if (char + nextChar === RHYTHM_MARKERS.DOUBLE) {
+                    tokens.push({
+                        type: TOKEN_TYPES.RHYTHM_MARKER,
+                        value: RHYTHM_MARKERS.DOUBLE,
+                        subtype: 'double',
+                        position: i
+                    });
+                    i += 2;
+                    continue;
+                }
+                
+                if (char === RHYTHM_MARKERS.SINGLE) {
+                    tokens.push({
+                        type: TOKEN_TYPES.RHYTHM_MARKER,
+                        value: RHYTHM_MARKERS.SINGLE,
+                        subtype: 'single',
+                        position: i
+                    });
+                    i++;
+                    continue;
+                }
+                
+                if (char === '\n') {
+                    tokens.push({
+                        type: TOKEN_TYPES.NEWLINE,
+                        value: char,
+                        position: i
+                    });
+                    i++;
+                    continue;
+                }
+                
+                if (isWhitespace(char)) {
+                    tokens.push({
+                        type: TOKEN_TYPES.WHITESPACE,
+                        value: char,
+                        position: i
+                    });
+                    i++;
+                    continue;
+                }
+                
+                const svaraResult = extractSvara(normalizedText, i);
+                if (svaraResult) {
+                    tokens.push({
+                        type: TOKEN_TYPES.SVARA,
+                        svara: svaraResult.svara,
+                        octave: svaraResult.octave,
+                        raw: svaraResult.raw,
+                        position: i
+                    });
+                    i = svaraResult.nextIndex;
+                    continue;
+                }
+                
+                tokens.push({
+                    type: TOKEN_TYPES.UNKNOWN,
+                    value: char,
+                    position: i
+                });
+                i++;
+            }
+            
+            return tokens;
+        }
+
+        function parseNotation(text, options = {}) {
+            const {
+                includeWhitespace = false,
+                includeUnknown = false,
+                defaultDuration = 1
+            } = options;
+            
+            const tokens = tokenize(text);
+            const notes = [];
+            let currentLine = 1;
+            let lastSvaraIndex = -1;
+            
+            for (let i = 0; i < tokens.length; i++) {
+                const token = tokens[i];
+                
+                switch (token.type) {
+                    case TOKEN_TYPES.SVARA:
+                        const note = {
+                            type: 'svara',
+                            svara: token.svara,
+                            svaraLatin: SVARA_CHARS[token.svara],
+                            octave: token.octave,
+                            duration: defaultDuration,
+                            beatMarker: null,
+                            line: currentLine,
+                            position: token.position
+                        };
+                        notes.push(note);
+                        lastSvaraIndex = notes.length - 1;
+                        break;
+                        
+                    case TOKEN_TYPES.RHYTHM_MARKER:
+                        if (lastSvaraIndex >= 0 && notes[lastSvaraIndex].type === 'svara') {
+                            notes[lastSvaraIndex].beatMarker = token.value;
+                        }
+                        notes.push({
+                            type: 'rhythm_marker',
+                            marker: token.value,
+                            subtype: token.subtype,
+                            line: currentLine,
+                            position: token.position
+                        });
+                        break;
+                        
+                    case TOKEN_TYPES.NEWLINE:
+                        currentLine++;
+                        lastSvaraIndex = -1;
+                        notes.push({
+                            type: 'newline',
+                            line: currentLine - 1,
+                            position: token.position
+                        });
+                        break;
+                        
+                    case TOKEN_TYPES.WHITESPACE:
+                        if (includeWhitespace) {
+                            notes.push({
+                                type: 'whitespace',
+                                line: currentLine,
+                                position: token.position
+                            });
+                        }
+                        break;
+                        
+                    case TOKEN_TYPES.UNKNOWN:
+                        if (includeUnknown) {
+                            notes.push({
+                                type: 'unknown',
+                                value: token.value,
+                                line: currentLine,
+                                position: token.position
+                            });
+                        }
+                        break;
+                }
+            }
+            
+            return notes;
+        }
+
+        function parseNotationByLines(text) {
+            const notes = parseNotation(text);
+            const lines = [];
+            let currentLine = [];
+            
+            for (const note of notes) {
+                if (note.type === 'newline') {
+                    if (currentLine.length > 0) {
+                        lines.push([...currentLine]);
+                        currentLine = [];
+                    }
+                } else if (note.type === 'svara') {
+                    currentLine.push(note);
+                }
+            }
+            
+            if (currentLine.length > 0) {
+                lines.push(currentLine);
+            }
+            
+            return lines;
+        }
+
+        function parseSvarasOnly(text) {
+            const notes = parseNotation(text);
+            return notes.filter(note => note.type === 'svara');
+        }
+
+        function getNotationStats(text) {
+            const notes = parseNotation(text);
+            const svaras = notes.filter(n => n.type === 'svara');
+            
+            const stats = {
+                totalNotes: svaras.length,
+                totalRhythmMarkers: notes.filter(n => n.type === 'rhythm_marker').length,
+                svaraCounts: {},
+                octaveDistribution: { mandra: 0, madhya: 0, taara: 0 },
+                lines: parseNotationByLines(text).length
+            };
+            
+            for (const svara of svaras) {
+                const latinName = svara.svaraLatin;
+                stats.svaraCounts[latinName] = (stats.svaraCounts[latinName] || 0) + 1;
+                stats.octaveDistribution[svara.octave]++;
+            }
+            
+            return stats;
+        }
+
+        function validateNotation(text) {
+            const issues = [];
+            const tokens = tokenize(text);
+            
+            let hasSvara = false;
+            let hasRhythmMarker = false;
+            
+            for (const token of tokens) {
+                if (token.type === TOKEN_TYPES.SVARA) {
+                    hasSvara = true;
+                } else if (token.type === TOKEN_TYPES.RHYTHM_MARKER) {
+                    hasRhythmMarker = true;
+                } else if (token.type === TOKEN_TYPES.UNKNOWN) {
+                    issues.push({
+                        type: 'warning',
+                        message: `Unknown character at position ${token.position}: "${token.value}"`,
+                        position: token.position
+                    });
+                }
+            }
+            
+            if (!hasSvara) {
+                issues.push({
+                    type: 'error',
+                    message: 'No svara characters found in notation'
+                });
+            }
+            
+            return {
+                valid: issues.filter(i => i.type === 'error').length === 0,
+                issues: issues,
+                hasSvara,
+                hasRhythmMarker
+            };
+        }
+
+
+        // ============================================================================
+        // AUDIO ENGINE MODULE
+        // ============================================================================
+
+        const AudioEnginePresets = {
+            flute: {
+                waveform: 'sine',
+                envelope: { attack: 0.05, decay: 0.1, sustain: 0.8, release: 0.2 },
+                masterVolume: 0.8
+            },
+            veena: {
+                waveform: 'triangle',
+                envelope: { attack: 0.02, decay: 0.05, sustain: 0.75, release: 0.15 },
+                masterVolume: 0.75
+            },
+            violin: {
+                waveform: 'sawtooth',
+                envelope: { attack: 0.1, decay: 0.2, sustain: 0.7, release: 0.3 },
+                masterVolume: 0.6
+            },
+            harmonium: {
+                waveform: 'square',
+                envelope: { attack: 0.03, decay: 0.1, sustain: 0.8, release: 0.2 },
+                masterVolume: 0.5
+            },
+            plucked: {
+                waveform: 'triangle',
+                envelope: { attack: 0.005, decay: 0.3, sustain: 0.3, release: 0.1 },
+                masterVolume: 0.8
+            }
+        };
+
+        class AudioEngine {
+            constructor(options = {}) {
+                this.audioContext = null;
+                this.isInitialized = false;
+                this.masterGain = null;
+                this.compressor = null;
+                
+                this.config = {
+                    waveform: options.waveform || 'triangle',
+                    envelope: {
+                        attack: options.envelope?.attack ?? 0.02,
+                        decay: options.envelope?.decay ?? 0.05,
+                        sustain: options.envelope?.sustain ?? 0.7,
+                        release: options.envelope?.release ?? 0.15
+                    },
+                    masterVolume: options.masterVolume ?? 0.7,
+                    tuning: options.tuning || 'equal',
+                    baseFrequency: options.baseFrequency ?? 261.6255653005986
+                };
+                
+                this.activeVoices = new Map();
+                this.isPlaying = false;
+                this.currentSequence = null;
+                this.sequenceTimeout = null;
+                this.tempo = 120;
+                this.beatDuration = 60 / this.tempo;
+                
+                this.eventListeners = {
+                    noteOn: [],
+                    noteOff: [],
+                    sequenceStart: [],
+                    sequenceEnd: [],
+                    ready: []
+                };
+                
+                this._scheduleNote = this._scheduleNote.bind(this);
+            }
+            
+            async init() {
+                if (this.isInitialized) {
+                    return true;
+                }
+                
+                try {
+                    const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+                    if (!AudioContextClass) {
+                        throw new Error('Web Audio API not supported in this browser');
+                    }
+                    
+                    this.audioContext = new AudioContextClass({
+                        latencyHint: 'interactive',
+                        sampleRate: 44100
+                    });
+                    
+                    this.masterGain = this.audioContext.createGain();
+                    this.masterGain.gain.value = this.config.masterVolume;
+                    
+                    this.compressor = this.audioContext.createDynamicsCompressor();
+                    this.compressor.threshold.value = -24;
+                    this.compressor.knee.value = 30;
+                    this.compressor.ratio.value = 12;
+                    this.compressor.attack.value = 0.003;
+                    this.compressor.release.value = 0.25;
+                    
+                    this.compressor.connect(this.masterGain);
+                    this.masterGain.connect(this.audioContext.destination);
+                    
+                    if (this.audioContext.state === 'suspended') {
+                        await this.audioContext.resume();
+                    }
+                    
+                    this.isInitialized = true;
+                    this._emit('ready', { audioContext: this.audioContext });
+                    
+                    return true;
+                } catch (error) {
+                    console.error('AudioEngine initialization failed:', error);
+                    throw error;
+                }
+            }
+            
+            async resume() {
+                if (this.audioContext && this.audioContext.state === 'suspended') {
+                    await this.audioContext.resume();
+                }
+            }
+            
+            async suspend() {
+                if (this.audioContext && this.audioContext.state === 'running') {
+                    await this.audioContext.suspend();
+                }
+            }
+            
+            on(event, callback) {
+                if (!this.eventListeners[event]) {
+                    throw new Error(`Unknown event: ${event}`);
+                }
+                
+                this.eventListeners[event].push(callback);
+                
+                return () => {
+                    const index = this.eventListeners[event].indexOf(callback);
+                    if (index > -1) {
+                        this.eventListeners[event].splice(index, 1);
+                    }
+                };
+            }
+            
+            _emit(event, data) {
+                if (this.eventListeners[event]) {
+                    this.eventListeners[event].forEach(callback => {
+                        try {
+                            callback(data);
+                        } catch (error) {
+                            console.error(`Error in ${event} listener:`, error);
+                        }
+                    });
+                }
+            }
+            
+            getFrequency(svara, octave = 'madhya') {
+                svara = normalizeSvaraName(svara);
+                octave = normalizeOctaveName(octave);
+                if (this.config.tuning === 'just') {
+                    return this._getJustIntonationFrequency(svara, octave);
+                }
+                return this._getEqualTemperamentFrequency(svara, octave);
+            }
+            
+            _getEqualTemperamentFrequency(svara, octave) {
+                octave = normalizeOctaveName(octave);
+                const octaveSuffix = {
+                    'mandara': '.',
+                    'madhya': '',
+                    'taara': '̇'
+                };
+                
+                const key = svara + octaveSuffix[octave];
+                
+                if (typeof SVARA_FREQUENCIES !== 'undefined' && SVARA_FREQUENCIES[key]) {
+                    return SVARA_FREQUENCIES[key].frequency;
+                }
+                
+                return this._calculateFrequency(svara, octave);
+            }
+            
+            _getJustIntonationFrequency(svara, octave) {
+                octave = normalizeOctaveName(octave);
+                const ratioMap = {
+                    'స': 'sa',
+                    'రి1': 'ri1', 'గ1': 'ri2',
+                    'రి2': 'ri2', 'గ2': 'ri3',
+                    'రి3': 'ri3', 'గ3': 'ga3',
+                    'మ1': 'ma1', 'మ2': 'ma2',
+                    'ప': 'pa',
+                    'ద1': 'da1', 'ని1': 'da2',
+                    'ద2': 'da2', 'ని2': 'da3',
+                    'ద3': 'da3', 'ని3': 'ni3'
+                };
+                
+                const ratioKey = ratioMap[svara];
+                if (!ratioKey || typeof JUST_INTONATION_RATIOS === 'undefined') {
+                    return this._getEqualTemperamentFrequency(svara, octave);
+                }
+                
+                const ratio = JUST_INTONATION_RATIOS[ratioKey]?.ratio;
+                if (!ratio) {
+                    return this._getEqualTemperamentFrequency(svara, octave);
+                }
+                
+                const octaveMultiplier = {
+                    'mandara': 0.5,
+                    'madhya': 1.0,
+                    'taara': 2.0
+                };
+                
+                return this.config.baseFrequency * ratio * octaveMultiplier[octave];
+            }
+            
+            _calculateFrequency(svara, octave) {
+                octave = normalizeOctaveName(octave);
+                const semitoneMap = {
+                    'స': 0,
+                    'రి1': 1, 'గ1': 2,
+                    'రి2': 2, 'గ2': 3,
+                    'రి3': 3, 'గ3': 4,
+                    'మ1': 5, 'మ2': 6,
+                    'ప': 7,
+                    'ద1': 8, 'ని1': 9,
+                    'ద2': 9, 'ని2': 10,
+                    'ద3': 10, 'ని3': 11
+                };
+                
+                const semitones = semitoneMap[svara];
+                if (semitones === undefined) {
+                    throw new Error(`Unknown svara: ${svara}`);
+                }
+                
+                const octaveMultiplier = {
+                    'mandara': 0.5,
+                    'madhya': 1.0,
+                    'taara': 2.0
+                };
+                
+                return this.config.baseFrequency * Math.pow(SEMITONE_RATIO, semitones) * octaveMultiplier[octave];
+            }
+            
+            _createVoice(frequency, startTime, duration, velocity = 1.0, svara = null, octave = null) {
+                const ctx = this.audioContext;
+                const env = this.config.envelope;
+                
+                const oscillator = ctx.createOscillator();
+                oscillator.type = this.config.waveform;
+                oscillator.frequency.value = frequency;
+                
+                const envelopeGain = ctx.createGain();
+                envelopeGain.gain.value = 0;
+                
+                const voiceGain = ctx.createGain();
+                voiceGain.gain.value = velocity;
+                
+                oscillator.connect(envelopeGain);
+                envelopeGain.connect(voiceGain);
+                voiceGain.connect(this.compressor);
+                
+                const attackEnd = startTime + env.attack;
+                const decayEnd = attackEnd + env.decay;
+                const releaseStart = startTime + duration;
+                const releaseEnd = releaseStart + env.release;
+                
+                const gainParam = envelopeGain.gain;
+                
+                gainParam.setValueAtTime(0, startTime);
+                gainParam.linearRampToValueAtTime(1, attackEnd);
+                gainParam.exponentialRampToValueAtTime(env.sustain, decayEnd);
+                gainParam.setValueAtTime(env.sustain, releaseStart);
+                gainParam.exponentialRampToValueAtTime(0.001, releaseEnd);
+                
+                oscillator.start(startTime);
+                oscillator.stop(releaseEnd + 0.1);
+                
+                const voiceId = `voice_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+                const voice = {
+                    id: voiceId,
+                    oscillator,
+                    envelopeGain,
+                    voiceGain,
+                    frequency,
+                    startTime,
+                    duration,
+                    releaseEnd,
+                    svara,
+                    octave,
+                    
+                    stop: (when = ctx.currentTime) => {
+                        try {
+                            const releaseDuration = env.release;
+                            const actualReleaseStart = Math.max(when, ctx.currentTime);
+                            const actualReleaseEnd = actualReleaseStart + releaseDuration;
+                            
+                            gainParam.cancelScheduledValues(actualReleaseStart);
+                            gainParam.setValueAtTime(gainParam.value, actualReleaseStart);
+                            gainParam.exponentialRampToValueAtTime(0.001, actualReleaseEnd);
+                            
+                            oscillator.stop(actualReleaseEnd + 0.05);
+                        } catch (e) {}
+                        this.activeVoices.delete(voiceId);
+                    }
+                };
+                
+                oscillator.onended = () => {
+                    this.activeVoices.delete(voiceId);
+                    try {
+                        oscillator.disconnect();
+                        envelopeGain.disconnect();
+                        voiceGain.disconnect();
+                    } catch (e) {}
+                };
+                
+                this.activeVoices.set(voiceId, voice);
+                return voice;
+            }
+            
+            playSvara(svara, octave = 'madhya', duration = 1.0, velocity = 1.0, when = null) {
+                if (!this.isInitialized) {
+                    console.warn('AudioEngine not initialized. Call init() first.');
+                    return null;
+                }
+                
+                if (this.audioContext.state === 'suspended') {
+                    this.audioContext.resume();
+                }
+                
+                const startTime = when !== null ? when : this.audioContext.currentTime;
+                const durationSeconds = duration * this.beatDuration;
+                
+                const frequency = this.getFrequency(svara, octave);
+                
+                const voice = this._createVoice(frequency, startTime, durationSeconds, velocity, svara, octave);
+                
+                const emitTime = Math.max(0, (startTime - this.audioContext.currentTime) * 1000);
+                setTimeout(() => {
+                    this._emit('noteOn', {
+                        svara,
+                        octave,
+                        frequency,
+                        voiceId: voice.id,
+                        startTime,
+                        duration: durationSeconds
+                    });
+                }, emitTime);
+                
+                // Schedule noteOff event
+                const noteOffDelay = emitTime + (durationSeconds * 1000);
+                setTimeout(() => {
+                    this._emit('noteOff', { svara, octave, voiceId: voice.id });
+                }, noteOffDelay);
+                
+                return voice;
+            }
+            
+            playFrequency(frequency, duration = 1.0, velocity = 1.0, when = null) {
+                if (!this.isInitialized) {
+                    console.warn('AudioEngine not initialized. Call init() first.');
+                    return null;
+                }
+                
+                const startTime = when !== null ? when : this.audioContext.currentTime;
+                const durationSeconds = duration * this.beatDuration;
+                
+                const voice = this._createVoice(frequency, startTime, durationSeconds, velocity);
+                
+                return voice;
+            }
+            
+            playSequence(notes, tempo = 120, options = {}) {
+                if (!this.isInitialized) {
+                    console.warn('AudioEngine not initialized. Call init() first.');
+                    return null;
+                }
+                
+                this.stopSequence();
+                this.setTempo(tempo);
+                
+                const { loop = false, loopCount = Infinity } = options;
+                let currentLoop = 0;
+                let isCancelled = false;
+                
+                const sequenceState = {
+                    notes,
+                    tempo,
+                    loop,
+                    loopCount,
+                    currentIndex: 0,
+                    isPlaying: true,
+                    cancel: () => { isCancelled = true; }
+                };
+                
+                this.currentSequence = sequenceState;
+                this._emit('sequenceStart', { notes, tempo });
+                
+                const scheduleSequence = () => {
+                    if (isCancelled) return;
+                    
+                    const startTime = this.audioContext.currentTime;
+                    let currentTime = startTime;
+                    
+                    for (let i = 0; i < notes.length; i++) {
+                        if (isCancelled) break;
+                        
+                        const note = notes[i];
+                        
+                        if (note.rest) {
+                            currentTime += note.duration * this.beatDuration;
+                            continue;
+                        }
+                        
+                        this._scheduleNote(note, currentTime, i);
+                        
+                        currentTime += note.duration * this.beatDuration;
+                    }
+                    
+                    const sequenceDuration = (currentTime - startTime) * 1000;
+                    
+                    if (loop && currentLoop < loopCount - 1 && !isCancelled) {
+                        currentLoop++;
+                        this.sequenceTimeout = setTimeout(scheduleSequence, sequenceDuration);
+                    } else {
+                        this.sequenceTimeout = setTimeout(() => {
+                            if (!isCancelled) {
+                                this._emit('sequenceEnd', { notes, tempo });
+                                sequenceState.isPlaying = false;
+                                this.currentSequence = null;
+                            }
+                        }, sequenceDuration);
+                    }
+                };
+                
+                scheduleSequence();
+                
+                return sequenceState;
+            }
+            
+            _scheduleNote(note, when, index) {
+                const { svara, octave = 'madhya', duration = 1.0, velocity = 1.0 } = note;
+                this.playSvara(svara, octave, duration, velocity, when);
+                
+                // Emit note index for visual sync
+                const emitTime = Math.max(0, (when - this.audioContext.currentTime) * 1000);
+                setTimeout(() => {
+                    this._emit('noteIndex', { index, svara, octave });
+                }, emitTime);
+            }
+            
+            stopSequence() {
+                if (this.sequenceTimeout) {
+                    clearTimeout(this.sequenceTimeout);
+                    this.sequenceTimeout = null;
+                }
+                
+                if (this.currentSequence) {
+                    this.currentSequence.cancel();
+                    this.currentSequence.isPlaying = false;
+                    this._emit('sequenceEnd', { cancelled: true });
+                    this.currentSequence = null;
+                }
+            }
+            
+            stopAll() {
+                this.stopSequence();
+                
+                this.activeVoices.forEach(voice => {
+                    voice.stop();
+                });
+                this.activeVoices.clear();
+            }
+            
+            setTempo(bpm) {
+                this.tempo = Math.max(30, Math.min(300, bpm));
+                this.beatDuration = 60 / this.tempo;
+            }
+            
+            setVolume(volume) {
+                this.config.masterVolume = Math.max(0, Math.min(1, volume));
+                if (this.masterGain) {
+                    this.masterGain.gain.value = this.config.masterVolume;
+                }
+            }
+            
+            setEnvelope(envelope) {
+                Object.assign(this.config.envelope, envelope);
+            }
+            
+            setWaveform(waveform) {
+                const validWaveforms = ['sine', 'triangle', 'sawtooth', 'square'];
+                if (validWaveforms.includes(waveform)) {
+                    this.config.waveform = waveform;
+                }
+            }
+            
+            setTuning(tuning) {
+                if (tuning === 'equal' || tuning === 'just') {
+                    this.config.tuning = tuning;
+                }
+            }
+            
+            setBaseFrequency(frequency) {
+                this.config.baseFrequency = frequency;
+            }
+            
+            getCurrentTime() {
+                return this.audioContext ? this.audioContext.currentTime : 0;
+            }
+            
+            isAudioPlaying() {
+                return this.activeVoices.size > 0 || 
+                       (this.currentSequence && this.currentSequence.isPlaying);
+            }
+            
+            getActiveVoiceCount() {
+                return this.activeVoices.size;
+            }
+            
+            dispose() {
+                this.stopAll();
+                
+                if (this.audioContext) {
+                    this.audioContext.close();
+                }
+                
+                this.isInitialized = false;
+                this.eventListeners = {
+                    noteOn: [],
+                    noteOff: [],
+                    sequenceStart: [],
+                    sequenceEnd: [],
+                    ready: []
+                };
+            }
+        }
+
+
+        // ============================================================================
+        // PIANO UI CONTROLLER
+        // ============================================================================
+
+        class PianoController {
+            constructor() {
+                this.keys = document.querySelectorAll('.key');
+                this.activeKeys = new Set();
+                this.keyboardMap = this.createKeyboardMap();
+                this.currentNoteIndex = -1;
+                this.currentlyPressedKey = null; // Track the key being pressed
+                this.autoReleaseTimers = new Map(); // Track auto-release timers
+                this.init();
+            }
+
+            createKeyboardMap() {
+                return {
+                    'a': { note: 's', octave: '1' },
+                    'w': { note: 'r1', octave: '1' },
+                    's': { note: 'r', octave: '1' },
+                    'e': { note: 'r2', octave: '1' },
+                    'd': { note: 'g', octave: '1' },
+                    'f': { note: 'm', octave: '1' },
+                    't': { note: 'm1', octave: '1' },
+                    'g': { note: 'p', octave: '1' },
+                    'y': { note: 'd1', octave: '1' },
+                    'h': { note: 'd', octave: '1' },
+                    'u': { note: 'd2', octave: '1' },
+                    'j': { note: 'n', octave: '1' },
+                    'k': { note: 's', octave: '2' },
+                    'o': { note: 'r1', octave: '2' },
+                    'l': { note: 'r', octave: '2' },
+                    'p': { note: 'r2', octave: '2' },
+                    ';': { note: 'g', octave: '2' },
+                    "'": { note: 'm', octave: '2' },
+                    ']': { note: 'm1', octave: '2' },
+                    '\\': { note: 'p', octave: '2' },
+                };
+            }
+
+            init() {
+                this.bindEvents();
+            }
+
+            bindEvents() {
+                // Bind events to each key
+                this.keys.forEach(key => {
+                    // Mouse events
+                    key.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.pressKey(key, true); // true = manual press with auto-release
+                    });
+
+                    key.addEventListener('mouseup', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.releaseKey(key);
+                    });
+
+                    key.addEventListener('mouseleave', (e) => {
+                        this.releaseKey(key);
+                    });
+
+                    // Touch events
+                    key.addEventListener('touchstart', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.pressKey(key, true); // true = manual press with auto-release
+                    });
+
+                    key.addEventListener('touchend', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.releaseKey(key);
+                    });
+
+                    // Also handle touch cancel
+                    key.addEventListener('touchcancel', (e) => {
+                        e.preventDefault();
+                        this.releaseKey(key);
+                    });
+                });
+
+                // Global mouse/touch release handlers to catch releases outside keys
+                document.addEventListener('mouseup', () => {
+                    if (this.currentlyPressedKey) {
+                        this.releaseKey(this.currentlyPressedKey);
+                        this.currentlyPressedKey = null;
+                    }
+                });
+
+                document.addEventListener('touchend', () => {
+                    if (this.currentlyPressedKey) {
+                        this.releaseKey(this.currentlyPressedKey);
+                        this.currentlyPressedKey = null;
+                    }
+                });
+
+                // Keyboard events
+                document.addEventListener('keydown', (e) => {
+                    if (e.repeat) return;
+                    const mapping = this.keyboardMap[e.key.toLowerCase()];
+                    if (mapping) {
+                        const key = this.findKey(mapping.note, mapping.octave);
+                        if (key) {
+                            this.pressKey(key, true);
+                        }
+                    }
+                });
+
+                document.addEventListener('keyup', (e) => {
+                    const mapping = this.keyboardMap[e.key.toLowerCase()];
+                    if (mapping) {
+                        const key = this.findKey(mapping.note, mapping.octave);
+                        if (key) {
+                            this.releaseKey(key);
+                        }
+                    }
+                });
+
+                // Safety: clear all keys when window loses focus
+                window.addEventListener('blur', () => {
+                    this.releaseAll();
+                });
+            }
+
+            findKey(note, octave) {
+                return document.querySelector(`.key[data-note="${note}"][data-octave="${octave}"]`);
+            }
+
+            pressKey(key, autoRelease = false, emitEvent = true) {
+                if (!key) return;
+
+                // Clear any existing auto-release timer for this key
+                this.clearAutoReleaseTimer(key);
+
+                const isAlreadyActive = this.activeKeys.has(key);
+
+                this.activeKeys.add(key);
+                this.currentlyPressedKey = key;
+                key.classList.add('active');
+
+                if (!isAlreadyActive && emitEvent) {
+                    key.dispatchEvent(new CustomEvent('pianoKeyDown', {
+                        bubbles: true,
+                        detail: {
+                            note: key.dataset.note,
+                            octave: key.dataset.octave,
+                            isBlack: key.classList.contains('black')
+                        }
+                    }));
+                }
+
+                // Auto-release after 500ms for manual presses (safety mechanism)
+                if (autoRelease) {
+                    const timerId = setTimeout(() => {
+                        this.releaseKey(key);
+                    }, 500);
+                    this.autoReleaseTimers.set(key, timerId);
+                }
+            }
+
+            releaseKey(key) {
+                if (!key) return;
+                
+                // Clear auto-release timer
+                this.clearAutoReleaseTimer(key);
+                
+                this.activeKeys.delete(key);
+                if (this.currentlyPressedKey === key) {
+                    this.currentlyPressedKey = null;
+                }
+                key.classList.remove('active');
+                
+                key.dispatchEvent(new CustomEvent('pianoKeyUp', {
+                    bubbles: true,
+                    detail: {
+                        note: key.dataset.note,
+                        octave: key.dataset.octave
+                    }
+                }));
+            }
+
+            clearAutoReleaseTimer(key) {
+                const timerId = this.autoReleaseTimers.get(key);
+                if (timerId) {
+                    clearTimeout(timerId);
+                    this.autoReleaseTimers.delete(key);
+                }
+            }
+
+            highlightKey(note, octave, duration = 300) {
+                const key = this.findKey(note, octave);
+                if (key) {
+                    this.pressKey(key, false, false); // Visual highlight only; do not re-trigger audio
+                    // Auto-release after duration using setTimeout for reliability
+                    setTimeout(() => {
+                        this.releaseKey(key);
+                    }, duration);
+                    return true;
+                }
+                return false;
+            }
+
+            highlightBySvara(svara, octave, duration = 300) {
+                const noteMap = {
+                    'స': 's',
+                    'రి': 'r', 'రి1': 'r1', 'రి2': 'r2', 'రి3': 'r2',
+                    'గ': 'g', 'గ1': 'r2', 'గ2': 'r2', 'గ3': 'g',
+                    'మ': 'm', 'మ1': 'm1', 'మ2': 'm1',
+                    'ప': 'p',
+                    'ద': 'd', 'ద1': 'd1', 'ద2': 'd2', 'ద3': 'd2',
+                    'ని': 'n', 'ని1': 'd2', 'ని2': 'd2', 'ని3': 'n'
+                };
+
+                const octaveMap = {
+                    'mandra': '1',
+                    'mandara': '1',
+                    'madhya': '2',
+                    'taara': '3'
+                };
+
+                const note = noteMap[svara] || 's';
+                const oct = octaveMap[octave] || '2';
+
+                return this.highlightKey(note, oct, duration);
+            }
+
+            releaseBySvara(svara, octave) {
+                const noteMap = {
+                    'స': 's',
+                    'రి': 'r', 'రి1': 'r1', 'రి2': 'r2', 'రి3': 'r2',
+                    'గ': 'g', 'గ1': 'r2', 'గ2': 'r2', 'గ3': 'g',
+                    'మ': 'm', 'మ1': 'm1', 'మ2': 'm1',
+                    'ప': 'p',
+                    'ద': 'd', 'ద1': 'd1', 'ద2': 'd2', 'ద3': 'd2',
+                    'ని': 'n', 'ని1': 'd2', 'ని2': 'd2', 'ని3': 'n'
+                };
+
+                const octaveMap = {
+                    'mandra': '1',
+                    'mandara': '1',
+                    'madhya': '2',
+                    'taara': '3'
+                };
+
+                const note = noteMap[svara] || 's';
+                const oct = octaveMap[octave] || '2';
+
+                const key = this.findKey(note, oct);
+                if (key) {
+                    this.releaseKey(key);
+                }
+            }
+
+            releaseAll() {
+                // Clear all auto-release timers
+                this.autoReleaseTimers.forEach((timerId, key) => {
+                    clearTimeout(timerId);
+                });
+                this.autoReleaseTimers.clear();
+                
+                // Release all active keys
+                const keysToRelease = Array.from(this.activeKeys);
+                keysToRelease.forEach(key => {
+                    this.releaseKey(key);
+                });
+                
+                this.activeKeys.clear();
+                this.currentlyPressedKey = null;
+            }
+        }
+
+        // ============================================================================
+        // MAIN APPLICATION CONTROLLER
+        // ============================================================================
+
+        class PaaduGajaalaApp {
+            constructor() {
+                this.audioEngine = null;
+                this.piano = null;
+                this.parsedNotes = [];
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.currentNoteIndex = 0;
+                this.tempo = 120;
+                this.volume = 0.7;
+
+                this.init();
+            }
+
+            async init() {
+                // Initialize piano (no audio required)
+                this.piano = new PianoController();
+
+                // Create audio engine but don't initialize yet (will init on first user interaction)
+                this.audioEngine = new AudioEngine(AudioEnginePresets.veena);
+
+                // Bind UI events
+                this.bindEvents();
+
+                // Hide loading overlay immediately
+                setTimeout(() => {
+                    const overlay = document.getElementById('loadingOverlay');
+                    if (overlay) {
+                        overlay.classList.add('hidden');
+                        overlay.style.display = 'none';
+                    }
+                }, 500);
+
+                this.showToast('Welcome to Paadu Gajaala! Click "Parse" to start.', 'info');
+            }
+
+            async ensureAudioInitialized() {
+                if (this.audioEngine && !this.audioEngine.isInitialized) {
+                    try {
+                        await this.audioEngine.init();
+                    } catch (error) {
+                        console.error('Audio initialization failed:', error);
+                        this.showToast('Audio initialization failed. Please click somewhere on the page first.', 'error');
+                    }
+                }
+            }
+
+            bindEvents() {
+                // Parse button
+                document.getElementById('parseBtn').addEventListener('click', () => {
+                    this.parseNotation();
+                });
+
+                // Example button
+                document.getElementById('exampleBtn').addEventListener('click', () => {
+                    this.loadExample();
+                });
+
+                // File upload
+                document.getElementById('fileUpload').addEventListener('change', (e) => {
+                    this.handleFileUpload(e);
+                });
+
+                // Clear button
+                document.getElementById('clearBtn').addEventListener('click', () => {
+                    this.clearAll();
+                });
+
+                // Play button
+                document.getElementById('playBtn').addEventListener('click', () => {
+                    this.play();
+                });
+
+                // Pause button
+                document.getElementById('pauseBtn').addEventListener('click', () => {
+                    this.pause();
+                });
+
+                // Stop button
+                document.getElementById('stopBtn').addEventListener('click', () => {
+                    this.stop();
+                });
+
+                // Tempo slider
+                const tempoSlider = document.getElementById('tempoSlider');
+                tempoSlider.addEventListener('input', (e) => {
+                    this.tempo = parseInt(e.target.value);
+                    document.getElementById('tempoValue').textContent = this.tempo;
+                    if (this.audioEngine) {
+                        this.audioEngine.setTempo(this.tempo);
+                    }
+                });
+
+                // Volume slider
+                const volumeSlider = document.getElementById('volumeSlider');
+                volumeSlider.addEventListener('input', (e) => {
+                    this.volume = parseInt(e.target.value) / 100;
+                    document.getElementById('volumeValue').textContent = e.target.value;
+                    if (this.audioEngine) {
+                        this.audioEngine.setVolume(this.volume);
+                    }
+                });
+
+                // Waveform select
+                document.getElementById('waveformSelect').addEventListener('change', (e) => {
+                    if (this.audioEngine) {
+                        this.audioEngine.setWaveform(e.target.value);
+                    }
+                });
+
+                // Tuning select
+                document.getElementById('tuningSelect').addEventListener('change', (e) => {
+                    if (this.audioEngine) {
+                        this.audioEngine.setTuning(e.target.value);
+                    }
+                });
+
+                // Preset buttons
+                document.querySelectorAll('.preset-btn').forEach(btn => {
+                    btn.addEventListener('click', (e) => {
+                        const preset = e.target.dataset.preset;
+                        this.applyPreset(preset);
+                        
+                        document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+                        e.target.classList.add('active');
+                    });
+                });
+
+                // Piano key events for playing audio
+                document.addEventListener('pianoKeyDown', (e) => {
+                    this.playPianoNote(e.detail.note, e.detail.octave);
+                });
+
+                // Audio engine events for visual sync
+                this.setupAudioEvents();
+            }
+
+            setupAudioEvents() {
+                this.audioEngine.on('noteOn', (data) => {
+                    // Use a fixed duration of 200ms for key highlight
+                    this.piano.highlightBySvara(data.svara, data.octave, 200);
+                    this.highlightNotationToken(data.svara, data.octave);
+                });
+
+                // noteOff event not needed - keys are auto-released
+
+                this.audioEngine.on('sequenceStart', () => {
+                    this.isPlaying = true;
+                    this.updateStatus('playing');
+                    this.updatePlaybackButtons();
+                });
+
+                this.audioEngine.on('sequenceEnd', () => {
+                    this.isPlaying = false;
+                    this.isPaused = false;
+                    this.currentNoteIndex = 0;
+                    this.updateStatus('ready');
+                    this.updatePlaybackButtons();
+                    this.piano.releaseAll();
+                    this.clearNotationHighlight();
+                });
+            }
+
+            async playPianoNote(note, octave) {
+                if (!this.audioEngine.isInitialized) {
+                    await this.audioEngine.init();
+                }
+
+                const svaraMap = {
+                    's': 'స',
+                    'r': 'రి2',
+                    'r1': 'రి1',
+                    'r2': 'రి2',
+                    'g': 'గ3',
+                    'm': 'మ1',
+                    'm1': 'మ2',
+                    'p': 'ప',
+                    'd': 'ద2',
+                    'd1': 'ద1',
+                    'd2': 'ద2',
+                    'n': 'ని3'
+                };
+
+                const octaveMap = {
+                    '1': 'mandara',
+                    '2': 'madhya',
+                    '3': 'taara'
+                };
+
+                const svara = svaraMap[note] || 'స';
+                const oct = octaveMap[octave] || 'madhya';
+
+                this.audioEngine.playSvara(svara, oct, 0.5);
+            }
+
+            parseNotation() {
+                const input = document.getElementById('notationInput').value.trim();
+                
+                if (!input) {
+                    this.showToast('Please enter notation first', 'warning');
+                    return;
+                }
+
+                const validation = validateNotation(input);
+                
+                if (!validation.valid) {
+                    this.showToast('Invalid notation: ' + validation.issues[0].message, 'error');
+                    return;
+                }
+
+                this.parsedNotes = parseSvarasOnly(input);
+                
+                if (this.parsedNotes.length === 0) {
+                    this.showToast('No valid svaras found in notation', 'warning');
+                    return;
+                }
+
+                this.displayParsedNotation(input);
+                this.updateStatistics(input);
+                
+                document.getElementById('parsedInfo').textContent = 
+                    `${this.parsedNotes.length} notes parsed`;
+                
+                this.showToast(`Parsed ${this.parsedNotes.length} notes successfully!`, 'success');
+                this.updateStatus('parsed');
+            }
+
+            displayParsedNotation(input) {
+                const display = document.getElementById('notationDisplay');
+                const tokens = parseNotation(input);
+                
+                let html = '';
+                tokens.forEach((token, index) => {
+                    if (token.type === 'svara') {
+                        let svaraHtml = token.svara;
+                        if (token.octave === 'mandra') {
+                            svaraHtml += '<sub>.</sub>';
+                        } else if (token.octave === 'taara') {
+                            svaraHtml += '<sup>.</sup>';
+                        }
+                        html += `<span class="svara-token" data-index="${index}" data-svara="${token.svara}" data-octave="${token.octave}">${svaraHtml}</span> `;
+                    } else if (token.type === 'rhythm_marker') {
+                        html += `<span class="rhythm-marker">${token.marker}</span> `;
+                    } else if (token.type === 'newline') {
+                        html += '<br>';
+                    }
+                });
+                
+                display.innerHTML = html;
+            }
+
+            updateStatistics(input) {
+                const stats = getNotationStats(input);
+                const svaras = parseSvarasOnly(input);
+                
+                // Calculate total duration
+                const totalBeats = svaras.reduce((sum, note) => sum + (note.duration || 1), 0);
+                const durationSeconds = (totalBeats * 60) / this.tempo;
+                
+                // Count unique octaves used
+                const octavesUsed = new Set(svaras.map(n => n.octave)).size;
+                
+                document.getElementById('statNotes').textContent = stats.totalNotes;
+                document.getElementById('statLines').textContent = stats.lines;
+                document.getElementById('statDuration').textContent = Math.round(durationSeconds) + 's';
+                document.getElementById('statOctaves').textContent = octavesUsed;
+            }
+
+            async play() {
+                if (this.parsedNotes.length === 0) {
+                    this.showToast('Please parse notation first', 'warning');
+                    return;
+                }
+
+                if (this.isPlaying) {
+                    this.showToast('Playback already in progress', 'warning');
+                    return;
+                }
+
+                if (!this.audioEngine.isInitialized) {
+                    try {
+                        await this.audioEngine.init();
+                    } catch (error) {
+                        this.showToast('Audio initialization failed: ' + error.message, 'error');
+                        return;
+                    }
+                }
+
+                if (this.isPaused) {
+                    this.isPaused = false;
+                    this.resumePlayback();
+                } else {
+                    this.startPlayback();
+                }
+            }
+
+            startPlayback() {
+                const sequence = this.parsedNotes.map(note => ({
+                    svara: note.svara,
+                    octave: note.octave,
+                    duration: note.duration || 1
+                }));
+
+                this.audioEngine.playSequence(sequence, this.tempo);
+            }
+
+            resumePlayback() {
+                // Resume from pause would require more complex state management
+                // For now, restart from beginning
+                this.startPlayback();
+            }
+
+            pause() {
+                this.isPaused = true;
+                this.audioEngine.stopAll();
+                this.updateStatus('paused');
+                this.updatePlaybackButtons();
+                this.showToast('Playback paused', 'info');
+            }
+
+            stop() {
+                this.isPlaying = false;
+                this.isPaused = false;
+                this.currentNoteIndex = 0;
+                this.audioEngine.stopAll();
+                this.piano.releaseAll();
+                this.clearNotationHighlight();
+                this.updateStatus('ready');
+                this.updatePlaybackButtons();
+            }
+
+            updatePlaybackButtons() {
+                const playBtn = document.getElementById('playBtn');
+                const pauseBtn = document.getElementById('pauseBtn');
+                const stopBtn = document.getElementById('stopBtn');
+
+                if (this.isPlaying) {
+                    playBtn.disabled = true;
+                    pauseBtn.disabled = false;
+                    stopBtn.disabled = false;
+                } else if (this.isPaused) {
+                    playBtn.disabled = false;
+                    pauseBtn.disabled = true;
+                    stopBtn.disabled = false;
+                } else {
+                    playBtn.disabled = false;
+                    pauseBtn.disabled = true;
+                    stopBtn.disabled = true;
+                }
+            }
+
+            updateStatus(status) {
+                const dot = document.getElementById('statusDot');
+                const text = document.getElementById('statusText');
+                
+                dot.className = 'status-dot';
+                
+                switch (status) {
+                    case 'playing':
+                        dot.classList.add('playing');
+                        text.textContent = 'Playing';
+                        break;
+                    case 'paused':
+                        dot.classList.add('paused');
+                        text.textContent = 'Paused';
+                        break;
+                    case 'parsed':
+                        text.textContent = 'Parsed';
+                        break;
+                    default:
+                        text.textContent = 'Ready';
+                }
+            }
+
+            highlightNotationToken(svara, octave) {
+                this.clearNotationHighlight();
+                
+                const tokens = document.querySelectorAll('.svara-token');
+                for (const token of tokens) {
+                    if (token.dataset.svara === svara && token.dataset.octave === octave) {
+                        token.classList.add('current');
+                        token.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        break;
+                    }
+                }
+            }
+
+            clearNotationHighlight() {
+                document.querySelectorAll('.svara-token.current').forEach(token => {
+                    token.classList.remove('current');
+                });
+            }
+
+            loadExample() {
+                const example = `స రి గ మ । ప ద ని ॥
+స̇ ని ద ప । మ గ రి ॥
+స రి గ మ । ప ద ని స̇ ॥
+స̇ ని ద ప । మ గ రి స ॥`;
+                
+                document.getElementById('notationInput').value = example;
+                this.showToast('Example notation loaded!', 'success');
+                this.parseNotation();
+            }
+
+            handleFileUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                const reader = new FileReader();
+                reader.onload = (e) => {
+                    document.getElementById('notationInput').value = e.target.result;
+                    this.showToast(`File "${file.name}" loaded successfully!`, 'success');
+                    this.parseNotation();
+                };
+                reader.onerror = () => {
+                    this.showToast('Error reading file', 'error');
+                };
+                reader.readAsText(file);
+            }
+
+            clearAll() {
+                document.getElementById('notationInput').value = '';
+                document.getElementById('notationDisplay').innerHTML = 
+                    '<p style="color: rgba(255, 248, 220, 0.4); text-align: center; padding: 40px;">Parsed notation will appear here...<br><small>Enter notation and click "Parse" to preview</small></p>';
+                document.getElementById('parsedInfo').textContent = '';
+                document.getElementById('statNotes').textContent = '0';
+                document.getElementById('statLines').textContent = '0';
+                document.getElementById('statDuration').textContent = '0s';
+                document.getElementById('statOctaves').textContent = '0';
+                this.parsedNotes = [];
+                this.stop();
+                this.showToast('All cleared', 'info');
+            }
+
+            applyPreset(presetName) {
+                const preset = AudioEnginePresets[presetName];
+                if (!preset) return;
+
+                this.audioEngine.setWaveform(preset.waveform);
+                this.audioEngine.setEnvelope(preset.envelope);
+                this.audioEngine.setVolume(preset.masterVolume);
+
+                // Update UI
+                document.getElementById('waveformSelect').value = preset.waveform;
+                document.getElementById('volumeSlider').value = Math.round(preset.masterVolume * 100);
+                document.getElementById('volumeValue').textContent = Math.round(preset.masterVolume * 100);
+
+                this.showToast(`${presetName.charAt(0).toUpperCase() + presetName.slice(1)} preset applied`, 'success');
+            }
+
+            showToast(message, type = 'info') {
+                const container = document.getElementById('toastContainer');
+                const toast = document.createElement('div');
+                toast.className = `toast ${type}`;
+                toast.textContent = message;
+                container.appendChild(toast);
+
+                setTimeout(() => {
+                    toast.style.opacity = '0';
+                    toast.style.transform = 'translateX(100%)';
+                    setTimeout(() => toast.remove(), 300);
+                }, 3000);
+            }
+        }
+
+        // ============================================================================
+        // INITIALIZE APPLICATION
+        // ============================================================================
+
+        document.addEventListener('DOMContentLoaded', () => {
+            window.app = new PaaduGajaalaApp();
+            
+            console.log('%c పాడు గాజాల ', 'background: linear-gradient(135deg, #FF9933, #FFD700); color: #1a0a00; font-size: 24px; font-weight: bold; padding: 10px 20px; border-radius: 10px;');
+            console.log('%c Carnatic Music Notation Player ', 'color: #FF9933; font-size: 14px;');
+            console.log('%c Available API: ', 'color: #FFD700; font-weight: bold;');
+            console.log('  - app.parseNotation() - Parse current notation');
+            console.log('  - app.play() - Start playback');
+            console.log('  - app.stop() - Stop playback');
+            console.log('  - app.audioEngine - Access audio engine');
+            console.log('  - app.piano - Access piano controller');
+        });
+    </script>
+</body>
+</html>
