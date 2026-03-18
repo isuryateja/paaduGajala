@@ -47,6 +47,31 @@ This project does not require a build step, package manager, or backend server f
 
 You can also open [virtual_piano.html](virtual_piano.html) directly to use the piano view.
 
+## Deploying To Vercel
+
+This repository includes a root-level `vercel.json`, so it can be deployed directly from GitHub without adding a build step.
+
+- `/` serves the main app from [paadugajaala/index.html](paadugajaala/index.html)
+- `/piano` serves the standalone piano from [virtual_piano.html](virtual_piano.html)
+
+### Deploy From GitHub
+
+1. Push the latest commit to GitHub.
+2. In Vercel, click `Add New > Project`.
+3. Import this GitHub repository.
+4. Keep the Root Directory as the repository root.
+5. Leave the build settings empty.
+6. Click `Deploy`.
+
+### Deploy With The Vercel CLI
+
+```bash
+npm i -g vercel
+vercel
+```
+
+When prompted, keep the default project root as this repository folder.
+
 ## How To Use The Notation Player
 
 1. Open the main app.

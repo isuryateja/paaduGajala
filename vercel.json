@@ -1,0 +1,30 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/paadugajaala/index.html"
+    },
+    {
+      "source": "/piano",
+      "destination": "/virtual_piano.html"
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/paadugajaala",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/paadugajaala/index.html",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/virtual_piano.html",
+      "destination": "/piano",
+      "permanent": true
+    }
+  ]
+}
