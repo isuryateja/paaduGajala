@@ -6,7 +6,7 @@
  * and visual synchronization events.
  * 
  * @author Carnatic Music Audio Research
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 // ============================================================================
@@ -21,13 +21,13 @@
  *   await engine.init();  // Required due to browser autoplay policies
  *   
  *   // Play a single note
- *   engine.playSvara('స', 'madhya', 1.0);
+ *   engine.playSvara('S', 'madhya', 1.0);
  *   
  *   // Play a sequence
  *   engine.playSequence([
- *     { svara: 'స', octave: 'madhya', duration: 0.5 },
- *     { svara: 'రి2', octave: 'madhya', duration: 0.5 },
- *     { svara: 'గ3', octave: 'madhya', duration: 1.0 }
+ *     { svara: 'S', octave: 'madhya', duration: 0.5 },
+ *     { svara: 'R2', octave: 'madhya', duration: 0.5 },
+ *     { svara: 'G3', octave: 'madhya', duration: 1.0 }
  *   ], 120);
  */
 class AudioEngine {
@@ -223,7 +223,7 @@ class AudioEngine {
   
   /**
    * Get frequency for a svara using the configured tuning system
-   * @param {string} svara - Svara name (e.g., 'స', 'రి1', 'గ3')
+   * @param {string} svara - Svara name (e.g., 'S', 'R1', 'G3')
    * @param {string} octave - Octave ('mandara', 'madhya', 'taara')
    * @returns {number} Frequency in Hz
    */
@@ -261,17 +261,17 @@ class AudioEngine {
    * @private
    */
   _getJustIntonationFrequency(svara, octave) {
-    // Map svara names to just intonation ratio keys
+    // Map svara notation to just intonation ratio keys
     const ratioMap = {
-      'స': 'sa',
-      'రి1': 'ri1', 'గ1': 'ri2',
-      'రి2': 'ri2', 'గ2': 'ri3',
-      'రి3': 'ri3', 'గ3': 'ga3',
-      'మ1': 'ma1', 'మ2': 'ma2',
-      'ప': 'pa',
-      'ద1': 'da1', 'ని1': 'da2',
-      'ద2': 'da2', 'ని2': 'da3',
-      'ద3': 'da3', 'ని3': 'ni3'
+      'S': 'sa',
+      'R1': 'ri1', 'G1': 'ri2',
+      'R2': 'ri2', 'G2': 'ri3',
+      'R3': 'ri3', 'G3': 'ga3',
+      'M1': 'ma1', 'M2': 'ma2',
+      'P': 'pa',
+      'D1': 'da1', 'N1': 'da2',
+      'D2': 'da2', 'N2': 'da3',
+      'D3': 'da3', 'N3': 'ni3'
     };
     
     const ratioKey = ratioMap[svara];
@@ -301,15 +301,15 @@ class AudioEngine {
   _calculateFrequency(svara, octave) {
     // Semitone offsets from Sa
     const semitoneMap = {
-      'స': 0,
-      'రి1': 1, 'గ1': 2,
-      'రి2': 2, 'గ2': 3,
-      'రి3': 3, 'గ3': 4,
-      'మ1': 5, 'మ2': 6,
-      'ప': 7,
-      'ద1': 8, 'ని1': 9,
-      'ద2': 9, 'ని2': 10,
-      'ద3': 10, 'ని3': 11
+      'S': 0,
+      'R1': 1, 'G1': 2,
+      'R2': 2, 'G2': 3,
+      'R3': 3, 'G3': 4,
+      'M1': 5, 'M2': 6,
+      'P': 7,
+      'D1': 8, 'N1': 9,
+      'D2': 9, 'N2': 10,
+      'D3': 10, 'N3': 11
     };
     
     const semitones = semitoneMap[svara];
@@ -340,7 +340,7 @@ class AudioEngine {
    * @returns {Object} Voice object with control methods
    * @private
    */
-  _createVoice(frequency, startTime, duration, velocity = 1.0) {
+  _createVoice(frequency, startTime, duration, velocity = 1.0, svara = null, octave = null) {
     const ctx = this.audioContext;
     const env = this.config.envelope;
     
@@ -399,6 +399,8 @@ class AudioEngine {
       startTime,
       duration,
       releaseEnd,
+      svara,
+      octave,
       
       // Stop the voice early
       stop: (when = ctx.currentTime) => {
@@ -442,7 +444,7 @@ class AudioEngine {
   
   /**
    * Play a single svara (note)
-   * @param {string} svara - Svara name (e.g., 'స', 'రి1', 'గ3')
+   * @param {string} svara - Svara name (e.g., 'S', 'R1', 'G3')
    * @param {string} octave - Octave ('mandara', 'madhya', 'taara')
    * @param {number} duration - Duration in beats (or seconds if tempo not set)
    * @param {number} velocity - Note velocity (0.0 to 1.0)
@@ -468,7 +470,7 @@ class AudioEngine {
     const frequency = this.getFrequency(svara, octave);
     
     // Create and schedule voice
-    const voice = this._createVoice(frequency, startTime, durationSeconds, velocity);
+    const voice = this._createVoice(frequency, startTime, durationSeconds, velocity, svara, octave);
     
     // Emit noteOn event for visual sync
     // Emit slightly before actual start for visual preparation
@@ -495,6 +497,75 @@ class AudioEngine {
     }, noteOffTime);
     
     return voice;
+  }
+
+  /**
+   * Start a note that sustains until you call stopVoice().
+   * @param {string} svara - Svara name (e.g., 'S', 'R1', 'G3')
+   * @param {string} octave - Octave ('mandara', 'madhya', 'taara')
+   * @param {number} velocity - Note velocity (0.0 to 1.0)
+   * @param {number} when - When to start (AudioContext time, default: now)
+   * @param {number} maxDurationSeconds - Safety cap; note will end by itself after this many seconds
+   * @returns {Object|null} Voice object
+   */
+  startSvara(svara, octave = 'madhya', velocity = 1.0, when = null, maxDurationSeconds = 120) {
+    if (!this.isInitialized) {
+      console.warn('AudioEngine not initialized. Call init() first.');
+      return null;
+    }
+
+    // Ensure context is running
+    if (this.audioContext.state === 'suspended') {
+      this.audioContext.resume();
+    }
+
+    const startTime = when !== null ? when : this.audioContext.currentTime;
+    const frequency = this.getFrequency(svara, octave);
+    const voice = this._createVoice(frequency, startTime, maxDurationSeconds, velocity, svara, octave);
+
+    const emitTime = Math.max(0, (startTime - this.audioContext.currentTime) * 1000);
+    setTimeout(() => {
+      this._emit('noteOn', {
+        svara,
+        octave,
+        frequency,
+        voiceId: voice.id,
+        startTime,
+        duration: maxDurationSeconds,
+        sustained: true
+      });
+    }, emitTime);
+
+    return voice;
+  }
+
+  /**
+   * Stop a currently-playing voice.
+   * @param {string|Object} voiceOrId - Voice object or voice id
+   * @param {number|null} when - When to stop (AudioContext time)
+   * @returns {boolean} Whether a voice was stopped
+   */
+  stopVoice(voiceOrId, when = null) {
+    if (!voiceOrId) return false;
+
+    const voiceId = typeof voiceOrId === 'string' ? voiceOrId : voiceOrId.id;
+    const voice = typeof voiceOrId === 'string' ? this.activeVoices.get(voiceOrId) : voiceOrId;
+    if (!voice || !voiceId) return false;
+
+    try {
+      const stopAt = when !== null ? when : this.audioContext.currentTime;
+      voice.stop(stopAt);
+    } catch (e) {
+      // Ignore
+    }
+
+    this._emit('noteOff', {
+      svara: voice.svara,
+      octave: voice.octave,
+      voiceId
+    });
+
+    return true;
   }
   
   /**
@@ -534,7 +605,7 @@ class AudioEngine {
    * 
    * Note object format:
    *   {
-   *     svara: 'స',        // Svara name
+   *     svara: 'S',        // Svara notation
    *     octave: 'madhya',  // Octave
    *     duration: 1.0,     // Duration in beats
    *     velocity: 1.0,     // Optional: note velocity
@@ -842,22 +913,22 @@ async function exampleBasicUsage() {
   await engine.init();
   
   // Play single notes
-  engine.playSvara('స', 'madhya', 1.0);  // Play Sa for 1 beat
-  engine.playSvara('రి2', 'madhya', 0.5); // Play Ri for 0.5 beats
-  engine.playSvara('గ3', 'madhya', 0.5);  // Play Ga for 0.5 beats
+  engine.playSvara('S', 'madhya', 1.0);  // Play Sa for 1 beat
+  engine.playSvara('R2', 'madhya', 0.5); // Play Ri for 0.5 beats
+  engine.playSvara('G3', 'madhya', 0.5);  // Play Ga for 0.5 beats
   
   // Change tempo and play sequence
   engine.setTempo(100);
   
   const sequence = engine.playSequence([
-    { svara: 'స', octave: 'madhya', duration: 1 },
-    { svara: 'రి2', octave: 'madhya', duration: 1 },
-    { svara: 'గ3', octave: 'madhya', duration: 1 },
-    { svara: 'మ1', octave: 'madhya', duration: 1 },
-    { svara: 'ప', octave: 'madhya', duration: 1 },
-    { svara: 'ద2', octave: 'madhya', duration: 1 },
-    { svara: 'ని3', octave: 'madhya', duration: 1 },
-    { svara: 'స̇', octave: 'madhya', duration: 2 }
+    { svara: 'S', octave: 'madhya', duration: 1 },
+    { svara: 'R2', octave: 'madhya', duration: 1 },
+    { svara: 'G3', octave: 'madhya', duration: 1 },
+    { svara: 'M1', octave: 'madhya', duration: 1 },
+    { svara: 'P', octave: 'madhya', duration: 1 },
+    { svara: 'D2', octave: 'madhya', duration: 1 },
+    { svara: 'N3', octave: 'madhya', duration: 1 },
+    { svara: "S'", octave: 'taara', duration: 2 }
   ], 100);
 }
 
@@ -904,8 +975,8 @@ async function examplePresets() {
   await veena.init();
   
   // Play same note with different timbres
-  flute.playSvara('స', 'madhya', 1.0);
-  veena.playSvara('స', 'madhya', 1.0);
+  flute.playSvara('S', 'madhya', 1.0);
+  veena.playSvara('S', 'madhya', 1.0);
 }
 
 /**
@@ -917,14 +988,14 @@ async function exampleRagaPlayback() {
   
   // Shankarabharanam arohana (ascending)
   const shankarabharanamArohana = [
-    { svara: 'స', octave: 'madhya', duration: 1 },
-    { svara: 'రి2', octave: 'madhya', duration: 1 },
-    { svara: 'గ3', octave: 'madhya', duration: 1 },
-    { svara: 'మ1', octave: 'madhya', duration: 1 },
-    { svara: 'ప', octave: 'madhya', duration: 1 },
-    { svara: 'ద2', octave: 'madhya', duration: 1 },
-    { svara: 'ని3', octave: 'madhya', duration: 1 },
-    { svara: 'స̇', octave: 'madhya', duration: 2 }
+    { svara: 'S', octave: 'madhya', duration: 1 },
+    { svara: 'R2', octave: 'madhya', duration: 1 },
+    { svara: 'G3', octave: 'madhya', duration: 1 },
+    { svara: 'M1', octave: 'madhya', duration: 1 },
+    { svara: 'P', octave: 'madhya', duration: 1 },
+    { svara: 'D2', octave: 'madhya', duration: 1 },
+    { svara: 'N3', octave: 'madhya', duration: 1 },
+    { svara: "S'", octave: 'taara', duration: 2 }
   ];
   
   engine.playSequence(shankarabharanamArohana, 80);
@@ -944,15 +1015,15 @@ async function exampleTuningComparison() {
   
   // Play chord with both tunings
   console.log('Equal temperament:');
-  equalEngine.playSvara('స', 'madhya', 2.0);
-  equalEngine.playSvara('గ3', 'madhya', 2.0);
-  equalEngine.playSvara('ప', 'madhya', 2.0);
+  equalEngine.playSvara('S', 'madhya', 2.0);
+  equalEngine.playSvara('G3', 'madhya', 2.0);
+  equalEngine.playSvara('P', 'madhya', 2.0);
   
   setTimeout(() => {
     console.log('Just intonation:');
-    justEngine.playSvara('స', 'madhya', 2.0);
-    justEngine.playSvara('గ3', 'madhya', 2.0);
-    justEngine.playSvara('ప', 'madhya', 2.0);
+    justEngine.playSvara('S', 'madhya', 2.0);
+    justEngine.playSvara('G3', 'madhya', 2.0);
+    justEngine.playSvara('P', 'madhya', 2.0);
   }, 2500);
 }
 

@@ -1,14 +1,14 @@
 /**
- * Carnatic Music Notation Parser for Telugu Script
+ * Carnatic Music Notation Parser for English Notation
  * 
  * This parser handles:
- * - Telugu svaras (స, రి, గ, మ, ప, ద, ని)
- * - Octave indicators (dots above/below for taara/mandra sthaayi)
- * - Rhythm markers (।, ॥)
+ * - English svara notation (S, R1, R2, R3, G1, G2, G3, M1, M2, P, D1, D2, D3, N1, N2, N3)
+ * - Octave indicators (dots below/above for mandara/taara sthaayi, or . and ' suffixes)
+ * - Rhythm markers (|, ||)
  * - Multiple input formats (tab-separated, space-separated)
  * 
  * @author Music Notation Parser
- * @version 1.0.0
+ * @version 2.0.0
  */
 
 // ============================================================================
@@ -16,59 +16,85 @@
 // ============================================================================
 
 /**
- * Telugu svara characters mapping
+ * English svara notation mapping
+ * Maps notation to full svara names
  */
-const SVARA_CHARS = {
-    'స': 'sa',
-    'రి': 'ri',
-    'గ': 'ga',
-    'మ': 'ma',
-    'ప': 'pa',
-    'ద': 'da',
-    'ని': 'ni'
+const SVARA_NOTATION = {
+    'S': 'sa',
+    'R1': 'ri1',
+    'R2': 'ri2',
+    'R3': 'ri3',
+    'G1': 'ga1',
+    'G2': 'ga2',
+    'G3': 'ga3',
+    'M1': 'ma1',
+    'M2': 'ma2',
+    'P': 'pa',
+    'D1': 'da1',
+    'D2': 'da2',
+    'D3': 'da3',
+    'N1': 'ni1',
+    'N2': 'ni2',
+    'N3': 'ni3'
 };
 
 /**
- * Reverse mapping for svara names
+ * Reverse mapping for svara notation
  */
 const SVARA_NAMES = {
-    'sa': 'స',
-    'ri': 'రి',
-    'ga': 'గ',
-    'ma': 'మ',
-    'pa': 'ప',
-    'da': 'ద',
-    'ni': 'ని'
+    'sa': 'S',
+    'ri1': 'R1',
+    'ri2': 'R2',
+    'ri3': 'R3',
+    'ga1': 'G1',
+    'ga2': 'G2',
+    'ga3': 'G3',
+    'ma1': 'M1',
+    'ma2': 'M2',
+    'pa': 'P',
+    'da1': 'D1',
+    'da2': 'D2',
+    'da3': 'D3',
+    'ni1': 'N1',
+    'ni2': 'N2',
+    'ni3': 'N3'
 };
+
+/**
+ * Valid svara base characters (first character of any svara)
+ */
+const SVARA_BASE_CHARS = ['S', 'R', 'G', 'M', 'P', 'D', 'N'];
 
 /**
  * Octave indicator characters
- * Note: These are combining characters that appear with the svara
  */
 const OCTAVE_MARKERS = {
     // Dot below - Mandra sthaayi (lower octave)
-    DOT_BELOW: '\u0323',  // Combining dot below (˙)
+    DOT_BELOW: '\u0323',
     // Dot above - Taara sthaayi (higher octave)
-    DOT_ABOVE: '\u0307',  // Combining dot above (̇)
+    DOT_ABOVE: '\u0307',
+    // Alternative suffixes
+    SUFFIX_LOW: '.',
+    SUFFIX_HIGH: "'"
 };
 
 /**
  * Octave names in Carnatic music
  */
 const OCTAVE_NAMES = {
-    MANDRA: 'mandra',   // Lower octave (dot below)
-    MADHYA: 'madhya',   // Middle octave (no dot)
-    TAARA: 'taara'      // Higher octave (dot above)
+    MANDRA: 'mandra',   // Lower octave
+    MADHYA: 'madhya',   // Middle octave
+    TAARA: 'taara'      // Higher octave
 };
 
 /**
  * Rhythm marker characters
  */
 const RHYTHM_MARKERS = {
-    SINGLE: '।',   // Single beat separator (danda)
-    DOUBLE: '॥',   // End of line/phrase marker (double danda)
-    SINGLE_LATIN: '|',  // Alternative single beat
-    DOUBLE_LATIN: '||'  // Alternative double beat
+    SINGLE: '|',   // Single beat separator
+    DOUBLE: '||',  // End of line/phrase marker
+    SINGLE_UNICODE: '।',   // Unicode single danda
+    DOUBLE_UNICODE: '॥'    // Unicode double danda
 };
 
 /**
@@ -81,24 +107,21 @@ const WHITESPACE_CHARS = /\s/;
 // ============================================================================
 
 /**
- * Check if a character is a Telugu svara
+ * Check if a character is a valid svara base character
  * @param {string} char - Character to check
- * @returns {boolean} True if it's a svara character
+ * @returns {boolean} True if it's a svara base character
  */
-function isSvaraChar(char) {
-    return char in SVARA_CHARS;
+function isSvaraBaseChar(char) {
+    return SVARA_BASE_CHARS.includes(char);
 }
 
 /**
- * Check if a character is a Telugu svara base (without modifiers)
- * This handles the case where Telugu characters may be composed of multiple Unicode points
- * @param {string} char - Character to check
- * @returns {boolean} True if it's a base svara character
+ * Check if a string is a valid svara notation
+ * @param {string} str - String to check
+ * @returns {boolean} True if it's a valid svara
  */
-function isSvaraBase(char) {
-    // Check for base Telugu svara characters
-    const baseChars = ['స', 'ర', 'ి', 'గ', 'మ', 'ప', 'ద', 'న'];
-    return baseChars.includes(char);
+function isValidSvara(str) {
+    return str in SVARA_NOTATION;
 }
 
 /**
@@ -108,13 +131,21 @@ function isSvaraBase(char) {
  */
 function isRhythmMarker(char) {
     return char === RHYTHM_MARKERS.SINGLE || 
-           char === RHYTHM_MARKERS.DOUBLE ||
-           char === RHYTHM_MARKERS.SINGLE_LATIN ||
-           char === RHYTHM_MARKERS.DOUBLE_LATIN;
+           char === RHYTHM_MARKERS.SINGLE_UNICODE;
 }
 
 /**
- * Check if a character is a whitespace
+ * Check if a string is a double rhythm marker
+ * @param {string} str - String to check
+ * @returns {boolean} True if it's a double rhythm marker
+ */
+function isDoubleRhythmMarker(str) {
+    return str === RHYTHM_MARKERS.DOUBLE ||
+           str === RHYTHM_MARKERS.DOUBLE_UNICODE;
+}
+
+/**
+ * Check if a character is whitespace
  * @param {string} char - Character to check
  * @returns {boolean} True if it's whitespace
  */
@@ -128,7 +159,7 @@ function isWhitespace(char) {
  * @returns {boolean} True if it's a dot below
  */
 function isDotBelow(char) {
-    return char === OCTAVE_MARKERS.DOT_BELOW;
+    return char === OCTAVE_MARKERS.DOT_BELOW || char === OCTAVE_MARKERS.SUFFIX_LOW;
 }
 
 /**
@@ -137,7 +168,7 @@ function isDotBelow(char) {
  * @returns {boolean} True if it's a dot above
  */
 function isDotAbove(char) {
-    return char === OCTAVE_MARKERS.DOT_ABOVE;
+    return char === OCTAVE_MARKERS.DOT_ABOVE || char === OCTAVE_MARKERS.SUFFIX_HIGH;
 }
 
 /**
@@ -209,13 +240,13 @@ function tokenize(text) {
     while (i < normalizedText.length) {
         const char = normalizedText[i];
         const nextChar = normalizedText[i + 1] || '';
-        const nextNextChar = normalizedText[i + 2] || '';
         
-        // Check for double rhythm marker first (॥)
-        if (char + nextChar === RHYTHM_MARKERS.DOUBLE) {
+        // Check for double rhythm marker first (|| or ॥)
+        if (char + nextChar === RHYTHM_MARKERS.DOUBLE ||
+            char + nextChar === RHYTHM_MARKERS.DOUBLE_UNICODE) {
             tokens.push({
                 type: TOKEN_TYPES.RHYTHM_MARKER,
-                value: RHYTHM_MARKERS.DOUBLE,
+                value: '||',
                 subtype: 'double',
                 position: i
             });
@@ -223,11 +254,11 @@ function tokenize(text) {
             continue;
         }
         
-        // Check for single rhythm marker (।)
-        if (char === RHYTHM_MARKERS.SINGLE) {
+        // Check for single rhythm marker (| or ।)
+        if (char === RHYTHM_MARKERS.SINGLE || char === RHYTHM_MARKERS.SINGLE_UNICODE) {
             tokens.push({
                 type: TOKEN_TYPES.RHYTHM_MARKER,
-                value: RHYTHM_MARKERS.SINGLE,
+                value: '|',
                 subtype: 'single',
                 position: i
             });
@@ -257,8 +288,7 @@ function tokenize(text) {
             continue;
         }
         
-        // Check for Telugu svara with modifiers
-        // Telugu characters can be complex - handle the common patterns
+        // Check for svara notation
         const svaraResult = extractSvara(normalizedText, i);
         if (svaraResult) {
             tokens.push({
@@ -286,7 +316,6 @@ function tokenize(text) {
 
 /**
  * Extract a svara with its octave modifiers from the text
- * Handles Telugu character composition and octave dots
  * @param {string} text - Full text
  * @param {number} startIndex - Starting position
  * @returns {Object|null} Svara info or null if not a svara
@@ -298,38 +327,32 @@ function extractSvara(text, startIndex) {
     let hasDotAbove = false;
     let rawChars = '';
     
-    // Collect the base svara character(s)
-    // Telugu "రి" is composed of "ర" + "ి" (consonant + vowel sign)
-    while (i < text.length) {
-        const char = text[i];
-        
-        // Check for base Telugu characters
-        if (!svaraBase && isSvaraBase(char)) {
-            svaraBase += char;
-            rawChars += char;
-            i++;
-            
-            // Check for vowel sign following the consonant (for రి)
-            if (char === 'ర' && i < text.length && text[i] === 'ి') {
-                svaraBase += text[i];
-                rawChars += text[i];
-                i++;
-            }
-            break;
-        } else if (!svaraBase) {
-            // Not a svara start
-            break;
-        } else {
-            break;
-        }
-    }
-    
-    // Check if we have a valid svara
-    if (!svaraBase || !isSvaraChar(svaraBase)) {
+    // Get the base character (S, R, G, M, P, D, or N)
+    const firstChar = text[i];
+    if (!isSvaraBaseChar(firstChar)) {
         return null;
     }
     
-    // Look for octave modifiers (combining characters that follow)
+    svaraBase = firstChar;
+    rawChars += firstChar;
+    i++;
+    
+    // Check for number suffix (1, 2, or 3) for R, G, M, D, N
+    if (i < text.length) {
+        const nextChar = text[i];
+        if (['1', '2', '3'].includes(nextChar) && ['R', 'G', 'M', 'D', 'N'].includes(firstChar)) {
+            svaraBase += nextChar;
+            rawChars += nextChar;
+            i++;
+        }
+    }
+    
+    // Validate the svara
+    if (!isValidSvara(svaraBase)) {
+        return null;
+    }
+    
+    // Look for octave modifiers (dots or suffixes that follow)
     while (i < text.length) {
         const char = text[i];
         if (isDotBelow(char)) {
@@ -358,7 +381,7 @@ function extractSvara(text, startIndex) {
 // ============================================================================
 
 /**
- * Parse Carnatic music notation in Telugu script
+ * Parse Carnatic music notation in English notation
  * 
  * @param {string} text - The notation text to parse
  * @param {Object} options - Parsing options
@@ -371,17 +394,17 @@ function extractSvara(text, startIndex) {
  * [
  *   {
  *     type: 'svara',
- *     svara: 'స',           // Telugu svara character
- *     svaraLatin: 'sa',      // Latin representation
- *     octave: 'madhya',      // 'mandra' | 'madhya' | 'taara'
- *     duration: 1,           // Note duration
- *     beatMarker: null | '।' | '॥',  // Associated rhythm marker
- *     line: 1,               // Line number in input
- *     position: 0            // Character position in input
+ *     svara: 'S',             // Svara notation
+ *     svaraName: 'sa',        // Full svara name
+ *     octave: 'madhya',       // 'mandra' | 'madhya' | 'taara'
+ *     duration: 1,            // Note duration
+ *     beatMarker: null | '|' | '||',  // Associated rhythm marker
+ *     line: 1,                // Line number in input
+ *     position: 0             // Character position in input
  *   },
  *   {
  *     type: 'rhythm_marker',
- *     marker: '।',
+ *     marker: '|',
  *     subtype: 'single',
  *     line: 1,
  *     position: 10
@@ -411,7 +434,7 @@ function parseNotation(text, options = {}) {
                 const note = {
                     type: 'svara',
                     svara: token.svara,
-                    svaraLatin: SVARA_CHARS[token.svara],
+                    svaraName: SVARA_NOTATION[token.svara],
                     octave: token.octave,
                     duration: defaultDuration,
                     beatMarker: null,
@@ -540,8 +563,8 @@ function getNotationStats(text) {
     
     for (const svara of svaras) {
         // Count by svara type
-        const latinName = svara.svaraLatin;
-        stats.svaraCounts[latinName] = (stats.svaraCounts[latinName] || 0) + 1;
+        const svaraName = svara.svara;
+        stats.svaraCounts[svaraName] = (stats.svaraCounts[svaraName] || 0) + 1;
         
         // Count by octave
         stats.octaveDistribution[svara.octave]++;
@@ -558,8 +581,8 @@ function getNotationStats(text) {
  */
 function notationToString(notes, options = {}) {
     const { 
-        useLatin = false,
-        separator = ' '
+        separator = ' ',
+        useOctaveSuffix = true  // Use . and ' instead of combining dots
     } = options;
     
     let result = '';
@@ -573,13 +596,21 @@ function notationToString(notes, options = {}) {
             }
             
             // Add the svara
-            let svaraStr = useLatin ? note.svaraLatin : note.svara;
+            let svaraStr = note.svara;
             
             // Add octave indicators
-            if (note.octave === 'mandra') {
-                svaraStr += '\u0323';  // Dot below
-            } else if (note.octave === 'taara') {
-                svaraStr += '\u0307';  // Dot above
+            if (useOctaveSuffix) {
+                if (note.octave === 'mandra') {
+                    svaraStr += '.';
+                } else if (note.octave === 'taara') {
+                    svaraStr += "'";
+                }
+            } else {
+                if (note.octave === 'mandra') {
+                    svaraStr += '\u0323';  // Dot below
+                } else if (note.octave === 'taara') {
+                    svaraStr += '\u0307';  // Dot above
+                }
             }
             
             result += svaraStr;
@@ -609,23 +640,22 @@ function notationToString(notes, options = {}) {
 
 /**
  * Create a svara with specified octave
- * @param {string} svara - Base svara (e.g., 'స', 'sa')
+ * @param {string} svara - Base svara (e.g., 'S', 'R1', 'G2', etc.)
  * @param {string} octave - Octave ('mandra', 'madhya', 'taara')
  * @returns {string} Svara with octave indicator
  */
 function createSvara(svara, octave = 'madhya') {
-    // Convert latin to telugu if needed
-    let teluguSvara = svara;
-    if (svara in SVARA_NAMES) {
-        teluguSvara = SVARA_NAMES[svara];
+    // Validate svara
+    if (!isValidSvara(svara)) {
+        throw new Error(`Invalid svara: ${svara}`);
     }
     
-    let result = teluguSvara;
+    let result = svara;
     
     if (octave === 'mandra') {
-        result += OCTAVE_MARKERS.DOT_BELOW;
+        result += '.';
     } else if (octave === 'taara') {
-        result += OCTAVE_MARKERS.DOT_ABOVE;
+        result += "'";
     }
     
     return result;
@@ -660,7 +690,7 @@ function validateNotation(text) {
     if (!hasSvara) {
         issues.push({
             type: 'error',
-            message: 'No svara characters found in notation'
+            message: 'No svara notation found in input'
         });
     }
     
@@ -684,7 +714,7 @@ function example1() {
     console.log('Example 1: Basic Parsing');
     console.log('='.repeat(60));
     
-    const input = `స      	స    	మ    	మ    	।    	రి   	రి   	।    	గ    	గ    	॥`;
+    const input = `S       S     M1    M1    |     R1    R1    |     G1    G1    ||`;
     
     console.log('Input:');
     console.log(input);
@@ -704,8 +734,8 @@ function example2() {
     console.log('Example 2: Multi-line Notation');
     console.log('='.repeat(60));
     
-    const input = `స స మ మ । రి రি । గ గ ॥
-ప ప ద ద । ని ని । స̇ స̇ ॥`;
+    const input = `S S M1 M1 | R1 R1 | G1 G1 ||
+P P D1 D1 | N1 N1 | S' S' ||`;
     
     console.log('Input:');
     console.log(input);
@@ -725,9 +755,9 @@ function example3() {
     console.log('Example 3: Octave Indicators');
     console.log('='.repeat(60));
     
-    // Note: Mandra (dot below) and Taara (dot above) examples
-    const input = `స˙ స˙ మ మ । రి˙ రి˙ । గ గ ॥
-స స రి రి । గ గ మ̇ మ̇ ॥`;
+    // Note: Mandra (dot below/suffix .) and Taara (dot above/suffix ') examples
+    const input = `S. S. M1 M1 | R1. R1. | G1 G1 ||
+S S R1 R1 | G1 G1 M1' M1' ||`;
     
     console.log('Input:');
     console.log(input);
@@ -736,7 +766,7 @@ function example3() {
     const result = parseSvarasOnly(input);
     
     for (const note of result) {
-        console.log(`${note.svara} (${note.svaraLatin}) - ${note.octave}`);
+        console.log(`${note.svara} (${note.svaraName}) - ${note.octave}`);
     }
     
     return result;
@@ -750,8 +780,8 @@ function example4() {
     console.log('Example 4: Notation Statistics');
     console.log('='.repeat(60));
     
-    const input = `స స మ మ । రి రి । గ గ ॥
-ప ప ద ద । ని ని । స̇ స̇ ॥`;
+    const input = `S S M1 M1 | R1 R1 | G1 G1 ||
+P P D1 D1 | N1 N1 | S' S' ||`;
     
     console.log('Input:');
     console.log(input);
@@ -771,7 +801,7 @@ function example5() {
     console.log('Example 5: Validation');
     console.log('='.repeat(60));
     
-    const validInput = `స రి గ మ । ప ద ని ॥`;
+    const validInput = `S R1 G1 M1 | P D1 N1 ||`;
     const invalidInput = `Hello World! 123`;
     
     console.log('Valid Input:', validInput);
@@ -791,25 +821,25 @@ function example6() {
     
     // Create a simple sarali varisai pattern
     const pattern = [
-        { svara: 'స', octave: 'madhya' },
-        { svara: 'రి', octave: 'madhya' },
-        { svara: 'గ', octave: 'madhya' },
-        { svara: 'మ', octave: 'madhya' },
-        { svara: '।', rhythm: true },
-        { svara: 'ప', octave: 'madhya' },
-        { svara: 'ద', octave: 'madhya' },
-        { svara: 'ని', octave: 'madhya' },
-        { svara: 'స̇', octave: 'taara' },
-        { svara: '॥', rhythm: true, double: true }
+        { svara: 'S', octave: 'madhya' },
+        { svara: 'R1', octave: 'madhya' },
+        { svara: 'G1', octave: 'madhya' },
+        { svara: 'M1', octave: 'madhya' },
+        { marker: '|', rhythm: true },
+        { svara: 'P', octave: 'madhya' },
+        { svara: 'D1', octave: 'madhya' },
+        { svara: 'N1', octave: 'madhya' },
+        { svara: 'S', octave: 'taara' },
+        { marker: '||', rhythm: true, double: true }
     ];
     
     console.log('Pattern:', JSON.stringify(pattern, null, 2));
     
-    // Convert to Telugu notation string
+    // Convert to notation string
     let notation = '';
     for (const item of pattern) {
         if (item.rhythm) {
-            notation += item.double ? ' ॥' : ' ।';
+            notation += item.double ? ' ||' : ' |';
         } else {
             notation += ' ' + createSvara(item.svara, item.octave);
         }
@@ -840,13 +870,13 @@ if (typeof module !== 'undefined' && module.exports) {
         validateNotation,
         tokenize,
         // Constants
-        SVARA_CHARS,
+        SVARA_NOTATION,
         SVARA_NAMES,
         OCTAVE_NAMES,
         RHYTHM_MARKERS,
         TOKEN_TYPES,
         // Helper functions
-        isSvaraChar,
+        isValidSvara,
         isRhythmMarker,
         getOctave,
         normalizeInput,
@@ -871,7 +901,7 @@ if (typeof window !== 'undefined') {
         createSvara,
         validateNotation,
         tokenize,
-        SVARA_CHARS,
+        SVARA_NOTATION,
         SVARA_NAMES,
         OCTAVE_NAMES,
         RHYTHM_MARKERS,
@@ -884,8 +914,8 @@ if (typeof window !== 'undefined') {
 // ============================================================================
 
 if (typeof require !== 'undefined' && require.main === module) {
-    console.log('Carnatic Music Notation Parser for Telugu Script');
-    console.log('================================================\n');
+    console.log('Carnatic Music Notation Parser for English Notation');
+    console.log('====================================================\n');
     
     example1();
     example2();
