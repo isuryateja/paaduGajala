@@ -1877,6 +1877,7 @@
                 this.isPlaying = false;
                 this.currentSequence = null;
                 this.sequenceTimeout = null;
+                this.sequenceEventTimeouts = new Set();
                 this.tempo = 120;
                 this.beatDuration = 60 / this.tempo;
                 
@@ -1890,6 +1891,42 @@
                 };
                 
                 this._scheduleNote = this._scheduleNote.bind(this);
+            }
+
+            _scheduleManagedTimeout(timeoutSet, callback, delay) {
+                let timeoutId = null;
+                timeoutId = setTimeout(() => {
+                    timeoutSet.delete(timeoutId);
+                    callback();
+                }, delay);
+                timeoutSet.add(timeoutId);
+                return timeoutId;
+            }
+
+            _scheduleVoiceTimeout(voice, callback, delay) {
+                if (!voice.timeoutIds) {
+                    voice.timeoutIds = new Set();
+                }
+
+                return this._scheduleManagedTimeout(voice.timeoutIds, callback, delay);
+            }
+
+            _scheduleSequenceTimeout(callback, delay) {
+                return this._scheduleManagedTimeout(this.sequenceEventTimeouts, callback, delay);
+            }
+
+            _clearManagedTimeouts(timeoutSet) {
+                timeoutSet.forEach(timeoutId => clearTimeout(timeoutId));
+                timeoutSet.clear();
+            }
+
+            _clearVoiceTimeouts(voice) {
+                if (!voice || !voice.timeoutIds) return;
+                this._clearManagedTimeouts(voice.timeoutIds);
+            }
+
+            _clearSequenceEventTimeouts() {
+                this._clearManagedTimeouts(this.sequenceEventTimeouts);
             }
             
             async init() {
@@ -2107,9 +2144,11 @@
                     releaseEnd,
                     svara,
                     octave,
+                    timeoutIds: new Set(),
                     
                     stop: (when = ctx.currentTime) => {
                         try {
+                            this._clearVoiceTimeouts(voice);
                             const releaseDuration = env.release;
                             const actualReleaseStart = Math.max(when, ctx.currentTime);
                             const actualReleaseEnd = actualReleaseStart + releaseDuration;
@@ -2125,6 +2164,7 @@
                 };
                 
                 oscillator.onended = () => {
+                    this._clearVoiceTimeouts(voice);
                     this.activeVoices.delete(voiceId);
                     try {
                         oscillator.disconnect();
@@ -2155,7 +2195,7 @@
                 const voice = this._createVoice(frequency, startTime, durationSeconds, velocity, svara, octave);
                 
                 const emitTime = Math.max(0, (startTime - this.audioContext.currentTime) * 1000);
-                setTimeout(() => {
+                this._scheduleVoiceTimeout(voice, () => {
                     this._emit('noteOn', {
                         svara,
                         octave,
@@ -2168,7 +2208,7 @@
                 
                 // Schedule noteOff event
                 const noteOffDelay = emitTime + (durationSeconds * 1000);
-                setTimeout(() => {
+                this._scheduleVoiceTimeout(voice, () => {
                     this._emit('noteOff', { svara, octave, voiceId: voice.id });
                 }, noteOffDelay);
                 
@@ -2197,7 +2237,7 @@
                 const voice = this._createVoice(frequency, startTime, maxDurationSeconds, velocity, svara, octave);
 
                 const emitTime = Math.max(0, (startTime - this.audioContext.currentTime) * 1000);
-                setTimeout(() => {
+                this._scheduleVoiceTimeout(voice, () => {
                     this._emit('noteOn', {
                         svara,
                         octave,
@@ -2298,9 +2338,13 @@
                     
                     if (loop && currentLoop < loopCount - 1 && !isCancelled) {
                         currentLoop++;
-                        this.sequenceTimeout = setTimeout(scheduleSequence, sequenceDuration);
+                        this.sequenceTimeout = this._scheduleSequenceTimeout(() => {
+                            this.sequenceTimeout = null;
+                            scheduleSequence();
+                        }, sequenceDuration);
                     } else {
-                        this.sequenceTimeout = setTimeout(() => {
+                        this.sequenceTimeout = this._scheduleSequenceTimeout(() => {
+                            this.sequenceTimeout = null;
                             if (!isCancelled) {
                                 this._emit('sequenceEnd', { notes, tempo });
                                 sequenceState.isPlaying = false;
@@ -2316,13 +2360,13 @@
             }
             
             _scheduleNote(note, when, index) {
-                const { svara, octave = 'madhya', duration = 1.0, velocity = 1.0 } = note;
+                const { svara, octave = 'madhya', duration = 1.0, velocity = 1.0, originalIndex = index } = note;
                 this.playSvara(svara, octave, duration, velocity, when);
                 
                 // Emit note index for visual sync
                 const emitTime = Math.max(0, (when - this.audioContext.currentTime) * 1000);
-                setTimeout(() => {
-                    this._emit('noteIndex', { index, svara, octave });
+                this._scheduleSequenceTimeout(() => {
+                    this._emit('noteIndex', { index: originalIndex, svara, octave });
                 }, emitTime);
             }
             
@@ -2331,6 +2375,8 @@
                     clearTimeout(this.sequenceTimeout);
                     this.sequenceTimeout = null;
                 }
+
+                this._clearSequenceEventTimeouts();
                 
                 if (this.currentSequence) {
                     this.currentSequence.cancel();
@@ -2702,6 +2748,7 @@
                 this.isPlaying = false;
                 this.isPaused = false;
                 this.currentNoteIndex = 0;
+                this.pausedNoteIndex = 0;
                 this.tempo = 120;
                 this.volume = 0.7;
                 this.heldPianoVoices = new Map(); // Map<HTMLElement, voice>
@@ -2872,10 +2919,15 @@
                     this.updatePlaybackButtons();
                 });
 
-                this.audioEngine.on('sequenceEnd', () => {
+                this.audioEngine.on('sequenceEnd', (data = {}) => {
+                    if (data.cancelled) {
+                        return;
+                    }
+
                     this.isPlaying = false;
                     this.isPaused = false;
                     this.currentNoteIndex = 0;
+                    this.pausedNoteIndex = 0;
                     this.updateStatus('ready');
                     this.updatePlaybackButtons();
                     this.piano.releaseAll();
@@ -3080,24 +3132,36 @@
             }
 
             startPlayback() {
-                const sequence = this.parsedNotes.map(note => ({
+                this.startPlaybackFromIndex(0);
+            }
+
+            startPlaybackFromIndex(startIndex = 0) {
+                const sequence = this.parsedNotes.slice(startIndex).map((note, offset) => ({
                     svara: note.svara,
                     octave: note.octave,
-                    duration: note.duration || 1
+                    duration: note.duration || 1,
+                    originalIndex: startIndex + offset
                 }));
 
                 this.audioEngine.playSequence(sequence, this.tempo);
             }
 
             resumePlayback() {
-                // Resume from pause would require more complex state management
-                // For now, restart from beginning
-                this.startPlayback();
+                const resumeIndex = Math.min(
+                    Math.max(this.pausedNoteIndex, 0),
+                    Math.max(this.parsedNotes.length - 1, 0)
+                );
+                this.startPlaybackFromIndex(resumeIndex);
             }
 
             pause() {
+                if (!this.isPlaying) return;
+
+                this.isPlaying = false;
                 this.isPaused = true;
+                this.pausedNoteIndex = Math.max(this.currentNoteIndex, 0);
                 this.audioEngine.stopAll();
+                this.piano.releaseAll();
                 this.updateStatus('paused');
                 this.updatePlaybackButtons();
                 this.showToast('Playback paused', 'info');
@@ -3107,6 +3171,7 @@
                 this.isPlaying = false;
                 this.isPaused = false;
                 this.currentNoteIndex = 0;
+                this.pausedNoteIndex = 0;
                 this.audioEngine.stopAll();
                 this.piano.releaseAll();
                 this.clearNotationHighlight();
