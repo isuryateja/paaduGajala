@@ -1883,6 +1883,7 @@
                 this.eventListeners = {
                     noteOn: [],
                     noteOff: [],
+                    noteIndex: [],
                     sequenceStart: [],
                     sequenceEnd: [],
                     ready: []
@@ -2405,6 +2406,7 @@
                 this.eventListeners = {
                     noteOn: [],
                     noteOff: [],
+                    noteIndex: [],
                     sequenceStart: [],
                     sequenceEnd: [],
                     ready: []
@@ -2696,6 +2698,7 @@
                 this.audioEngine = null;
                 this.piano = null;
                 this.parsedNotes = [];
+                this.parsedNotationTokens = [];
                 this.isPlaying = false;
                 this.isPaused = false;
                 this.currentNoteIndex = 0;
@@ -2854,7 +2857,11 @@
                     if (!data.sustained) {
                         this.piano.highlightBySvara(data.svara, data.octave, 200);
                     }
-                    this.highlightNotationToken(data.svara, data.octave);
+                });
+
+                this.audioEngine.on('noteIndex', ({ index }) => {
+                    this.currentNoteIndex = index;
+                    this.highlightNotationToken(index);
                 });
 
                 // noteOff event not needed - keys are auto-released
@@ -3005,7 +3012,8 @@
                 const tokens = parseNotation(input);
                 
                 let html = '';
-                tokens.forEach((token, index) => {
+                let noteIndex = 0;
+                tokens.forEach((token) => {
                     if (token.type === 'svara') {
                         let svaraHtml = token.svara;
                         if (token.octave === 'mandra') {
@@ -3013,7 +3021,8 @@
                         } else if (token.octave === 'taara') {
                             svaraHtml += '<sup>.</sup>';
                         }
-                        html += `<span class="svara-token" data-index="${index}" data-svara="${token.svara}" data-octave="${token.octave}">${svaraHtml}</span> `;
+                        html += `<span class="svara-token" data-note-index="${noteIndex}" data-position="${token.position}" data-svara="${token.svara}" data-octave="${token.octave}">${svaraHtml}</span> `;
+                        noteIndex++;
                     } else if (token.type === 'rhythm_marker') {
                         html += `<span class="rhythm-marker">${token.marker}</span> `;
                     } else if (token.type === 'newline') {
@@ -3022,6 +3031,7 @@
                 });
                 
                 display.innerHTML = html;
+                this.parsedNotationTokens = Array.from(display.querySelectorAll('.svara-token'));
             }
 
             updateStatistics(input) {
@@ -3147,16 +3157,13 @@
                 }
             }
 
-            highlightNotationToken(svara, octave) {
+            highlightNotationToken(noteIndex) {
                 this.clearNotationHighlight();
-                
-                const tokens = document.querySelectorAll('.svara-token');
-                for (const token of tokens) {
-                    if (token.dataset.svara === svara && token.dataset.octave === octave) {
-                        token.classList.add('current');
-                        token.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        break;
-                    }
+
+                const token = this.parsedNotationTokens[noteIndex];
+                if (token) {
+                    token.classList.add('current');
+                    token.scrollIntoView({ behavior: 'smooth', block: 'center' });
                 }
             }
 
@@ -3229,6 +3236,7 @@
                 document.getElementById('statDuration').textContent = '0s';
                 document.getElementById('statOctaves').textContent = '0';
                 this.parsedNotes = [];
+                this.parsedNotationTokens = [];
                 this.stop();
                 this.showToast('All cleared', 'info');
             }
