@@ -1,0 +1,12 @@
+.page-shell {
+  width: min(1200px, calc(100vw - 2rem));
+  margin: 0 auto;
+  padding: 1rem 0 3rem;
+}
+
+.card {
+  background: var(--pg-card);
+  border: 1px solid var(--pg-border);
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+}

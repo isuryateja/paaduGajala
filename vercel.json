@@ -1,15 +1,8 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [
-    {
-      "source": "/",
-      "destination": "/paadugajaala/index.html"
-    },
-    {
-      "source": "/piano",
-      "destination": "/virtual_piano.html"
-    }
-  ],
+  "framework": "sveltekit",
+  "installCommand": "npm install",
+  "buildCommand": "npm run build",
   "redirects": [
     {
       "source": "/paadugajaala",

@@ -1,0 +1,13 @@
+:root {
+  --pg-saffron: #ff9933;
+  --pg-gold: #ffd700;
+  --pg-maroon: #800000;
+  --pg-cream: #fff8dc;
+  --pg-bg: #1a0a00;
+  --pg-card: rgba(45, 24, 16, 0.9);
+  --pg-border: rgba(255, 153, 51, 0.3);
+  --pg-success: #4caf50;
+  --pg-warning: #ffc107;
+  --pg-error: #f44336;
+  --pg-info: #2196f3;
+}

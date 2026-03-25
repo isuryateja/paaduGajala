@@ -1,0 +1,26 @@
+@import './tokens.css';
+@import './app-theme.css';
+
+html,
+body {
+  margin: 0;
+  min-height: 100%;
+  background: linear-gradient(135deg, var(--pg-bg) 0%, #2d1810 50%, #4a0000 100%);
+  color: var(--pg-cream);
+  font-family: 'Poppins', system-ui, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+* {
+  box-sizing: border-box;
+}

@@ -932,3 +932,23 @@ if (typeof require !== 'undefined' && require.main === module) {
 // Return the main parser function as the default export
 // Note: For ES6 modules, use: export default parseNotation;
 // This file uses CommonJS exports for Node.js compatibility
+
+export {
+    parseNotation,
+    parseNotationByLines,
+    parseSvarasOnly,
+    getNotationStats,
+    notationToString,
+    createSvara,
+    validateNotation,
+    tokenize,
+    SVARA_NOTATION,
+    SVARA_NAMES,
+    OCTAVE_NAMES,
+    RHYTHM_MARKERS,
+    TOKEN_TYPES,
+    isValidSvara,
+    isRhythmMarker,
+    getOctave,
+    normalizeInput
+};
