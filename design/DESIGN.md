@@ -1,4 +1,18 @@
-# Design System Document
+# Legacy Design System Document
+
+## Status
+
+This document is retained as a **legacy reference** from the earlier "Rhythmic Rail" direction.
+
+- It is **not** the active source of truth for the current 004 redesign effort.
+- It may be used as historical context or inspiration only.
+- New implementation decisions should follow the current design-definition artifacts documented for the redesign, not this file.
+
+## Historical Context
+
+The content below describes the superseded "Rhythmic Rail" direction that previously informed the product's design language.
+
+---
 
 ## 1. Overview & Creative North Star: "The Rhythmic Rail"
 This design system moves beyond digital interfaces to recreate the tactile, rhythmic experience of a classic South Indian train journey. Our Creative North Star is **"The Rhythmic Rail"**—a philosophy that blends the structural rigidity of a vintage train compartment with the fluid, organic grace of Carnatic music. 

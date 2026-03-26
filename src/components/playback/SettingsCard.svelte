@@ -24,17 +24,25 @@
 </script>
 
 <section class="card section">
-  <h2>Settings</h2>
+  <header class="header">
+    <p class="section-label">Tone and tuning</p>
+    <h2>Shape the instrument before rehearsal starts.</h2>
+  </header>
+
   <div class="grid">
     <SelectControl label="Waveform" value={waveform} options={waveformOptions} onChange={onWaveform} />
-    <SelectControl label="Tuning System" value={tuning} options={tuningOptions} onChange={onTuning} />
+    <SelectControl label="Tuning system" value={tuning} options={tuningOptions} onChange={onTuning} />
   </div>
 
   <div class="presets">
-    <span>Instrument Preset</span>
+    <span class="preset-label">Instrument preset</span>
     <div class="buttons">
       {#each presets as presetName}
-        <button class:active={preset === presetName} on:click={() => onPreset(presetName)}>
+        <button
+          class:active={preset === presetName}
+          class="preset-button"
+          on:click={() => onPreset(presetName)}
+        >
           {presetName.charAt(0).toUpperCase() + presetName.slice(1)}
         </button>
       {/each}
@@ -44,29 +52,53 @@
 
 <style>
   .section {
-    padding: 1rem;
+    display: grid;
+    gap: 1rem;
+    padding: 1.35rem;
+  }
+
+  .header {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
   }
 
   .grid {
     display: grid;
-    gap: 0.75rem;
-    grid-template-columns: repeat(auto-fit, minmax(12rem, 1fr));
+    gap: 0.85rem;
   }
 
   .presets {
     display: grid;
-    gap: 0.5rem;
-    margin-top: 1rem;
+    gap: 0.65rem;
+  }
+
+  .preset-label {
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
   }
 
   .buttons {
     display: flex;
-    gap: 0.5rem;
+    gap: 0.55rem;
     flex-wrap: wrap;
   }
 
-  .active {
-    background: var(--pg-saffron);
-    color: #1f1400;
+  .preset-button {
+    background: var(--surface-overlay);
+    color: var(--text-body);
+    box-shadow: inset 0 0 0 1px var(--line-soft);
+  }
+
+  .preset-button.active {
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+    color: var(--text-inverse);
+    box-shadow: 0 10px 20px rgba(146, 74, 44, 0.24);
   }
 </style>

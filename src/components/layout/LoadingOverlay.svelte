@@ -4,8 +4,11 @@
 
 {#if visible}
   <div class="overlay">
-    <div class="spinner"></div>
-    <div>Paadu Gajaala</div>
+    <div class="panel">
+      <div class="spinner"></div>
+      <p class="label">Preparing audio engine</p>
+      <p class="brand">Paadu Gajala</p>
+    </div>
   </div>
 {/if}
 
@@ -15,18 +18,45 @@
     inset: 0;
     display: grid;
     place-items: center;
-    gap: 0.75rem;
-    background: rgba(10, 4, 0, 0.8);
+    padding: 1.5rem;
+    background: var(--overlay-scrim);
+    backdrop-filter: blur(12px);
     z-index: 1000;
   }
 
+  .panel {
+    display: grid;
+    justify-items: center;
+    gap: 0.85rem;
+    min-width: min(24rem, 100%);
+    padding: 2rem 1.5rem;
+    border-radius: var(--radius-lg);
+    background: var(--surface-overlay-strong);
+    box-shadow: var(--shadow-soft);
+  }
+
   .spinner {
-    width: 2rem;
-    height: 2rem;
-    border: 3px solid rgba(255, 255, 255, 0.2);
-    border-top-color: var(--pg-gold);
+    width: 2.4rem;
+    height: 2.4rem;
+    border: 3px solid var(--accent-secondary-soft);
+    border-top-color: var(--accent);
     border-radius: 999px;
-    animation: spin 1s linear infinite;
+    animation: spin 0.9s linear infinite;
+  }
+
+  .label {
+    color: var(--text-muted);
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+  }
+
+  .brand {
+    color: var(--text-strong);
+    font-family: 'Sora', sans-serif;
+    font-size: 1.3rem;
+    font-weight: 700;
   }
 
   @keyframes spin {

@@ -7,11 +7,18 @@
   $: previewTokens = buildPreviewNotationTokens(nodes);
 </script>
 
-<section class="card section">
-  <h2>Parsed Notation</h2>
+<section class="card parsed-card">
+  <header class="header">
+    <div>
+      <p class="section-label">Sequence preview</p>
+      <h2>Read the phrase exactly as the engine sees it.</h2>
+    </div>
+    <p class="section-copy">Parsed notes stay in view while playback advances so phrase structure and keyboard response remain connected.</p>
+  </header>
+
   <div class="notation">
     {#if nodes.length === 0}
-      <p class="empty">Parsed notation will appear here. Enter notation and click Parse to preview.</p>
+      <p class="empty">Parsed notation will appear here once you run the current sequence through the parser.</p>
     {:else}
       {#each previewTokens as token}
         {#if token.type === 'svara'}
@@ -34,33 +41,57 @@
 </section>
 
 <style>
-  .section {
-    padding: 1rem;
+  .parsed-card {
+    display: grid;
+    gap: 1rem;
+    padding: 1.35rem;
+  }
+
+  .header {
+    display: grid;
+    gap: 0.5rem;
+  }
+
+  h2 {
+    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
   }
 
   .notation {
-    min-height: 8rem;
+    min-height: 12rem;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    background: var(--surface-overlay);
+    box-shadow: inset 0 0 0 1px var(--line-soft);
+    line-height: 2.1;
   }
 
   .token,
   .marker {
     display: inline-block;
-    margin: 0.125rem 0.25rem 0.125rem 0;
+    margin: 0.15rem 0.35rem 0.15rem 0;
   }
 
   .token {
-    padding: 0.15rem 0.35rem;
+    padding: 0.16rem 0.55rem;
     border-radius: 999px;
-    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    background: var(--accent-secondary-soft);
+    color: var(--text-strong);
+    font-weight: 700;
   }
 
   .token.active {
-    background: var(--pg-gold);
-    color: var(--pg-brown-900);
+    background: linear-gradient(135deg, var(--accent) 0%, var(--accent-strong) 100%);
+    color: var(--text-inverse);
     transform: translateY(-1px);
   }
 
+  .marker {
+    color: var(--accent-secondary);
+    font-weight: 800;
+  }
+
   .empty {
-    opacity: 0.7;
+    max-width: 28rem;
+    color: var(--text-muted);
   }
 </style>

@@ -8,7 +8,11 @@
 </script>
 
 <section class="card section">
-  <h2>Statistics</h2>
+  <header class="header">
+    <p class="section-label">Run metrics</p>
+    <h2>Keep the scale of the current passage in sight.</h2>
+  </header>
+
   <div class="grid">
     <StatCard label="Notes" value={notes} />
     <StatCard label="Lines" value={lines} />
@@ -19,12 +23,23 @@
 
 <style>
   .section {
-    padding: 1rem;
+    display: grid;
+    gap: 1rem;
+    padding: 1.35rem;
+  }
+
+  .header {
+    display: grid;
+    gap: 0.4rem;
+  }
+
+  h2 {
+    font-size: 1.3rem;
   }
 
   .grid {
     display: grid;
-    gap: 0.75rem;
+    gap: 0.8rem;
     grid-template-columns: repeat(auto-fit, minmax(8rem, 1fr));
   }
 </style>

@@ -1,5 +1,5 @@
 import { clearNotation, loadExampleNotation, loadNotationFile, parseCurrentNotation, setNotationText } from '../actions/notation.actions';
-import { pausePlayback, startPlayback, stopPlayback } from '../actions/playback.actions';
+import { pausePlayback, resumePlayback, startPlayback, stopPlayback } from '../actions/playback.actions';
 import { applyPreset, updateTempo, updateTuning, updateVolume, updateWaveform } from '../actions/settings.actions';
 import type { NotationState } from '../stores/notation.store';
 import type { SettingsState } from '../stores/settings.store';
@@ -43,6 +43,7 @@ export const mainPlayerHandlers = {
   loadExampleNotation,
   parseCurrentNotation,
   pausePlayback,
+  resumePlayback,
   startPlayback,
   stopPlayback,
   setNotationText,

@@ -211,7 +211,7 @@ export class AudioEngine {
 
   stopAll(): void {
     this.stopSequence();
-    this.activeVoices.forEach((voice) => voice.stop());
+    this.activeVoices.forEach((voice) => this.stopVoice(voice, this.audioContext?.currentTime ?? null));
     this.activeVoices.clear();
   }
 
@@ -294,7 +294,16 @@ export class AudioEngine {
     voiceGain.connect(this.compressor);
 
     const stop = (when: number = startTime + durationSeconds) => {
-      const releaseStart = Math.max(when, this.audioContext?.currentTime ?? when);
+      const currentTime = this.audioContext?.currentTime ?? when;
+      const releaseStart = Math.max(when, currentTime);
+
+      if (releaseStart <= startTime) {
+        envelopeGain.gain.cancelScheduledValues(startTime);
+        envelopeGain.gain.setValueAtTime(0.0001, startTime);
+        oscillator.stop(startTime);
+        return;
+      }
+
       envelopeGain.gain.cancelScheduledValues(releaseStart);
       envelopeGain.gain.setValueAtTime(envelopeGain.gain.value || this.config.envelope.sustain, releaseStart);
       envelopeGain.gain.linearRampToValueAtTime(0.0001, releaseStart + this.config.envelope.release);
