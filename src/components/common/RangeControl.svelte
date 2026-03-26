@@ -8,7 +8,10 @@
 </script>
 
 <label class="control">
-  <span>{label}</span>
+  <span class="topline">
+    <span class="label">{label}</span>
+    <span class="value">{value}{suffix}</span>
+  </span>
   <input
     type="range"
     min={min}
@@ -16,12 +19,42 @@
     value={value}
     on:input={(event) => onInput(Number((event.currentTarget as HTMLInputElement).value))}
   />
-  <span>{value}{suffix}</span>
 </label>
 
 <style>
   .control {
     display: grid;
-    gap: 0.5rem;
+    gap: 0.6rem;
+    padding: 0.95rem;
+    border-radius: var(--radius-md);
+    background: var(--surface-overlay);
+    box-shadow: inset 0 0 0 1px var(--line-soft);
+  }
+
+  .topline {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .label,
+  .value {
+    font-size: 0.82rem;
+    font-weight: 800;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  .label {
+    color: var(--text-muted);
+  }
+
+  .value {
+    color: var(--text-strong);
+  }
+
+  input[type='range'] {
+    accent-color: var(--accent);
   }
 </style>

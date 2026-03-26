@@ -1,12 +1,58 @@
 .page-shell {
-  width: min(1200px, calc(100vw - 2rem));
+  width: min(var(--page-max), calc(100vw - 2rem));
   margin: 0 auto;
-  padding: 1rem 0 3rem;
+  padding: 1.25rem 0 3rem;
 }
 
 .card {
-  background: var(--pg-card);
-  border: 1px solid var(--pg-border);
-  border-radius: 1rem;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  position: relative;
+  overflow: hidden;
+  border-radius: var(--radius-lg);
+  background: linear-gradient(180deg, var(--surface-1) 0%, var(--surface-2) 100%);
+  box-shadow: var(--shadow-panel);
+  backdrop-filter: blur(14px);
+}
+
+.card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(192, 200, 204, 0.32);
+  border-radius: inherit;
+  pointer-events: none;
+}
+
+.card > * {
+  position: relative;
+  z-index: 1;
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  color: var(--accent-secondary);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.section-copy {
+  color: var(--text-muted);
+  font-size: 0.96rem;
+}
+
+.pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  min-height: 2rem;
+  padding: 0.38rem 0.8rem;
+  border-radius: 999px;
+  background: var(--surface-overlay);
+  color: var(--text-body);
+  box-shadow: inset 0 0 0 1px var(--line-soft);
+  font-size: 0.8rem;
+  font-weight: 700;
 }

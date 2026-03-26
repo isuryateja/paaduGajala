@@ -11,3 +11,10 @@
     <PianoOctave keys={PIANO_KEYS.filter((key) => key.octave === octave)} {activeKeys} />
   {/each}
 </div>
+
+<style>
+  .piano-keyboard {
+    display: grid;
+    gap: 0.85rem;
+  }
+</style>
