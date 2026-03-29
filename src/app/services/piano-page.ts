@@ -3,11 +3,11 @@ import { PIANO_KEYBOARD_MAP } from '../../domain/piano/piano-keyboard-map';
 import { addWindowListener } from '../../infra/browser/dom-helpers';
 import { onVisibilityChange, onWindowBlur } from '../../infra/browser/visibility-events';
 import { releaseAllPianoNotes, startPianoNote, stopPianoNote } from '../actions/piano.actions';
-import type { PianoKeyboardMapping } from '../../domain/piano/piano.types';
+import type { ActivePianoKeys, PianoKeyboardMapping } from '../../domain/piano/piano.types';
 import type { Teardown } from '../../domain/shared/types';
 
 export interface PianoPageController {
-  activeKeys: Writable<Set<string>>;
+  activeKeys: Writable<ActivePianoKeys>;
   pressMappedKey: (note: string, octave: string) => void;
   releaseMappedKey: (note: string, octave: string) => void;
   releaseEverything: () => void;
@@ -20,25 +20,28 @@ function createKeyId(note: string, octave: string): string {
   return `${note}:${octave}`;
 }
 
-function updateActiveKeys(store: Writable<Set<string>>, updater: (current: Set<string>) => Set<string>): void {
+function updateActiveKeys(store: Writable<ActivePianoKeys>, updater: (current: ActivePianoKeys) => ActivePianoKeys): void {
   store.update((current) => updater(current));
 }
 
 export function createPianoPageController(
   keyboardMap: Record<string, PianoKeyboardMapping> = PIANO_KEYBOARD_MAP
 ): PianoPageController {
-  const activeKeys = writable<Set<string>>(new Set());
+  const activeKeys = writable<ActivePianoKeys>({});
 
   function pressMappedKey(note: string, octave: string): void {
     let shouldStart = false;
     updateActiveKeys(activeKeys, (current) => {
       const keyId = createKeyId(note, octave);
-      if (current.has(keyId)) {
+      if (current[keyId]) {
         return current;
       }
 
       shouldStart = true;
-      return new Set([...current, keyId]);
+      return {
+        ...current,
+        [keyId]: true
+      };
     });
 
     if (shouldStart) {
@@ -50,12 +53,13 @@ export function createPianoPageController(
     let shouldStop = false;
     updateActiveKeys(activeKeys, (current) => {
       const keyId = createKeyId(note, octave);
-      if (!current.has(keyId)) {
+      if (!current[keyId]) {
         return current;
       }
 
       shouldStop = true;
-      return new Set([...current].filter((entry) => entry !== keyId));
+      const { [keyId]: _released, ...remainingKeys } = current;
+      return remainingKeys;
     });
 
     if (shouldStop) {
@@ -64,7 +68,7 @@ export function createPianoPageController(
   }
 
   function releaseEverything(): void {
-    activeKeys.set(new Set());
+    activeKeys.set({});
     releaseAllPianoNotes();
   }
 

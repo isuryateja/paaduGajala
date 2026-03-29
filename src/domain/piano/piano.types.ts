@@ -1,3 +1,5 @@
+export type ActivePianoKeys = Record<string, boolean>;
+
 export interface PianoKeyDefinition {
   note: string;
   label: string;

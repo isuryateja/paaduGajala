@@ -1,10 +1,13 @@
 import { clearNotation, loadExampleNotation, loadNotationFile, parseCurrentNotation, setNotationText } from '../actions/notation.actions';
-import { pausePlayback, resumePlayback, startPlayback, stopPlayback } from '../actions/playback.actions';
+import { audioEngine, pausePlayback, resumePlayback, startPlayback, stopPlayback } from '../actions/playback.actions';
 import { applyPreset, updateTempo, updateTuning, updateVolume, updateWaveform } from '../actions/settings.actions';
 import type { NotationState } from '../stores/notation.store';
 import type { SettingsState } from '../stores/settings.store';
 import { formatDuration } from '../../lib/utils/format-duration';
 import { getNotationPreviewStats } from '../../domain/notation/notation.stats';
+import { normalizeOctaveName, normalizeSvaraName } from '../../domain/pitch/svara-normalization';
+import type { ActivePianoKeys } from '../../domain/piano/piano.types';
+import type { OctaveName, Teardown } from '../../domain/shared/types';
 
 export interface MainPlayerViewModel {
   noteCount: string;
@@ -13,6 +16,47 @@ export interface MainPlayerViewModel {
   duration: string;
   parsedInfo: string;
 }
+
+const PLAYBACK_KEY_MAP_BY_OCTAVE: Record<OctaveName, Record<string, string>> = {
+  mandra: {
+    D2: 'n1',
+    N1: 'n1',
+    D3: 'n2',
+    N2: 'n2',
+    N3: 'n'
+  },
+  mandara: {
+    D2: 'n1',
+    N1: 'n1',
+    D3: 'n2',
+    N2: 'n2',
+    N3: 'n'
+  },
+  madhya: {
+    S: 's',
+    R1: 'r1',
+    R2: 'r2',
+    G1: 'r2',
+    R3: 'r3',
+    G2: 'r3',
+    G3: 'g',
+    M1: 'm',
+    M2: 'm2',
+    P: 'p',
+    D1: 'd1',
+    D2: 'd2',
+    N1: 'd2',
+    D3: 'd3',
+    N2: 'd3',
+    N3: 'n'
+  },
+  taara: {
+    S: 's',
+    R1: 'r1',
+    R2: 'r2',
+    G1: 'r2'
+  }
+};
 
 export function createMainPlayerViewModel(notationState: NotationState, settingsState: SettingsState): MainPlayerViewModel {
   const stats = notationState.stats ?? {
@@ -28,6 +72,82 @@ export function createMainPlayerViewModel(notationState: NotationState, settings
     octaveCount: String(previewStats.octavesUsed),
     duration: formatDuration(previewStats.totalBeats, settingsState.tempo),
     parsedInfo: stats.totalNotes ? `${stats.totalNotes} notes parsed` : ''
+  };
+}
+
+export function resolvePlaybackPianoKeyId(svara: string, octave: string): string | null {
+  const normalizedOctave = normalizeOctaveName(octave);
+  const pianoNote = PLAYBACK_KEY_MAP_BY_OCTAVE[normalizedOctave][normalizeSvaraName(svara)];
+  if (!pianoNote) {
+    return null;
+  }
+
+  const pianoOctave = normalizedOctave === 'mandra' || normalizedOctave === 'mandara' ? '1' : normalizedOctave === 'madhya' ? '2' : '3';
+  return pianoOctave ? `${pianoNote}:${pianoOctave}` : null;
+}
+
+export function createPlaybackPianoVisualizer(onChange: (activeKeys: ActivePianoKeys) => void): Teardown {
+  let activeKeys: ActivePianoKeys = {};
+
+  function emitChange(): void {
+    onChange(activeKeys);
+  }
+
+  function setKeyState(keyId: string | null, pressed: boolean): void {
+    if (!keyId) {
+      return;
+    }
+
+    if (pressed) {
+      if (activeKeys[keyId]) {
+        return;
+      }
+
+      activeKeys = {
+        ...activeKeys,
+        [keyId]: true
+      };
+      emitChange();
+      return;
+    }
+
+    if (!activeKeys[keyId]) {
+      return;
+    }
+
+    const { [keyId]: _released, ...remainingKeys } = activeKeys;
+    activeKeys = remainingKeys;
+    emitChange();
+  }
+
+  function clearKeys(): void {
+    if (Object.keys(activeKeys).length === 0) {
+      return;
+    }
+
+    activeKeys = {};
+    emitChange();
+  }
+
+  const removeNoteOn = audioEngine.on('noteOn', (event) => {
+    const data = event as { svara?: string; octave?: string };
+    setKeyState(resolvePlaybackPianoKeyId(data.svara ?? '', data.octave ?? ''), true);
+  });
+
+  const removeNoteOff = audioEngine.on('noteOff', (event) => {
+    const data = event as { svara?: string; octave?: string };
+    setKeyState(resolvePlaybackPianoKeyId(data.svara ?? '', data.octave ?? ''), false);
+  });
+
+  const removeSequenceEnd = audioEngine.on('sequenceEnd', clearKeys);
+  const removeSequenceStart = audioEngine.on('sequenceStart', clearKeys);
+
+  return () => {
+    removeNoteOn();
+    removeNoteOff();
+    removeSequenceEnd();
+    removeSequenceStart();
+    clearKeys();
   };
 }
 

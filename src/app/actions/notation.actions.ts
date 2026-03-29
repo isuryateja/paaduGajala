@@ -6,9 +6,9 @@ import { notationStore } from '../stores/notation.store';
 import { pushToast, setStatus } from '../stores/ui.store';
 import { readTextFile } from '../../infra/browser/file-reader';
 
-const FALLBACK_EXAMPLE = `S     S     R1    R1    |     G1    G1    |     M1    M1    ||
-R1    R1    G1    G1    |     M1    M1    |     P     P     ||
-G     G     M1    M1    |     P     P     |     D1    D1    ||`;
+const FALLBACK_EXAMPLE = `S     S     R1    R1    |     G3    G3    |     M1    M1    ||
+R1    R1    G3    G3    |     M1    M1    |     P     P     ||
+G3    G3    M1    M1    |     P     P     |     D1    D1    ||`;
 
 export function setNotationText(rawText: string, source: 'manual' | 'example' | 'file' = 'manual'): void {
   notationStore.update((state) => ({ ...state, rawText, source }));

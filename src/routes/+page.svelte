@@ -5,13 +5,14 @@
 <script lang="ts">
   import { onDestroy, onMount } from 'svelte';
   import { bootstrapApp } from '../app/services/app-bootstrap';
-  import { mainPlayerHandlers } from '../app/services/main-player-page';
+  import { createPlaybackPianoVisualizer, mainPlayerHandlers } from '../app/services/main-player-page';
   import { getVisualizerMedia } from '../app/services/visualizer-state';
   import { notationStore } from '../app/stores/notation.store';
   import { playbackStore } from '../app/stores/playback.store';
   import { settingsStore } from '../app/stores/settings.store';
   import { uiStore } from '../app/stores/ui.store';
   import { startPianoNote, stopPianoNote, releaseAllPianoNotes } from '../app/actions/piano.actions';
+  import type { ActivePianoKeys } from '../domain/piano/piano.types';
 
   type ManualOctave = '1' | '2' | '3';
 
@@ -69,19 +70,25 @@
   ];
 
   let teardown = () => {};
+  let releasePlaybackVisualizer = () => {};
   let droneEnabled = true;
   let reverbLevel = 42;
+  let playbackActiveKeys: ActivePianoKeys = {};
   const activeManualKeys = new Set<string>();
   const manualKeyAnimationTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
   onMount(() => {
     teardown = bootstrapApp();
+    releasePlaybackVisualizer = createPlaybackPianoVisualizer((activeKeys) => {
+      playbackActiveKeys = activeKeys;
+    });
   });
 
   onDestroy(() => {
     manualKeyAnimationTimers.forEach((timer) => clearTimeout(timer));
     manualKeyAnimationTimers.clear();
     releaseAllPianoNotes();
+    releasePlaybackVisualizer();
     teardown();
   });
 
@@ -316,7 +323,9 @@
           {#each whiteKeys as key}
             <button
               aria-label={key.secondaryLabel ? `${key.label} or ${key.secondaryLabel}` : key.label}
+              aria-pressed={!!playbackActiveKeys[`${key.note}:${key.octave}`]}
               class:divider={key.divider}
+              class:playback-active={!!playbackActiveKeys[`${key.note}:${key.octave}`]}
               class="white-key"
               type="button"
               on:pointerdown={(e) => handleKeyDown(e, key.note, key.octave)}
@@ -334,6 +343,8 @@
           {#each blackKeys as key}
             <button
               aria-label={key.secondaryLabel ? `${key.label} or ${key.secondaryLabel}` : key.label}
+              aria-pressed={!!playbackActiveKeys[`${key.note}:${key.octave}`]}
+              class:playback-active={!!playbackActiveKeys[`${key.note}:${key.octave}`]}
               class="black-key"
               style={`left:${key.left}%`}
               type="button"
@@ -959,6 +970,14 @@
     transform: translateY(2px);
   }
 
+  .white-key.playback-active {
+    background: #ece5d9;
+    box-shadow:
+      inset 0 4px 12px rgba(123, 108, 84, 0.14),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.04);
+    transform: translateY(2px);
+  }
+
   .black-key {
     position: absolute;
     top: 0;
@@ -989,6 +1008,15 @@
   }
 
   .black-key:active {
+    background: #566066;
+    box-shadow:
+      1px 2px 3px rgba(0, 0, 0, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -2px 3px rgba(255, 255, 255, 0.08);
+    transform: translateX(-50%) translateY(1px);
+  }
+
+  .black-key.playback-active {
     background: #566066;
     box-shadow:
       1px 2px 3px rgba(0, 0, 0, 0.16),
