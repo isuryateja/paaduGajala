@@ -1,9 +1,10 @@
 <script lang="ts">
   import PianoOctave from './PianoOctave.svelte';
   import { PIANO_KEYS } from '../../domain/piano/piano.constants';
+  import type { ActivePianoKeys } from '../../domain/piano/piano.types';
 
   const octaves = ['1', '2', '3'] as const;
-  export let activeKeys = new Set<string>();
+  export let activeKeys: ActivePianoKeys = {};
 </script>
 
 <div class="piano-keyboard">

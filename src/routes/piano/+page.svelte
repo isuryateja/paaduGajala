@@ -4,9 +4,10 @@
   import AppHeader from '../../components/layout/AppHeader.svelte';
   import PianoCard from '../../components/piano/PianoCard.svelte';
   import { createPianoPageController } from '../../app/services/piano-page';
+  import type { ActivePianoKeys } from '../../domain/piano/piano.types';
 
   const controller = createPianoPageController();
-  let activeKeys = new Set<string>();
+  let activeKeys: ActivePianoKeys = {};
   let teardown = () => {};
 
   onMount(() => {

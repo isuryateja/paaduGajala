@@ -1,9 +1,9 @@
 <script lang="ts">
   import PianoKey from './PianoKey.svelte';
-  import type { PianoKeyDefinition } from '../../domain/piano/piano.types';
+  import type { ActivePianoKeys, PianoKeyDefinition } from '../../domain/piano/piano.types';
 
   export let keys: PianoKeyDefinition[] = [];
-  export let activeKeys = new Set<string>();
+  export let activeKeys: ActivePianoKeys = {};
 
   $: whiteKeys = keys.filter((key) => !key.isBlack);
   $: blackKeys = keys.filter((key) => key.isBlack);
@@ -13,12 +13,12 @@
   <div class="octave-label">Octave {keys[0]?.octave ?? ''}</div>
   <div class="row white-row">
     {#each whiteKeys as key}
-      <PianoKey {...key} pressed={activeKeys.has(`${key.note}:${key.octave}`)} />
+      <PianoKey {...key} pressed={!!activeKeys[`${key.note}:${key.octave}`]} />
     {/each}
   </div>
   <div class="row black-row">
     {#each blackKeys as key}
-      <PianoKey {...key} pressed={activeKeys.has(`${key.note}:${key.octave}`)} />
+      <PianoKey {...key} pressed={!!activeKeys[`${key.note}:${key.octave}`]} />
     {/each}
   </div>
 </div>
