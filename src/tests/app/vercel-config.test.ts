@@ -9,6 +9,9 @@ type VercelRedirect = {
 };
 
 type VercelConfig = {
+  engines?: {
+    node?: string;
+  };
   framework?: string;
   installCommand?: string;
   buildCommand?: string;
@@ -22,11 +25,15 @@ const readVercelConfig = (): VercelConfig =>
 describe('vercel deployment config', () => {
   it('keeps the repo configured as a root-level SvelteKit deployment', () => {
     const config = readVercelConfig();
+    const packageJson = JSON.parse(
+      readFileSync(resolve(process.cwd(), 'package.json'), 'utf8')
+    ) as { engines?: { node?: string } };
 
     expect(config.framework).toBe('sveltekit');
     expect(config.installCommand).toBe('npm install');
     expect(config.buildCommand).toBe('npm run build');
     expect(config).not.toHaveProperty('rewrites');
+    expect(packageJson.engines?.node).toBe('20.x');
   });
 
   it('preserves legacy entrypoints through redirects only', () => {
