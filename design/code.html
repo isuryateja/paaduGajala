@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>పాడు గజాల - Paadu Gajala - Notation Player</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;700;800;900&amp;family=Public+Sans:wght@300;400;600&amp;family=Noto+Sans+Telugu:wght@400;700;900&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+      tailwind.config = {
+        darkMode: "class",
+        theme: {
+          extend: {
+            colors: {
+              "surface": "#fcf9f2",
+              "secondary-container": "#aadafe",
+              "surface-variant": "#e5e2db",
+              "on-primary-fixed": "#001f29",
+              "on-error": "#ffffff",
+              "error": "#ba1a1a",
+              "inverse-on-surface": "#f3f0e9",
+              "on-surface-variant": "#40484c",
+              "on-secondary-container": "#2e607f",
+              "secondary": "#316382",
+              "on-primary": "#ffffff",
+              "outline-variant": "#c0c8cc",
+              "on-tertiary-fixed": "#370e00",
+              "tertiary": "#924a2c",
+              "inverse-surface": "#31312c",
+              "primary-fixed": "#b9eaff",
+              "tertiary-container": "#dc8662",
+              "secondary-fixed-dim": "#9cccef",
+              "secondary-fixed": "#c7e7ff",
+              "on-secondary-fixed": "#001e2e",
+              "primary": "#2f6578",
+              "tertiary-fixed": "#ffdbce",
+              "on-error-container": "#93000a",
+              "on-tertiary": "#ffffff",
+              "on-primary-container": "#003848",
+              "surface-container-highest": "#e5e2db",
+              "surface-dim": "#dcdad3",
+              "on-primary-fixed-variant": "#0f4d5f",
+              "on-tertiary-fixed-variant": "#743417",
+              "on-background": "#1c1c18",
+              "outline": "#71787c",
+              "surface-container-lowest": "#ffffff",
+              "primary-container": "#6fa3b8",
+              "on-tertiary-container": "#5c2105",
+              "on-secondary": "#ffffff",
+              "surface-bright": "#fcf9f2",
+              "error-container": "#ffdad6",
+              "surface-container-high": "#ebe8e1",
+              "surface-container": "#f1eee7",
+              "primary-fixed-dim": "#9acee4",
+              "on-surface": "#1c1c18",
+              "surface-tint": "#2f6578",
+              "background": "#fcf9f2",
+              "on-secondary-fixed-variant": "#134b69",
+              "inverse-primary": "#9acee4",
+              "surface-container-low": "#f6f3ec",
+              "tertiary-fixed-dim": "#ffb598"
+            },
+            fontFamily: {
+              "headline": ["Work Sans"],
+              "body": ["Public Sans"],
+              "label": ["Public Sans"],
+              "telugu": ["Noto Sans Telugu"]
+            },
+            borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+          },
+        },
+      }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .grain-texture {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            pointer-events: none;
+        }
+        .inner-shadow-sm {
+            box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.06);
+        }
+        .piano-key-white {
+            height: 180px;
+            width: 54px;
+            border-bottom-left-radius: 8px;
+            border-bottom-right-radius: 8px;
+            transition: all 0.1s ease;
+        }
+        .piano-key-black {
+            height: 110px;
+            width: 32px;
+            margin-left: -16px;
+            margin-right: -16px;
+            z-index: 10;
+            border-bottom-left-radius: 4px;
+            border-bottom-right-radius: 4px;
+            transition: all 0.1s ease;
+        }
+        .active-key-white {
+            background-color: #c7e7ff !important;
+            transform: translateY(2px);
+            box-shadow: inset 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .active-key-black {
+            background-color: #2f6578 !important;
+            transform: translateY(2px);
+        }
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .telugu-branding {
+            text-shadow: 1px 1px 0px rgba(0,0,0,0.1);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface selection:bg-secondary-container flex flex-col min-h-screen">
+<!-- TopAppBar Shell -->
+<header class="bg-[#fcf9f2] dark:bg-[#1a1c1e] flex justify-between items-center px-8 py-4 w-full max-w-full z-50 sticky top-0 shrink-0">
+<div class="flex items-center gap-6">
+<div class="flex flex-col leading-none">
+<span class="text-[#2f6578] dark:text-[#6fa3b8] font-telugu font-black text-2xl telugu-branding">పాడు గజాల</span>
+<span class="text-[#2f6578] dark:text-[#6fa3b8] font-headline font-black uppercase tracking-tighter text-[10px] opacity-60">Paadu Gajala</span>
+</div>
+<nav class="hidden md:flex gap-8">
+<a class="text-[#40484c] dark:text-[#c0c8cc] hover:text-[#2f6578] font-headline font-bold uppercase tracking-tight text-sm" href="#">Ragas</a>
+<a class="text-[#40484c] dark:text-[#c0c8cc] hover:text-[#2f6578] font-headline font-bold uppercase tracking-tight text-sm" href="#">Talas</a>
+<a class="text-[#924a2c] dark:text-[#ffb4a2] border-b-4 border-[#924a2c] pb-1 font-headline font-bold uppercase tracking-tight text-sm" href="#">Notation</a>
+<a class="text-[#40484c] dark:text-[#c0c8cc] hover:text-[#2f6578] font-headline font-bold uppercase tracking-tight text-sm" href="#">Library</a>
+<a class="text-[#40484c] dark:text-[#c0c8cc] hover:text-[#2f6578] font-headline font-bold uppercase tracking-tight text-sm" href="#">Practice</a>
+</nav>
+</div>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-[#f6f3ec] rounded-full transition-colors">account_circle</button>
+<button class="material-symbols-outlined p-2 text-on-surface-variant hover:bg-[#f6f3ec] rounded-full transition-colors">settings</button>
+</div>
+</header>
+<div class="bg-[#e5e2db] dark:bg-[#323537] h-px w-full opacity-20 shrink-0"></div>
+<div class="flex flex-1 overflow-hidden">
+<!-- SideNavBar Shell -->
+<aside class="hidden lg:flex bg-[#f6f3ec] dark:bg-[#1a1c1e] w-72 border-r-8 border-[#e5e2db] dark:border-[#323537] flex-col shrink-0 overflow-y-auto">
+<div class="p-8">
+<h2 class="font-headline font-black text-[#2f6578] text-xl tracking-tighter">The Rhythmic Rail</h2>
+<p class="font-['Work_Sans'] font-medium text-[10px] uppercase tracking-widest text-on-surface-variant opacity-60">Compartment No. 108</p>
+</div>
+<nav class="flex-1 space-y-1">
+<a class="flex items-center gap-4 text-[#40484c] dark:text-[#c0c8cc] pl-8 py-3 hover:bg-[#e5e2db] transition-all font-['Work_Sans'] font-medium text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">music_note</span> Ragas
+            </a>
+<a class="flex items-center gap-4 text-[#40484c] dark:text-[#c0c8cc] pl-8 py-3 hover:bg-[#e5e2db] transition-all font-['Work_Sans'] font-medium text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">timer</span> Talas
+            </a>
+<a class="flex items-center gap-4 bg-[#2f6578] text-[#fcf9f2] rounded-l-full ml-4 pl-4 py-3 font-['Work_Sans'] font-medium text-sm uppercase tracking-widest translate-x-1" href="#">
+<span class="material-symbols-outlined">description</span> Notation Player
+            </a>
+<a class="flex items-center gap-4 text-[#40484c] dark:text-[#c0c8cc] pl-8 py-3 hover:bg-[#e5e2db] transition-all font-['Work_Sans'] font-medium text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">library_music</span> Library
+            </a>
+<a class="flex items-center gap-4 text-[#40484c] dark:text-[#c0c8cc] pl-8 py-3 hover:bg-[#e5e2db] transition-all font-['Work_Sans'] font-medium text-sm uppercase tracking-widest" href="#">
+<span class="material-symbols-outlined">exercise</span> Practice
+            </a>
+</nav>
+<div class="p-8 mt-auto">
+<div class="relative w-24 h-24 mb-4">
+<img alt="Legend" class="w-full h-full object-cover rounded-xl filter desaturate-[0.8] mix-blend-multiply opacity-80 border-2 border-outline-variant/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuDLPpiOR9dmNqQmmwusuDDjy52yOv6peU3Qa5YTl6rL3zbyD3p3oSkWxErML-JVFf2RKiHiJbG1mCnwO4GMUjvFLalBHIldmMwYXfvVTZI4NnY54nLFGoT050nSuZIbJ_8JEjf4l-zqOKFD3XAuSYXZnzDBWUfmc1znFXowqg636ORvQF0wix2SbtTg8LmNL8tEyTMgU_pLVrMPqTB0om01Anr0oUgi7qN7R6nYa7iUoAClLz0_euHV_mbX3kzcIoqzw7hrs90MSWg"/>
+<div class="absolute -bottom-2 -right-2 bg-primary px-2 py-1 text-[8px] text-on-primary font-bold tracking-widest uppercase">Legacy</div>
+</div>
+<p class="text-[10px] text-on-surface-variant font-medium uppercase tracking-tighter">Current Inspiration:</p>
+<p class="text-xs font-bold text-primary">M.S. Subbulakshmi</p>
+</div>
+</aside>
+<!-- Main Content Area -->
+<section class="flex-1 p-6 md:p-8 relative overflow-y-auto flex flex-col gap-6 bg-surface-container-low pb-12">
+<div class="grain-texture absolute inset-0"></div>
+<!-- Page Title Area -->
+<div class="relative z-10 flex flex-col md:flex-row justify-between items-end gap-4 border-l-4 border-primary pl-6">
+<div>
+<span class="text-primary font-bold uppercase tracking-[0.2em] text-xs">Module 04</span>
+<h1 class="font-headline font-black text-4xl md:text-6xl text-primary tracking-tighter leading-none">Notation <span class="text-primary-container">Player</span></h1>
+<p class="text-on-surface-variant max-w-md mt-2 text-base">Input your swaras and watch the rhythmic rail guide your fingers.</p>
+</div>
+<div class="flex gap-2 mb-2">
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-primary">Carnatic Grade 1</span>
+<span class="bg-surface-container-highest px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-widest text-primary">Melakartha #29</span>
+</div>
+</div>
+<!-- Virtual Piano Section - "Center Stage" -->
+<div class="relative z-10">
+<div class="bg-[#e5e2db] p-1 rounded-2xl shadow-xl border-x-4 border-t-4 border-[#dcdad3]">
+<div class="bg-surface-container-highest px-6 py-1.5 rounded-t-xl flex justify-between items-center border-b border-outline-variant/20">
+<div class="flex gap-1">
+<div class="w-1.5 h-1.5 rounded-full bg-red-400"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-amber-400"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-green-400"></div>
+</div>
+<span class="text-[8px] font-bold uppercase tracking-[0.4em] text-on-surface-variant/40">Paadu Gajala Audio Systems - Model 1985</span>
+</div>
+<div class="flex justify-center bg-surface-container-highest p-6 rounded-b-xl overflow-x-auto scrollbar-hide">
+<div class="flex relative">
+<!-- Octave 1 -->
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3 active-key-white">
+<span class="font-headline font-black text-primary">S</span>
+<span class="text-[8px] font-bold uppercase">Sa</span>
+</div>
+<div class="piano-key-black bg-neutral-800 shadow-lg border-b-4 border-black"></div>
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3">
+<span class="font-headline font-black text-on-surface-variant opacity-30 text-sm">R</span>
+</div>
+<div class="piano-key-black bg-neutral-800 shadow-lg border-b-4 border-black"></div>
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3">
+<span class="font-headline font-black text-on-surface-variant opacity-30 text-sm">G</span>
+</div>
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3">
+<span class="font-headline font-black text-on-surface-variant opacity-30 text-sm">M</span>
+</div>
+<div class="piano-key-black bg-neutral-800 shadow-lg border-b-4 border-black"></div>
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3">
+<span class="font-headline font-black text-on-surface-variant opacity-30 text-sm">P</span>
+</div>
+<div class="piano-key-black bg-neutral-800 shadow-lg border-b-4 border-black"></div>
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3">
+<span class="font-headline font-black text-on-surface-variant opacity-30 text-sm">D</span>
+</div>
+<div class="piano-key-black bg-neutral-800 shadow-lg border-b-4 border-black"></div>
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3">
+<span class="font-headline font-black text-on-surface-variant opacity-30 text-sm">N</span>
+</div>
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3">
+<span class="font-headline font-black text-on-surface-variant opacity-30 text-sm">S'</span>
+</div>
+<div class="w-4"></div>
+<!-- Octave 2 Partial -->
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3">
+<span class="font-headline font-black text-on-surface-variant opacity-30 text-sm">S</span>
+</div>
+<div class="piano-key-black bg-neutral-800 shadow-lg border-b-4 border-black"></div>
+<div class="piano-key-white bg-white border border-outline-variant shadow-sm flex flex-col justify-end items-center pb-3">
+<span class="font-headline font-black text-on-surface-variant opacity-30 text-sm">R</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Integrated Content Section -->
+<div class="relative z-10 grid grid-cols-1 lg:grid-cols-10 gap-6">
+<!-- Notation Input Panel (70%) -->
+<div class="lg:col-span-7 flex flex-col gap-4">
+<div class="bg-surface-container p-1 rounded-2xl border border-outline-variant/30">
+<div class="bg-surface rounded-xl overflow-hidden shadow-sm">
+<div class="px-6 py-3 border-b border-outline-variant/20 flex justify-between items-center bg-surface-container-low/50">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary">edit_note</span>
+<label class="font-headline font-bold text-xs uppercase tracking-widest text-on-surface-variant">Notation Input</label>
+</div>
+<button class="flex items-center gap-1 text-[10px] font-bold text-primary uppercase hover:bg-surface-container-highest px-3 py-1.5 rounded transition-colors">
+<span class="material-symbols-outlined text-sm">upload_file</span> Import
+                            </button>
+</div>
+<div class="relative">
+<textarea class="w-full h-40 bg-transparent p-6 font-headline text-2xl focus:ring-0 border-none outline-none resize-none placeholder:text-on-surface-variant/20 tracking-wide" placeholder="S R2 G3 M1 P D2 N3 S' ..."></textarea>
+<div class="absolute bottom-4 right-4 flex items-center gap-3">
+<button class="bg-tertiary text-on-tertiary px-6 py-2.5 rounded-xl font-headline font-black uppercase tracking-[0.15em] flex items-center gap-3 hover:brightness-110 active:scale-95 transition-all shadow-lg group">
+<span class="material-symbols-outlined transition-transform group-hover:rotate-12" style="font-variation-settings: 'FILL' 1;">auto_fix_high</span>
+                                    Parse
+                                </button>
+</div>
+</div>
+</div>
+</div>
+<!-- Playback Sequence -->
+<div class="bg-surface rounded-xl p-4 flex flex-col gap-3 border border-outline-variant/20 shadow-sm">
+<div class="flex items-center justify-between">
+<label class="font-headline font-bold text-[10px] uppercase tracking-widest text-on-surface-variant">Current Sequence</label>
+<span class="text-primary text-[10px] font-bold flex items-center gap-1"><span class="w-1.5 h-1.5 rounded-full bg-primary"></span> READY</span>
+</div>
+<div class="flex gap-2 overflow-x-auto pb-2 scrollbar-hide inner-shadow-sm bg-surface-container-low p-2 rounded-lg min-h-[60px] items-center">
+<div class="bg-primary text-on-primary px-3 py-1.5 rounded-lg font-headline font-black text-xl flex flex-col items-center flex-shrink-0">
+<span>S</span>
+</div>
+<div class="bg-surface-container-highest text-on-surface px-3 py-1.5 rounded-lg font-headline font-bold text-xl flex flex-col items-center flex-shrink-0">
+<span>R2</span>
+</div>
+<div class="bg-surface-container-highest text-on-surface px-3 py-1.5 rounded-lg font-headline font-bold text-xl flex flex-col items-center flex-shrink-0">
+<span>G3</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Tone & Timbre / Controls Panel (30%) -->
+<div class="lg:col-span-3 flex flex-col gap-4">
+<div class="bg-surface-container p-6 rounded-2xl border border-outline-variant/30 h-full flex flex-col gap-6">
+<div>
+<label class="font-headline font-bold text-xs uppercase tracking-widest text-primary block mb-4">Tone &amp; Timbre</label>
+<div class="space-y-4">
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-on-surface-variant">Instrument</span>
+<span class="text-sm font-headline font-black text-primary">Veena</span>
+</div>
+<div class="flex items-center justify-between">
+<span class="text-xs font-bold text-on-surface-variant">Reverb</span>
+<span class="text-sm font-headline font-black text-primary">Temple Hall</span>
+</div>
+</div>
+</div>
+<div class="mt-auto space-y-4">
+<div class="flex flex-col gap-2">
+<div class="flex justify-between text-[10px] font-bold text-on-surface-variant uppercase tracking-widest">
+<span>Tempo</span>
+<span class="text-primary">84 BPM</span>
+</div>
+<input class="w-full accent-tertiary bg-surface-variant h-1 rounded-full appearance-none cursor-pointer" max="220" min="40" type="range" value="84"/>
+</div>
+<div class="flex items-center gap-2 bg-surface p-2 rounded-xl border border-outline-variant/20 shadow-inner">
+<button class="p-2 hover:bg-surface-container-highest rounded-lg transition-colors"><span class="material-symbols-outlined text-primary text-sm">skip_previous</span></button>
+<button class="flex-1 bg-primary text-on-primary py-2 rounded-lg font-headline font-black text-xs uppercase tracking-widest hover:opacity-90 active:scale-95 transition-all">PLAY</button>
+<button class="p-2 hover:bg-surface-container-highest rounded-lg transition-colors"><span class="material-symbols-outlined text-primary text-sm">skip_next</span></button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</section>
+</div>
+<!-- Footer Shell - Fixed at the very bottom -->
+<footer class="bg-[#e5e2db] dark:bg-[#2a2d2f] h-10 flex items-center justify-between px-12 w-full shrink-0 border-t border-outline-variant/10 z-50">
+<div class="flex gap-8">
+<a class="font-['Work_Sans'] text-[10px] uppercase tracking-widest opacity-70 text-[#40484c] dark:text-[#c0c8cc] no-underline hover:opacity-100 hover:text-[#2f6578]" href="#">Safety Chain</a>
+<a class="font-['Work_Sans'] text-[10px] uppercase tracking-widest opacity-70 text-[#40484c] dark:text-[#c0c8cc] no-underline hover:opacity-100 hover:text-[#2f6578]" href="#">Schedule</a>
+<a class="font-['Work_Sans'] text-[10px] uppercase tracking-widest opacity-70 text-[#40484c] dark:text-[#c0c8cc] no-underline hover:opacity-100 hover:text-[#2f6578]" href="#">Station Master</a>
+</div>
+<p class="font-['Work_Sans'] text-[10px] uppercase tracking-widest opacity-70 text-[#40484c] dark:text-[#c0c8cc]">© 1985 Southern Railways - పాడు గజాల Musical Trust</p>
+</footer>
+</body></html>

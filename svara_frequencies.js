@@ -672,11 +672,53 @@ const MELAKARTA_RAGAS = {
 // EXPORTS
 // ============================================================================
 
-// For ES6 modules
-// export { SVARA_FREQUENCIES, NOTE_DURATIONS, MELAKARTA_RAGAS, getSvaraFrequency, getAllOctaves };
-
 // For CommonJS
-// module.exports = { SVARA_FREQUENCIES, NOTE_DURATIONS, MELAKARTA_RAGAS, getSvaraFrequency, getAllOctaves };
+if (typeof module !== 'undefined' && module.exports) {
+  module.exports = {
+    REFERENCE_A4,
+    BASE_SA_FREQUENCY,
+    SEMITONE_RATIO,
+    JUST_INTONATION_RATIOS,
+    SVARA_FREQUENCIES,
+    NOTE_DURATIONS,
+    MELAKARTA_RAGAS,
+    getSvaraFrequency,
+    getAllOctaves,
+    getJustIntonationFrequency,
+    frequencyToSvara
+  };
+}
+
+// For browser global
+if (typeof window !== 'undefined') {
+  window.CarnaticSvaraFrequencies = {
+    REFERENCE_A4,
+    BASE_SA_FREQUENCY,
+    SEMITONE_RATIO,
+    JUST_INTONATION_RATIOS,
+    SVARA_FREQUENCIES,
+    NOTE_DURATIONS,
+    MELAKARTA_RAGAS,
+    getSvaraFrequency,
+    getAllOctaves,
+    getJustIntonationFrequency,
+    frequencyToSvara
+  };
+}
 
 // For browser global
 // window.SvaraFrequencies = { SVARA_FREQUENCIES, NOTE_DURATIONS, MELAKARTA_RAGAS, getSvaraFrequency, getAllOctaves };
+
+export {
+  REFERENCE_A4,
+  BASE_SA_FREQUENCY,
+  SEMITONE_RATIO,
+  JUST_INTONATION_RATIOS,
+  SVARA_FREQUENCIES,
+  NOTE_DURATIONS,
+  MELAKARTA_RAGAS,
+  getSvaraFrequency,
+  getAllOctaves,
+  getJustIntonationFrequency,
+  frequencyToSvara
+};
