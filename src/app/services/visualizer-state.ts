@@ -20,6 +20,11 @@ const PAUSED_MEDIA: VisualizerMedia = {
   alt: 'Rhythmic Sync paused visualizer'
 };
 
+const PARSE_SUCCESS_MEDIA: VisualizerMedia = {
+  src: '/gifs/on_parse.gif',
+  alt: 'Rhythmic Sync parse success visualizer'
+};
+
 const PARSE_ERROR_MEDIA: VisualizerMedia = {
   src: '/gifs/parse_error.gif',
   alt: 'Rhythmic Sync parse error visualizer'
@@ -32,6 +37,8 @@ const parseErrorStatusTexts = new Set([
   'no valid svaras found'
 ]);
 
+const parseSuccessStatusTexts = new Set(['parsed']);
+
 export function getVisualizerMedia(playbackStatus: PlaybackStatus, status: StatusState | null | undefined): VisualizerMedia {
   if (playbackStatus === 'playing') {
     return PLAYING_MEDIA;
@@ -42,6 +49,10 @@ export function getVisualizerMedia(playbackStatus: PlaybackStatus, status: Statu
   }
 
   const normalizedStatusText = status?.text.trim().toLowerCase() ?? '';
+  if (status?.tone === 'success' || parseSuccessStatusTexts.has(normalizedStatusText)) {
+    return PARSE_SUCCESS_MEDIA;
+  }
+
   if (status?.tone === 'error' || parseErrorStatusTexts.has(normalizedStatusText)) {
     return PARSE_ERROR_MEDIA;
   }

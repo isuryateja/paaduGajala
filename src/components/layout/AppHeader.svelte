@@ -30,8 +30,7 @@
 
 <header class="app-header">
   <a class="brand" href="/">
-    <span class="brand-top">పాడు గజాల</span>
-    <span class="brand-bottom">Paadu Gajala</span>
+    <img src="/site_logo.png" alt="Paadu Gajala" class="brand-logo" />
   </a>
 
   <nav class="nav" aria-label="Primary">
@@ -55,20 +54,17 @@
   }
 
   .brand {
-    display: inline-grid;
+    display: inline-flex;
     justify-self: start;
-    gap: 0.1rem;
+    align-items: center;
   }
 
-  .brand-top {
-    color: var(--text-strong);
-    font-family: 'Sora', sans-serif;
-    font-size: clamp(1.1rem, 2vw, 1.45rem);
-    font-weight: 800;
-    letter-spacing: -0.04em;
+  .brand-logo {
+    height: 48px;
+    width: auto;
+    object-fit: contain;
   }
 
-  .brand-bottom,
   .utility-label {
     color: var(--text-muted);
     font-size: 0.76rem;

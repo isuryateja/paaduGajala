@@ -14,6 +14,10 @@ describe('visualizer state', () => {
     expect(getVisualizerMedia('paused', { tone: 'info', text: 'Paused' }).src).toBe('/gifs/on_pause.gif');
   });
 
+  it('shows the parse success gif after successful parsing', () => {
+    expect(getVisualizerMedia('ready', { tone: 'success', text: 'Parsed' }).src).toBe('/gifs/on_parse.gif');
+  });
+
   it('shows the parse error gif when playback is requested before parsing', () => {
     expect(getVisualizerMedia('ready', { tone: 'warning', text: 'Parse notation before playback' }).src).toBe('/gifs/parse_error.gif');
   });
