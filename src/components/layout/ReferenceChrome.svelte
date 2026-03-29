@@ -11,7 +11,9 @@
 <div class="reference-page">
   <header class="reference-header">
     <div class="header-inner">
-      <div class="brand">పాడు గజాల</div>
+      <a class="brand-link" href="/" aria-label="Paadu Gajala home">
+        <img class="brand-logo" src="/site_logo.png" alt="Paadu Gajala" />
+      </a>
 
       <nav class="desktop-nav" aria-label="Primary">
         {#each navItems as item}
@@ -31,7 +33,9 @@
 
   <footer class="reference-footer">
     <div class="footer-inner">
-      <div class="footer-brand">పాడు గజాల</div>
+      <a class="brand-link footer-brand-link" href="/" aria-label="Paadu Gajala home">
+        <img class="brand-logo footer-brand-logo" src="/site_logo.png" alt="Paadu Gajala" />
+      </a>
 
       <div class="footer-links">
         <a href="/">Terms of Berth</a>
@@ -95,14 +99,26 @@
     padding: 1.25rem 0;
   }
 
-  .brand,
-  .footer-brand {
-    color: #2f6578;
-    font-family: 'Montserrat', sans-serif;
-    font-size: 1.55rem;
-    font-weight: 900;
-    letter-spacing: -0.06em;
-    text-transform: uppercase;
+  .brand-link,
+  .footer-brand-link {
+    display: inline-flex;
+    align-items: center;
+    flex: 0 0 auto;
+  }
+
+  .brand-logo,
+  .footer-brand-logo {
+    display: block;
+    width: auto;
+    object-fit: contain;
+  }
+
+  .brand-logo {
+    height: 3.75rem;
+  }
+
+  .footer-brand-logo {
+    height: 4.5rem;
   }
 
   .desktop-nav {
@@ -259,6 +275,14 @@
 
     .reference-header {
       position: relative;
+    }
+
+    .brand-logo {
+      height: 3.1rem;
+    }
+
+    .footer-brand-logo {
+      height: 4rem;
     }
   }
 </style>
