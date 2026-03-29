@@ -1,0 +1,40 @@
+# paaduGajala
+
+> A SvelteKit-based Carnatic music notation player and virtual piano for parsing, previewing, and playing Carnatic swaras with a standalone interactive keyboard.
+
+Built with SvelteKit 2, Svelte 5 (runes mode), TypeScript, Vite, and the Web Audio API.
+
+## Getting Started
+- [README](README.md): Project overview, tech stack, local setup, and deployment notes
+- [Quickstart: Lift-and-Shift Refactor](specs/003-lift-shift-refactor/quickstart.md): How the SvelteKit migration was structured and how to verify parity
+
+## Routes
+- [Main Player (`/`)](src/routes/+page.svelte): Notation input, parse, playback controls, settings, preview, and embedded piano
+- [Piano (`/piano`)](src/routes/piano/+page.svelte): Standalone interactive piano with mouse, touch, and keyboard input
+- [Sruti to Swara (`/sruti-to-swara`)](src/routes/sruti-to-swara/+page.svelte): Sruti-to-swara mapping utility
+- [Theory (`/theory`)](src/routes/theory/+page.svelte): Music theory reference page
+
+## Domain & Architecture
+- [App Services](src/app/services/): Orchestration layer — main-player-page, piano-page, app-bootstrap, visualizer-state
+- [App Stores](src/app/stores/): Reactive state — notation, playback, settings, ui stores
+- [Domain Modules](src/domain/): Pure logic — audio, notation parsing/validation, piano, pitch, shared utilities
+- [Components](src/components/): UI components grouped by: common, layout, notation, piano, playback
+
+## Specs & Feature Plans
+- [003 Lift-and-Shift Refactor](specs/003-lift-shift-refactor/spec.md): Full SvelteKit migration spec from legacy HTML/JS app
+- [004 Design Language Overhaul](specs/004-design-language-store/spec.md): Complete UI redesign replacing the legacy `--pg-*` visual system
+- [005 Piano Playback](specs/005-piano-playback/spec.md): Piano-integrated playback with note-follow highlighting
+
+## Design
+- [Design Folder](design/): Current design-system source of truth; `code.html` is the reference mock
+
+## Reference (Legacy)
+- [notation_parser.js](notation_parser.js): Original Carnatic notation parser (parity reference only)
+- [audio_engine.js](audio_engine.js): Original Web Audio engine (parity reference only)
+- [svara_frequencies.js](svara_frequencies.js): Svara-to-frequency map (parity reference only)
+- [virtual_piano.html](virtual_piano.html): Original standalone piano (redirects to `/piano` in production)
+
+## Optional
+- [AGENTS.md](AGENTS.md): Mandatory coding conventions for AI agents working in this repo
+- [vercel.json](vercel.json): Deployment config and legacy URL redirects
+- [Svara Frequency Reference](svara_frequency.md): Markdown doc on svara frequency mapping rationale
