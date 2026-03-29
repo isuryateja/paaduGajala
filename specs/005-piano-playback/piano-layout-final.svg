@@ -1,0 +1,114 @@
+<svg width="1540" height="860" viewBox="0 0 1540 860" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1540" height="860" fill="#F4EFE6"/>
+  <rect x="36" y="36" width="1468" height="788" rx="28" fill="#FFF9F1" stroke="#D9CCB8" stroke-width="2"/>
+
+  <text x="82" y="98" fill="#24313A" font-family="Arial, sans-serif" font-size="40" font-weight="700">
+    Final Compact Piano Layout
+  </text>
+  <text x="82" y="138" fill="#5E6D74" font-family="Arial, sans-serif" font-size="23">
+    Lower extension + middle octave focus + upper S/R extension
+  </text>
+
+  <rect x="82" y="188" width="1376" height="498" rx="24" fill="#E7DED0" stroke="#CCBDA4" stroke-width="2"/>
+
+  <!-- White keys -->
+  <g font-family="Arial, sans-serif">
+    <rect x="112" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="230" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="348" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="466" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="584" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="702" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="820" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="938" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="1056" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="1174" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="1292" y="220" width="118" height="430" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+
+    <text x="171" y="520" text-anchor="middle" fill="#22313A" font-size="24" font-weight="700">N1.</text>
+    <text x="171" y="552" text-anchor="middle" fill="#22313A" font-size="21" font-weight="700">/ D2.</text>
+    <text x="171" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">A3</text>
+
+    <text x="289" y="536" text-anchor="middle" fill="#22313A" font-size="28" font-weight="700">N3.</text>
+    <text x="289" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">B3</text>
+
+    <text x="407" y="536" text-anchor="middle" fill="#22313A" font-size="34" font-weight="700">S</text>
+    <text x="407" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">C4</text>
+
+    <text x="525" y="520" text-anchor="middle" fill="#22313A" font-size="24" font-weight="700">R2 / G1</text>
+    <text x="525" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">D4</text>
+
+    <text x="643" y="536" text-anchor="middle" fill="#22313A" font-size="30" font-weight="700">G3</text>
+    <text x="643" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">E4</text>
+
+    <text x="761" y="536" text-anchor="middle" fill="#22313A" font-size="30" font-weight="700">M1</text>
+    <text x="761" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">F4</text>
+
+    <text x="879" y="536" text-anchor="middle" fill="#22313A" font-size="30" font-weight="700">P</text>
+    <text x="879" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">G4</text>
+
+    <text x="997" y="520" text-anchor="middle" fill="#22313A" font-size="24" font-weight="700">D2 / N1</text>
+    <text x="997" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">A4</text>
+
+    <text x="1115" y="536" text-anchor="middle" fill="#22313A" font-size="30" font-weight="700">N3</text>
+    <text x="1115" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">B4</text>
+
+    <text x="1233" y="536" text-anchor="middle" fill="#22313A" font-size="34" font-weight="700">S'</text>
+    <text x="1233" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">C5</text>
+
+    <text x="1351" y="520" text-anchor="middle" fill="#22313A" font-size="24" font-weight="700">R2' / G1'</text>
+    <text x="1351" y="590" text-anchor="middle" fill="#7A5A2A" font-size="16">D5</text>
+  </g>
+
+  <!-- Black keys -->
+  <g font-family="Arial, sans-serif">
+    <rect x="201" y="220" width="76" height="254" fill="#1D2329" stroke="#0C1013" stroke-width="2"/>
+    <rect x="437" y="220" width="76" height="254" fill="#1D2329" stroke="#0C1013" stroke-width="2"/>
+    <rect x="555" y="220" width="76" height="254" fill="#1D2329" stroke="#0C1013" stroke-width="2"/>
+    <rect x="791" y="220" width="76" height="254" fill="#1D2329" stroke="#0C1013" stroke-width="2"/>
+    <rect x="909" y="220" width="76" height="254" fill="#1D2329" stroke="#0C1013" stroke-width="2"/>
+    <rect x="1027" y="220" width="76" height="254" fill="#1D2329" stroke="#0C1013" stroke-width="2"/>
+    <rect x="1263" y="220" width="76" height="254" fill="#1D2329" stroke="#0C1013" stroke-width="2"/>
+
+    <text x="239" y="338" text-anchor="middle" fill="#FFF8E8" font-size="21" font-weight="700">N2.</text>
+    <text x="239" y="366" text-anchor="middle" fill="#FFF8E8" font-size="18" font-weight="700">/ D3.</text>
+    <text x="239" y="400" text-anchor="middle" fill="#ECCA91" font-size="15">A#3 / Bb3</text>
+
+    <text x="475" y="355" text-anchor="middle" fill="#FFF8E8" font-size="24" font-weight="700">R1</text>
+    <text x="475" y="400" text-anchor="middle" fill="#ECCA91" font-size="15">C#4</text>
+
+    <text x="593" y="338" text-anchor="middle" fill="#FFF8E8" font-size="20" font-weight="700">R3 / G2</text>
+    <text x="593" y="400" text-anchor="middle" fill="#ECCA91" font-size="15">D#4 / Eb4</text>
+
+    <text x="829" y="355" text-anchor="middle" fill="#FFF8E8" font-size="24" font-weight="700">M2</text>
+    <text x="829" y="400" text-anchor="middle" fill="#ECCA91" font-size="15">F#4 / Gb4</text>
+
+    <text x="947" y="355" text-anchor="middle" fill="#FFF8E8" font-size="24" font-weight="700">D1</text>
+    <text x="947" y="400" text-anchor="middle" fill="#ECCA91" font-size="15">G#4 / Ab4</text>
+
+    <text x="1065" y="338" text-anchor="middle" fill="#FFF8E8" font-size="20" font-weight="700">D3 / N2</text>
+    <text x="1065" y="400" text-anchor="middle" fill="#ECCA91" font-size="15">A#4 / Bb4</text>
+
+    <text x="1301" y="355" text-anchor="middle" fill="#FFF8E8" font-size="24" font-weight="700">R1'</text>
+    <text x="1301" y="400" text-anchor="middle" fill="#ECCA91" font-size="15">C#5</text>
+  </g>
+
+  <!-- Range separators -->
+  <line x1="348" y1="206" x2="348" y2="664" stroke="#C3B18F" stroke-width="4" stroke-dasharray="10 10"/>
+  <line x1="1174" y1="206" x2="1174" y2="664" stroke="#C3B18F" stroke-width="4" stroke-dasharray="10 10"/>
+
+  <text x="210" y="724" text-anchor="middle" fill="#6B4E28" font-family="Arial, sans-serif" font-size="22" font-weight="700">
+    Lower extension
+  </text>
+  <text x="761" y="724" text-anchor="middle" fill="#6B4E28" font-family="Arial, sans-serif" font-size="22" font-weight="700">
+    Middle octave focus
+  </text>
+  <text x="1292" y="724" text-anchor="middle" fill="#6B4E28" font-family="Arial, sans-serif" font-size="22" font-weight="700">
+    Upper extension
+  </text>
+
+  <rect x="82" y="760" width="1376" height="46" rx="12" fill="#EFE5D6" stroke="#D3C1A6" stroke-width="2"/>
+  <text x="106" y="790" fill="#24313A" font-family="Arial, sans-serif" font-size="20" font-weight="700">
+    Locked range: N1./D2., N2./D3., N3., S, R1, R2/G1, R3/G2, G3, M1, M2, P, D1, D2/N1, D3/N2, N3, S', R1', R2'/G1'
+  </text>
+</svg>

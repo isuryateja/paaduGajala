@@ -10,6 +10,11 @@
       "permanent": true
     },
     {
+      "source": "/paadugajaala/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
       "source": "/paadugajaala/index.html",
       "destination": "/",
       "permanent": true

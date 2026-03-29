@@ -13,13 +13,13 @@
   import { uiStore } from '../app/stores/ui.store';
   import { startPianoNote, stopPianoNote, releaseAllPianoNotes } from '../app/actions/piano.actions';
 
-  type ManualOctave = '1' | '2';
+  type ManualOctave = '1' | '2' | '3';
 
   interface WhiteKey {
     note: string;
     octave: ManualOctave;
     label: string;
-    name: string;
+    secondaryLabel?: string;
     divider?: boolean;
   }
 
@@ -27,6 +27,8 @@
     note: string;
     octave: ManualOctave;
     left: number;
+    label: string;
+    secondaryLabel?: string;
   }
 
   const navItems = [
@@ -43,45 +45,42 @@
   ];
 
   const whiteKeys: WhiteKey[] = [
-    { note: 's', octave: '1', label: 'SA', name: 'Shadjama' },
-    { note: 'r', octave: '1', label: 'RI', name: 'Rishabha' },
-    { note: 'g', octave: '1', label: 'GA', name: 'Gandhara' },
-    { note: 'm', octave: '1', label: 'MA', name: 'Madhyama' },
-    { note: 'p', octave: '1', label: 'PA', name: 'Panchama' },
-    { note: 'd', octave: '1', label: 'DA', name: 'Dhaivata' },
-    { note: 'n', octave: '1', label: 'NI', name: 'Nishada' },
-    { note: 's', octave: '2', label: "SA'", name: 'Tara', divider: true },
-    { note: 'r', octave: '2', label: "RI'", name: 'Rishabha' },
-    { note: 'g', octave: '2', label: "GA'", name: 'Gandhara' },
-    { note: 'm', octave: '2', label: "MA'", name: 'Madhyama' },
-    { note: 'p', octave: '2', label: "PA'", name: 'Panchama' },
-    { note: 'd', octave: '2', label: "DA'", name: 'Dhaivata' },
-    { note: 'n', octave: '2', label: "NI'", name: 'Nishada' }
+    { note: 'n1', octave: '1', label: 'N1.', secondaryLabel: 'D2.' },
+    { note: 'n', octave: '1', label: 'N3.' },
+    { note: 's', octave: '2', label: 'S', divider: true },
+    { note: 'r2', octave: '2', label: 'R2', secondaryLabel: 'G1' },
+    { note: 'g', octave: '2', label: 'G3' },
+    { note: 'm', octave: '2', label: 'M1' },
+    { note: 'p', octave: '2', label: 'P' },
+    { note: 'd2', octave: '2', label: 'D2', secondaryLabel: 'N1' },
+    { note: 'n', octave: '2', label: 'N3' },
+    { note: 's', octave: '3', label: "S'", divider: true },
+    { note: 'r2', octave: '3', label: "R2'", secondaryLabel: "G1'" }
   ];
 
   const blackKeys: BlackKey[] = [
-    { note: 'r1', octave: '1', left: 4 },
-    { note: 'r2', octave: '1', left: 11 },
-    { note: 'm1', octave: '1', left: 25 },
-    { note: 'd1', octave: '1', left: 32 },
-    { note: 'd2', octave: '1', left: 39 },
-    { note: 'r1', octave: '2', left: 54 },
-    { note: 'r2', octave: '2', left: 61 },
-    { note: 'm1', octave: '2', left: 75 },
-    { note: 'd1', octave: '2', left: 82 },
-    { note: 'd2', octave: '2', left: 89 }
+    { note: 'n2', octave: '1', left: 9.09, label: 'N2.', secondaryLabel: 'D3.' },
+    { note: 'r1', octave: '2', left: 27.27, label: 'R1' },
+    { note: 'r3', octave: '2', left: 36.36, label: 'R3', secondaryLabel: 'G2' },
+    { note: 'm2', octave: '2', left: 54.55, label: 'M2' },
+    { note: 'd1', octave: '2', left: 63.64, label: 'D1' },
+    { note: 'd3', octave: '2', left: 72.73, label: 'D3', secondaryLabel: 'N2' },
+    { note: 'r1', octave: '3', left: 90.91, label: "R1'" }
   ];
 
   let teardown = () => {};
   let droneEnabled = true;
   let reverbLevel = 42;
-  let activeManualKeys = new Set<string>();
+  const activeManualKeys = new Set<string>();
+  const manualKeyAnimationTimers = new Map<string, ReturnType<typeof setTimeout>>();
 
   onMount(() => {
     teardown = bootstrapApp();
   });
 
   onDestroy(() => {
+    manualKeyAnimationTimers.forEach((timer) => clearTimeout(timer));
+    manualKeyAnimationTimers.clear();
     releaseAllPianoNotes();
     teardown();
   });
@@ -91,30 +90,48 @@
     $playbackStore.status === 'playing' ? 'Pause playback' : $playbackStore.status === 'paused' ? 'Resume playback' : 'Play';
   $: visualizerMedia = getVisualizerMedia($playbackStore.status, $uiStore.status);
 
-  function updateManualKey(key: string, active: boolean): void {
-    const next = new Set(activeManualKeys);
-    if (active) {
-      next.add(key);
+  function handleKeyDown(event: PointerEvent, note: string, octave: ManualOctave): void {
+    const key = `${note}:${octave}`;
+    const el = event.currentTarget as HTMLElement;
+
+    if (activeManualKeys.has(key)) return;
+    activeManualKeys.add(key);
+
+    // Apply pressed visual state via inline styles
+    const isBlack = el.classList.contains('black-key');
+    if (isBlack) {
+      el.style.background = '#566066';
+      el.style.boxShadow = '1px 2px 3px rgba(0,0,0,0.16), inset 0 1px 0 rgba(255,255,255,0.12), inset 0 -2px 3px rgba(255,255,255,0.08)';
+      el.style.transform = 'translateX(-50%) translateY(1px)';
     } else {
-      next.delete(key);
+      el.style.background = '#ece5d9';
+      el.style.boxShadow = 'inset 0 4px 12px rgba(123,108,84,0.14), inset 0 -1px 0 rgba(0,0,0,0.04)';
+      el.style.transform = 'translateY(2px)';
     }
-    activeManualKeys = next;
+
+    void startPianoNote(note, octave);
+
+    // Clear any previous flash timer
+    const existingTimer = manualKeyAnimationTimers.get(key);
+    if (existingTimer) {
+      clearTimeout(existingTimer);
+      manualKeyAnimationTimers.delete(key);
+    }
   }
 
-  async function pressManualKey(note: string, octave: ManualOctave): Promise<void> {
+  function handleKeyUp(event: PointerEvent, note: string, octave: ManualOctave): void {
     const key = `${note}:${octave}`;
-    updateManualKey(key, true);
-    await startPianoNote(note, octave);
-  }
+    if (!activeManualKeys.has(key)) return;
+    activeManualKeys.delete(key);
 
-  function releaseManualKey(note: string, octave: ManualOctave): void {
-    const key = `${note}:${octave}`;
-    updateManualKey(key, false);
+    const el = event.currentTarget as HTMLElement;
+
+    // Remove inline styles to restore default appearance
+    el.style.background = '';
+    el.style.boxShadow = '';
+    el.style.transform = '';
+
     stopPianoNote(note, octave);
-  }
-
-  function isManualKeyActive(note: string, octave: ManualOctave): boolean {
-    return activeManualKeys.has(`${note}:${octave}`);
   }
 
   function handleTransport(): void {
@@ -289,41 +306,47 @@
           <div class="accent-bar"></div>
           <h2>Virtual Swara Piano</h2>
         </div>
-        <div class="octave-badge">2 Octaves Mapped</div>
+        <div class="octave-badge">Locked Compact Range</div>
       </div>
 
       <div class="piano-frame">
-        {#each blackKeys as key}
-          <button
-            aria-label={`${key.note.toUpperCase()} octave ${key.octave}`}
-            class:black-active={isManualKeyActive(key.note, key.octave)}
-            class="black-key"
-            style={`left:${key.left}%`}
-            type="button"
-            on:mousedown={() => void pressManualKey(key.note, key.octave)}
-            on:mouseup={() => releaseManualKey(key.note, key.octave)}
-            on:mouseleave={() => releaseManualKey(key.note, key.octave)}
-            on:touchstart|preventDefault={() => void pressManualKey(key.note, key.octave)}
-            on:touchend|preventDefault={() => releaseManualKey(key.note, key.octave)}
-          ></button>
-        {/each}
+        <div class="piano-keybed">
+          {#each whiteKeys as key}
+            <button
+              aria-label={key.secondaryLabel ? `${key.label} or ${key.secondaryLabel}` : key.label}
+              class:divider={key.divider}
+              class="white-key"
+              type="button"
+              on:pointerdown={(e) => handleKeyDown(e, key.note, key.octave)}
+              on:pointerup={(e) => handleKeyUp(e, key.note, key.octave)}
+              on:pointerleave={(e) => handleKeyUp(e, key.note, key.octave)}
+              on:pointercancel={(e) => handleKeyUp(e, key.note, key.octave)}
+            >
+              <span class="swara-label">{key.label}</span>
+              {#if key.secondaryLabel}
+                <span class="swara-name">{key.secondaryLabel}</span>
+              {/if}
+            </button>
+          {/each}
 
-        {#each whiteKeys as key}
-          <button
-            class:divider={key.divider}
-            class:white-active={isManualKeyActive(key.note, key.octave)}
-            class="white-key"
-            type="button"
-            on:mousedown={() => void pressManualKey(key.note, key.octave)}
-            on:mouseup={() => releaseManualKey(key.note, key.octave)}
-            on:mouseleave={() => releaseManualKey(key.note, key.octave)}
-            on:touchstart|preventDefault={() => void pressManualKey(key.note, key.octave)}
-            on:touchend|preventDefault={() => releaseManualKey(key.note, key.octave)}
-          >
-            <span class="swara-label">{key.label}</span>
-            <span class="swara-name">{key.name}</span>
-          </button>
-        {/each}
+          {#each blackKeys as key}
+            <button
+              aria-label={key.secondaryLabel ? `${key.label} or ${key.secondaryLabel}` : key.label}
+              class="black-key"
+              style={`left:${key.left}%`}
+              type="button"
+              on:pointerdown={(e) => handleKeyDown(e, key.note, key.octave)}
+              on:pointerup={(e) => handleKeyUp(e, key.note, key.octave)}
+              on:pointerleave={(e) => handleKeyUp(e, key.note, key.octave)}
+              on:pointercancel={(e) => handleKeyUp(e, key.note, key.octave)}
+            >
+              <span class="swara-label">{key.label}</span>
+              {#if key.secondaryLabel}
+                <span class="swara-name">{key.secondaryLabel}</span>
+              {/if}
+            </button>
+          {/each}
+        </div>
       </div>
     </section>
   </main>
@@ -852,7 +875,6 @@
   }
 
   .piano-frame {
-    display: flex;
     position: relative;
     width: 100%;
     height: 20rem;
@@ -861,6 +883,16 @@
     background: #f6f3ec;
     box-shadow: 0 24px 36px rgba(31, 42, 48, 0.16);
     user-select: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+  }
+
+  .piano-keybed {
+    display: flex;
+    position: relative;
+    width: 100%;
+    min-width: 56rem;
+    height: 100%;
   }
 
   .white-key,
@@ -876,12 +908,14 @@
     flex-direction: column;
     align-items: center;
     justify-content: flex-end;
-    gap: 0.15rem;
+    gap: 0.2rem;
     padding: 0 0 1rem;
     border-left: 1px solid #e5e2db;
     background: #fcf9f2;
     color: inherit;
-    box-shadow: inset 0 -4px 0 rgba(0, 0, 0, 0.05);
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      inset 0 -4px 0 rgba(0, 0, 0, 0.05);
     transition: transform 75ms ease, box-shadow 75ms ease, background-color 75ms ease;
   }
 
@@ -889,21 +923,37 @@
     border-left: none;
   }
 
+  .white-key:hover:not(:disabled) {
+    transform: none;
+    background: #fcf9f2;
+    box-shadow:
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      inset 0 -4px 0 rgba(0, 0, 0, 0.05);
+  }
+
   .white-key.divider {
     border-left: 2px solid #f1eee7;
   }
 
-  .white-key.white-active {
-    background: #f6f3ec;
-    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.1);
+  .white-key:active {
+    background: #ece5d9;
+    box-shadow:
+      inset 0 4px 12px rgba(123, 108, 84, 0.14),
+      inset 0 -1px 0 rgba(0, 0, 0, 0.04);
     transform: translateY(2px);
   }
 
   .black-key {
     position: absolute;
     top: 0;
-    width: 6%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 0.15rem;
+    width: 6.3%;
     height: 60%;
+    padding: 0 0.2rem 0.75rem;
     border-radius: 0 0 0.45rem 0.45rem;
     background: #40484c;
     z-index: 10;
@@ -914,26 +964,62 @@
     transition: transform 75ms ease, box-shadow 75ms ease, background-color 75ms ease;
   }
 
-  .black-key.black-active {
-    background: #1c1c18;
-    box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.4);
-    transform: translateX(-50%) translateY(2px);
+  .black-key:hover:not(:disabled) {
+    background: #40484c;
+    box-shadow:
+      2px 4px 6px rgba(0, 0, 0, 0.3),
+      inset 0 -4px 4px rgba(255, 255, 255, 0.1);
+    transform: translateX(-50%);
+  }
+
+  .black-key:active {
+    background: #566066;
+    box-shadow:
+      1px 2px 3px rgba(0, 0, 0, 0.16),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12),
+      inset 0 -2px 3px rgba(255, 255, 255, 0.08);
+    transform: translateX(-50%) translateY(1px);
   }
 
   .swara-label {
-    color: rgba(47, 101, 120, 0.4);
+    color: rgba(47, 101, 120, 0.72);
     font-family: 'Montserrat', sans-serif;
-    font-size: 0.74rem;
-    font-weight: 800;
+    font-size: 0.82rem;
+    font-weight: 900;
+    letter-spacing: 0.04em;
     text-transform: uppercase;
   }
 
   .swara-name {
-    color: rgba(47, 101, 120, 0.3);
-    font-size: 0.48rem;
-    font-weight: 700;
-    letter-spacing: -0.02em;
+    color: rgba(47, 101, 120, 0.48);
+    font-size: 0.56rem;
+    font-weight: 800;
+    letter-spacing: 0.03em;
     text-transform: uppercase;
+  }
+
+  .black-key .swara-label {
+    color: rgba(252, 249, 242, 0.94);
+    font-size: 0.68rem;
+    letter-spacing: 0.03em;
+  }
+
+  .black-key .swara-name {
+    color: rgba(252, 249, 242, 0.68);
+    font-size: 0.5rem;
+  }
+
+  .piano-frame::-webkit-scrollbar {
+    height: 0.55rem;
+  }
+
+  .piano-frame::-webkit-scrollbar-track {
+    background: rgba(229, 226, 219, 0.8);
+  }
+
+  .piano-frame::-webkit-scrollbar-thumb {
+    border-radius: 999px;
+    background: rgba(111, 163, 184, 0.55);
   }
 
   .reference-footer {
@@ -1093,6 +1179,23 @@
 
     .piano-frame {
       height: 14rem;
+    }
+
+    .piano-keybed {
+      min-width: 48rem;
+    }
+
+    .swara-label {
+      font-size: 0.68rem;
+    }
+
+    .swara-name {
+      font-size: 0.46rem;
+    }
+
+    .black-key {
+      width: 7.2%;
+      padding-bottom: 0.5rem;
     }
 
     .desktop-nav {

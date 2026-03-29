@@ -1,0 +1,88 @@
+<svg width="1400" height="860" viewBox="0 0 1400 860" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1400" height="860" fill="#F5F0E6"/>
+  <rect x="40" y="40" width="1320" height="780" rx="32" fill="#FFF9F0" stroke="#D8CDBB" stroke-width="2"/>
+
+  <text x="90" y="110" fill="#24313A" font-family="Arial, sans-serif" font-size="40" font-weight="700">
+    Corrected Piano Layout Sample
+  </text>
+  <text x="90" y="152" fill="#5C6C73" font-family="Arial, sans-serif" font-size="24">
+    One octave reference with Carnatic overlap labels and real black-key placement
+  </text>
+
+  <rect x="90" y="210" width="1120" height="470" rx="26" fill="#E6DDD0" stroke="#CDBFA8" stroke-width="2"/>
+
+  <!-- White keys -->
+  <g font-family="Arial, sans-serif">
+    <rect x="120" y="240" width="140" height="400" rx="0" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="260" y="240" width="140" height="400" rx="0" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="400" y="240" width="140" height="400" rx="0" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="540" y="240" width="140" height="400" rx="0" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="680" y="240" width="140" height="400" rx="0" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="820" y="240" width="140" height="400" rx="0" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+    <rect x="960" y="240" width="140" height="400" rx="0" fill="#FFFDF8" stroke="#B7AA97" stroke-width="2"/>
+
+    <text x="190" y="560" text-anchor="middle" fill="#21313A" font-size="34" font-weight="700">S</text>
+    <text x="190" y="592" text-anchor="middle" fill="#7A5A2A" font-size="18">C</text>
+
+    <text x="330" y="540" text-anchor="middle" fill="#21313A" font-size="28" font-weight="700">R2 / G1</text>
+    <text x="330" y="574" text-anchor="middle" fill="#7A5A2A" font-size="18">same pitch</text>
+    <text x="330" y="602" text-anchor="middle" fill="#7A5A2A" font-size="18">D</text>
+
+    <text x="470" y="560" text-anchor="middle" fill="#21313A" font-size="34" font-weight="700">G3</text>
+    <text x="470" y="592" text-anchor="middle" fill="#7A5A2A" font-size="18">E</text>
+
+    <text x="610" y="560" text-anchor="middle" fill="#21313A" font-size="34" font-weight="700">M1</text>
+    <text x="610" y="592" text-anchor="middle" fill="#7A5A2A" font-size="18">F</text>
+
+    <text x="750" y="560" text-anchor="middle" fill="#21313A" font-size="34" font-weight="700">P</text>
+    <text x="750" y="592" text-anchor="middle" fill="#7A5A2A" font-size="18">G</text>
+
+    <text x="890" y="540" text-anchor="middle" fill="#21313A" font-size="28" font-weight="700">D2 / N1</text>
+    <text x="890" y="574" text-anchor="middle" fill="#7A5A2A" font-size="18">same pitch</text>
+    <text x="890" y="602" text-anchor="middle" fill="#7A5A2A" font-size="18">A</text>
+
+    <text x="1030" y="560" text-anchor="middle" fill="#21313A" font-size="34" font-weight="700">N3</text>
+    <text x="1030" y="592" text-anchor="middle" fill="#7A5A2A" font-size="18">B</text>
+  </g>
+
+  <!-- Black keys -->
+  <g font-family="Arial, sans-serif">
+    <rect x="224" y="240" width="92" height="235" rx="0" fill="#1F252B" stroke="#0D1114" stroke-width="2"/>
+    <rect x="364" y="240" width="92" height="235" rx="0" fill="#1F252B" stroke="#0D1114" stroke-width="2"/>
+    <rect x="644" y="240" width="92" height="235" rx="0" fill="#1F252B" stroke="#0D1114" stroke-width="2"/>
+    <rect x="784" y="240" width="92" height="235" rx="0" fill="#1F252B" stroke="#0D1114" stroke-width="2"/>
+    <rect x="924" y="240" width="92" height="235" rx="0" fill="#1F252B" stroke="#0D1114" stroke-width="2"/>
+
+    <text x="270" y="372" text-anchor="middle" fill="#FFF8E6" font-size="28" font-weight="700">R1</text>
+    <text x="270" y="404" text-anchor="middle" fill="#EACB8A" font-size="17">C# / Db</text>
+
+    <text x="410" y="352" text-anchor="middle" fill="#FFF8E6" font-size="25" font-weight="700">R3 / G2</text>
+    <text x="410" y="382" text-anchor="middle" fill="#EACB8A" font-size="16">same pitch</text>
+    <text x="410" y="410" text-anchor="middle" fill="#EACB8A" font-size="17">D# / Eb</text>
+
+    <text x="690" y="372" text-anchor="middle" fill="#FFF8E6" font-size="28" font-weight="700">M2</text>
+    <text x="690" y="404" text-anchor="middle" fill="#EACB8A" font-size="17">F# / Gb</text>
+
+    <text x="830" y="372" text-anchor="middle" fill="#FFF8E6" font-size="28" font-weight="700">D1</text>
+    <text x="830" y="404" text-anchor="middle" fill="#EACB8A" font-size="17">G# / Ab</text>
+
+    <text x="970" y="352" text-anchor="middle" fill="#FFF8E6" font-size="25" font-weight="700">D3 / N2</text>
+    <text x="970" y="382" text-anchor="middle" fill="#EACB8A" font-size="16">same pitch</text>
+    <text x="970" y="410" text-anchor="middle" fill="#EACB8A" font-size="17">A# / Bb</text>
+  </g>
+
+  <!-- Legend -->
+  <rect x="90" y="715" width="1120" height="70" rx="18" fill="#F0E6D7" stroke="#D3C1A6" stroke-width="2"/>
+  <text x="120" y="758" fill="#24313A" font-family="Arial, sans-serif" font-size="24" font-weight="700">
+    White keys: S, R2/G1, G3, M1, P, D2/N1, N3
+  </text>
+  <text x="760" y="758" fill="#24313A" font-family="Arial, sans-serif" font-size="24" font-weight="700">
+    Black keys: R1, R3/G2, M2, D1, D3/N2
+  </text>
+
+  <!-- Position helpers -->
+  <text x="1240" y="300" fill="#6D7A80" font-family="Arial, sans-serif" font-size="22" font-weight="700">No black key</text>
+  <text x="1240" y="332" fill="#6D7A80" font-family="Arial, sans-serif" font-size="22" font-weight="700">between G3 and M1</text>
+  <text x="1240" y="418" fill="#6D7A80" font-family="Arial, sans-serif" font-size="22" font-weight="700">No black key</text>
+  <text x="1240" y="450" fill="#6D7A80" font-family="Arial, sans-serif" font-size="22" font-weight="700">between N3 and next S</text>
+</svg>

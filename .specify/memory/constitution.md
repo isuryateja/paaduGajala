@@ -1,50 +1,58 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+# paaduGajala Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Svelte 5 Runes-First Reactivity
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+Svelte 5 is NOT Svelte 4. Legacy reactive patterns (`$:`, `let` reassignment) are unreliable in Svelte 5's default runes mode. Follow these rules:
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+- **Never use `Set`, `Map`, or other collection types for reactive template state.** Svelte 5 cannot track `.has()`, `.get()`, or `.size` calls in templates. Use plain objects (`Record<string, T>`) or arrays instead.
+- **Prefer `$state()` runes** for any variable that drives template rendering. Bare `let` reassignment may not trigger re-renders.
+- **Do not hide reactive reads behind function calls** in templates. `{myFunction(arg)}` prevents Svelte from detecting dependencies. Inline the expression directly: `{myObject[key]}`.
+- **When `$:` legacy syntax is used**, the entire component runs in legacy mode — but legacy mode reactivity is weaker than Svelte 4. Avoid mixing `$:` with imperative state updates in helper functions.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+### II. CSS Scoping Awareness
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+Svelte's compiler scopes all CSS to the component and **strips selectors it considers unused**:
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+- **Never use `classList.add()` / `classList.remove()`** to toggle classes that have scoped CSS rules. Svelte will strip those rules because no template element references the class.
+- If you must use runtime DOM class manipulation, either:
+  - Wrap selectors with `:global()` (e.g., `.white-key:global(.pressed)`), OR
+  - Use **inline styles** via `el.style` (preferred — highest specificity, immune to scoping).
+- **Use `class:name={expression}` directive** instead of manual classList manipulation when possible — Svelte tracks these and preserves their CSS.
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+### III. Direct DOM Manipulation for Transient Visual States
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+For high-frequency, transient visual states (piano key presses, button flashes, drag indicators):
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+- Use `event.currentTarget` to directly apply/remove inline styles in event handlers.
+- This bypasses Svelte's reactivity and CSS scoping entirely — both of which have proven unreliable for sub-200ms visual feedback.
+- Reserve Svelte's reactive system for persistent UI state (navigation, settings, modals).
+
+### IV. Event Handling
+
+- Use `on:pointerdown` / `on:pointerup` / `on:pointerleave` / `on:pointercancel` for press interactions — covers mouse and touch.
+- Always pass the event object to handlers when DOM manipulation is needed: `on:pointerdown={(e) => handler(e, ...args)}`.
+
+### V. Technology Stack
+
+- **Runtime**: TypeScript 5.x, Svelte 5, SvelteKit
+- **Build**: Vite, Vitest, ESLint, Prettier
+- **Audio**: Web Audio API
+- **Styling**: Vanilla CSS (component-scoped via Svelte `<style>`)
+- **No external CSS frameworks** (no Tailwind, no Bootstrap)
+
+## Development Guardrails
+
+1. Before implementing any reactive UI state, verify which Svelte mode the component compiles in (runes vs legacy). If a file contains `$:`, it's legacy — consider migrating to `$state`/`$derived`.
+2. When a visual change "works in JS but not in DOM", check:
+   - Is the CSS selector being stripped? (Look for "Unused CSS selector" warnings)
+   - Is the reactive variable actually tracked? (Add `console.log` — if the log fires but DOM doesn't update, it's a reactivity tracking failure)
+3. Test all interactive UI in a real browser — automated DOM snapshots may miss timing-sensitive class/style changes.
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+- This constitution supersedes ad-hoc coding patterns.
+- Amendments require documenting the failure case that motivated the change.
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+**Version**: 1.0.0 | **Ratified**: 2026-03-29 | **Last Amended**: 2026-03-29

@@ -9,6 +9,11 @@ describe('main player route source', () => {
     expect(source).toContain('Tone &amp; Tuning');
     expect(source).toContain('Virtual Swara Piano');
     expect(source).toContain('Swara to Sruti');
+    expect(source).toContain('Locked Compact Range');
+    expect(source).toContain("label: 'N1.'");
+    expect(source).toContain("label: 'N2.'");
+    expect(source).toContain('secondaryLabel: \'D3.\'');
+    expect(source).toContain('secondaryLabel: "G1\'"');
   });
 
   it('keeps the non-primary tabs as placeholder routes', () => {
