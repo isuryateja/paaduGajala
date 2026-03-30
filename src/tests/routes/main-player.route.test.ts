@@ -16,6 +16,14 @@ describe('main player route source', () => {
     expect(source).toContain('secondaryLabel: "G1\'"');
   });
 
+  it('swaps the notation editor for the playback highlighter only while playing', () => {
+    const source = readFileSync(resolve(process.cwd(), 'src/routes/+page.svelte'), 'utf8');
+    expect(source).toContain("PlaybackNotationHighlighter");
+    expect(source).toContain("{#if $playbackStore.status === 'playing'}");
+    expect(source).toContain('<section class="notation-panel">');
+    expect(source).toContain("highlightedIndex={$playbackStore.currentIndex}");
+  });
+
   it('keeps the non-primary tabs as placeholder routes', () => {
     const srutiToSwara = readFileSync(resolve(process.cwd(), 'src/routes/sruti-to-swara/+page.svelte'), 'utf8');
     const theory = readFileSync(resolve(process.cwd(), 'src/routes/theory/+page.svelte'), 'utf8');
