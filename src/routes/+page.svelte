@@ -6,6 +6,7 @@
   import { onDestroy, onMount } from 'svelte';
   import { bootstrapApp } from '../app/services/app-bootstrap';
   import { createPlaybackPianoVisualizer, mainPlayerHandlers } from '../app/services/main-player-page';
+  import PlaybackNotationHighlighter from '../components/notation/PlaybackNotationHighlighter.svelte';
   import { getVisualizerMedia } from '../app/services/visualizer-state';
   import { notationStore } from '../app/stores/notation.store';
   import { playbackStore } from '../app/stores/playback.store';
@@ -177,38 +178,44 @@
 
   <main class="reference-main">
     <div class="top-panels">
-      <section class="notation-panel">
-        <div class="panel-header">
-          <h2>Notation Input</h2>
+      {#if $playbackStore.status === 'playing'}
+        <section class="notation-panel">
+          <PlaybackNotationHighlighter nodes={$notationStore.parsed} highlightedIndex={$playbackStore.currentIndex} />
+        </section>
+      {:else}
+        <section class="notation-panel">
+          <div class="panel-header">
+            <h2>Notation Input</h2>
 
-          <div class="utility-actions">
-            <label class="utility-button">
-              <span class="material-symbols-outlined icon-sm">upload_file</span>
-              <span>Upload File</span>
-              <input type="file" accept=".txt" on:change={(event) => void mainPlayerHandlers.handleNotationFileSelection(event)} />
-            </label>
+            <div class="utility-actions">
+              <label class="utility-button">
+                <span class="material-symbols-outlined icon-sm">upload_file</span>
+                <span>Upload File</span>
+                <input type="file" accept=".txt" on:change={(event) => void mainPlayerHandlers.handleNotationFileSelection(event)} />
+              </label>
 
-            <button class="utility-button" type="button" on:click={() => void mainPlayerHandlers.loadExampleNotation()}>
-              <span class="material-symbols-outlined icon-sm">auto_awesome</span>
-              <span>Load Example</span>
-            </button>
+              <button class="utility-button" type="button" on:click={() => void mainPlayerHandlers.loadExampleNotation()}>
+                <span class="material-symbols-outlined icon-sm">auto_awesome</span>
+                <span>Load Example</span>
+              </button>
+            </div>
           </div>
-        </div>
 
-        <div class="manuscript-field">
-          <label for="notation-input">Swaram Manuscript</label>
-          <textarea
-            id="notation-input"
-            placeholder="Enter swara notation (e.g., S R G M P D N S')..."
-            value={$notationStore.rawText}
-            on:input={(event) => mainPlayerHandlers.setNotationText((event.currentTarget as HTMLTextAreaElement).value)}
-          ></textarea>
-        </div>
+          <div class="manuscript-field">
+            <label for="notation-input">Swaram Manuscript</label>
+            <textarea
+              id="notation-input"
+              placeholder="Enter swara notation (e.g., S R G M P D N S')..."
+              value={$notationStore.rawText}
+              on:input={(event) => mainPlayerHandlers.setNotationText((event.currentTarget as HTMLTextAreaElement).value)}
+            ></textarea>
+          </div>
 
-        <div class="parse-action">
-          <button class="parse-button" type="button" on:click={mainPlayerHandlers.parseCurrentNotation}>Parse</button>
-        </div>
-      </section>
+          <div class="parse-action">
+            <button class="parse-button" type="button" on:click={mainPlayerHandlers.parseCurrentNotation}>Parse</button>
+          </div>
+        </section>
+      {/if}
 
       <section class="tuning-panel">
         <h2>Tone &amp; Tuning</h2>
