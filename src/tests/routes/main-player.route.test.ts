@@ -26,11 +26,13 @@ describe('main player route source', () => {
     expect(source).toContain("highlightedIndex={$playbackStore.currentIndex}");
   });
 
-  it('keeps the non-primary tabs as placeholder routes', () => {
+  it('keeps sruti-to-swara as a placeholder route and wires theory to the quick builder widget', () => {
     const srutiToSwara = readFileSync(resolve(process.cwd(), 'src/routes/sruti-to-swara/+page.svelte'), 'utf8');
     const theory = readFileSync(resolve(process.cwd(), 'src/routes/theory/+page.svelte'), 'utf8');
 
     expect(srutiToSwara).toContain('PlaceholderWorkspace');
-    expect(theory).toContain('PlaceholderWorkspace');
+    expect(theory).toContain('Raga Nirmāṇa');
+    expect(theory).toContain('Quick Build');
+    expect(theory).toContain('Open Full Builder');
   });
 });
