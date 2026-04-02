@@ -1,0 +1,78 @@
+<svg width="1600" height="900" viewBox="0 0 1600 900" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <rect width="1600" height="900" rx="0" fill="#F7F2E9"/>
+
+  <rect x="0" y="0" width="1600" height="96" fill="#F7F2E9"/>
+  <line x1="0" y1="96.5" x2="1600" y2="96.5" stroke="#E7DACB"/>
+
+  <text x="72" y="48" fill="#1D5B72" font-family="Arial, sans-serif" font-size="28" font-weight="700">paaduGajala</text>
+  <text x="610" y="40" fill="#2A677B" font-family="Arial, sans-serif" font-size="22" font-weight="700">Swara to Sruti</text>
+  <line x1="610" y1="54" x2="742" y2="54" stroke="#9E552E" stroke-width="3"/>
+  <text x="805" y="40" fill="#7C9AA7" font-family="Arial, sans-serif" font-size="22" font-weight="700">Sruti to Swara</text>
+  <text x="986" y="40" fill="#7C9AA7" font-family="Arial, sans-serif" font-size="22" font-weight="700">Theory</text>
+
+  <rect x="24" y="136" width="1060" height="598" rx="32" fill="#FBF8F2" stroke="#EADFD3"/>
+  <rect x="1120" y="136" width="456" height="598" rx="32" fill="#78AFC4"/>
+
+  <text x="66" y="202" fill="#1F5E74" font-family="Arial, sans-serif" font-size="30" font-weight="800">NOTATION INPUT</text>
+
+  <rect x="66" y="236" width="150" height="48" rx="16" fill="#CAE6FA" stroke="#A4CCE5"/>
+  <text x="141" y="267" text-anchor="middle" fill="#2A6780" font-family="Arial, sans-serif" font-size="18" font-weight="700">Upload File</text>
+
+  <rect x="230" y="236" width="168" height="48" rx="16" fill="#CAE6FA" stroke="#A4CCE5"/>
+  <text x="314" y="267" text-anchor="middle" fill="#2A6780" font-family="Arial, sans-serif" font-size="18" font-weight="700">Load Example</text>
+
+  <rect x="414" y="236" width="306" height="48" rx="16" fill="#EEF7FD" stroke="#9FC5DB" stroke-width="2"/>
+  <text x="436" y="220" fill="#6D9AAF" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="2">RAGA LIBRARY</text>
+  <text x="442" y="267" fill="#1C566B" font-family="Arial, sans-serif" font-size="18" font-weight="700">Select a raga</text>
+  <text x="686" y="267" fill="#7C93A0" font-family="Arial, sans-serif" font-size="20" font-weight="700">⌄</text>
+
+  <rect x="66" y="318" width="966" height="260" rx="28" fill="#F9F5EF" stroke="#E5DACA" stroke-width="4"/>
+  <rect x="94" y="302" width="194" height="24" rx="12" fill="#F7F2E9"/>
+  <text x="96" y="308" dominant-baseline="hanging" fill="#6BA1BC" font-family="Arial, sans-serif" font-size="11" font-weight="700" letter-spacing="3.2">SWARAM MANUSCRIPT</text>
+  <text x="96" y="372" fill="#667078" font-family="Courier New, monospace" font-size="24">Enter swara notation (e.g., S R G M P D N S')</text>
+
+  <rect x="812" y="624" width="220" height="68" rx="18" fill="#9F572F"/>
+  <text x="922" y="667" text-anchor="middle" fill="#FFF8F2" font-family="Arial, sans-serif" font-size="24" font-weight="800" letter-spacing="1.2">PARSE</text>
+
+  <rect x="444" y="292" width="292" height="180" rx="22" fill="#FFFFFF" stroke="#D4E4EE" filter="url(#shadow)"/>
+  <text x="470" y="324" fill="#6A98AD" font-family="Arial, sans-serif" font-size="12" font-weight="700" letter-spacing="2.8">RAGAS</text>
+  <rect x="462" y="342" width="256" height="34" rx="11" fill="#F3F9FD"/>
+  <text x="478" y="364" fill="#275F73" font-family="Arial, sans-serif" font-size="17" font-weight="700">Abheri</text>
+  <rect x="462" y="384" width="256" height="34" rx="11" fill="#F7F4EE"/>
+  <text x="478" y="406" fill="#5C6670" font-family="Arial, sans-serif" font-size="16">Abhogi</text>
+  <rect x="462" y="426" width="256" height="34" rx="11" fill="#F7F4EE"/>
+  <text x="478" y="448" fill="#5C6670" font-family="Arial, sans-serif" font-size="16">Ananda Bhairavi</text>
+  <text x="470" y="490" fill="#8DA7B6" font-family="Arial, sans-serif" font-size="13">Pulled from `carnatic_ragas.json`</text>
+
+  <text x="1160" y="202" fill="#0F4157" font-family="Arial, sans-serif" font-size="28" font-weight="800">TONE &amp; TUNING</text>
+  <text x="1160" y="338" fill="#24566C" font-family="Arial, sans-serif" font-size="13" font-weight="700" letter-spacing="3">PRIMARY INSTRUMENT</text>
+  <rect x="1160" y="368" width="380" height="70" rx="18" fill="#114E61"/>
+  <text x="1186" y="412" fill="#F5FBFF" font-family="Arial, sans-serif" font-size="18" font-weight="700">Saraswati Veena</text>
+  <text x="1510" y="412" fill="#F5FBFF" font-family="Arial, sans-serif" font-size="22">⌄</text>
+
+  <rect x="1160" y="474" width="380" height="98" rx="22" fill="#6EA2B8"/>
+  <text x="1182" y="528" fill="#1E4D61" font-family="Arial, sans-serif" font-size="15" font-weight="700" letter-spacing="2.4">SHRUTI (DRONE)</text>
+  <rect x="1460" y="508" width="58" height="30" rx="15" fill="#9E552E"/>
+  <circle cx="1498" cy="523" r="12" fill="#FFFFFF"/>
+
+  <rect x="24" y="782" width="1552" height="90" rx="28" fill="#FBF8F2" stroke="#EADFD3"/>
+  <circle cx="90" cy="827" r="40" fill="#2A6780"/>
+  <polygon points="82,811 82,843 106,827" fill="#FFFFFF"/>
+  <text x="152" y="808" fill="#6D8E9E" font-family="Arial, sans-serif" font-size="14" font-weight="700" letter-spacing="2.6">TEMPO (BPM)</text>
+  <line x1="158" y1="850" x2="744" y2="850" stroke="#DBD7D2" stroke-width="10" stroke-linecap="round"/>
+  <line x1="158" y1="850" x2="494" y2="850" stroke="#9E552E" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="494" cy="850" r="12" fill="#9E552E"/>
+  <text x="710" y="818" fill="#2A6780" font-family="Arial, sans-serif" font-size="26" font-weight="800">120</text>
+
+  <defs>
+    <filter id="shadow" x="432" y="284" width="316" height="210" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feFlood flood-opacity="0" result="BackgroundImageFix"/>
+      <feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+      <feOffset dy="6"/>
+      <feGaussianBlur stdDeviation="6"/>
+      <feColorMatrix type="matrix" values="0 0 0 0 0.1125 0 0 0 0 0.2314 0 0 0 0 0.2824 0 0 0 0.12 0"/>
+      <feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_1_1"/>
+      <feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_1_1" result="shape"/>
+    </filter>
+  </defs>
+</svg>
