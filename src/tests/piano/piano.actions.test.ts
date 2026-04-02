@@ -23,8 +23,8 @@ describe('piano actions', () => {
     vi.spyOn(audioEngine, 'startSvara').mockReturnValue({ id: 'voice-2' } as ReturnType<typeof audioEngine.startSvara>);
     vi.spyOn(audioEngine, 'stopVoice').mockReturnValue(true);
 
-    await startPianoNote('g', '1');
-    stopPianoNote('g', '1');
+    await startPianoNote('g3', '1');
+    stopPianoNote('g3', '1');
     expect(audioEngine.stopVoice).toHaveBeenCalledWith('voice-2');
     expect(getHeldPianoNoteCount()).toBe(0);
 
