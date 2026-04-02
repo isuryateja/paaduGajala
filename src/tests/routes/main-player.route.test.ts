@@ -9,6 +9,8 @@ describe('main player route source', () => {
     expect(source).toContain('Tone &amp; Tuning');
     expect(source).toContain('Virtual Swara Piano');
     expect(source).toContain('Swara to Sruti');
+    expect(source).toContain('Raga Search');
+    expect(source).toContain('role="combobox"');
     expect(source).toContain('Locked Compact Range');
     expect(source).toContain("label: 'N1.'");
     expect(source).toContain("label: 'N2.'");

@@ -1,0 +1,1259 @@
+{
+  "source": "Raga Surabhi - https://www.ragasurabhi.com/carnatic-music/ragas.html; KSST 72 Melakarta Ragas - https://sites.google.com/site/kalpsangeethasabha/ragas/72-melakarta-ragas; Melakarta table - https://en.wikipedia.org/wiki/Melakarta",
+  "total_count": 179,
+  "ragas": [
+    {
+      "name": "Abheri",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S G2 M1 P N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G2 R2 S"
+    },
+    {
+      "name": "Abhogi",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 G2 M1 D2 S'",
+      "avarohanam": "S' D2 M1 G2 R2 S"
+    },
+    {
+      "name": "Ahiri",
+      "type": "Janya",
+      "parent_raga": "Vakulabaranam",
+      "arohanam": "S R1 S G3 M1 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G3 R1 S"
+    },
+    {
+      "name": "Amrithavarshini",
+      "type": "Janya",
+      "parent_raga": "Chithrambari",
+      "arohanam": "S G3 M2 P N3 S'",
+      "avarohanam": "S' N3 P M2 G3 S"
+    },
+    {
+      "name": "Ananda Bhairavi",
+      "type": "Janya",
+      "parent_raga": "Natabhairavi",
+      "arohanam": "S G2 R2 G2 M1 P D2 P S'",
+      "avarohanam": "S' N2 D2 P M1 G2 R2 S"
+    },
+    {
+      "name": "Andolika",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P N2 S'",
+      "avarohanam": "S' N2 D2 M1 R2 S"
+    },
+    {
+      "name": "Arabhi",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S R2 M1 P D2 S'",
+      "avarohanam": "S' N3 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Asaveri",
+      "type": "Janya",
+      "parent_raga": "Hanumatodi",
+      "arohanam": "S R1 M1 P D1 S'",
+      "avarohanam": "S' N2 S P D1 P M1 G2 R1 S"
+    },
+    {
+      "name": "Atana",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S R2 M1 P N3 S'",
+      "avarohanam": "S' N3 S D2 P M1 R2 G3 R2 S"
+    },
+    {
+      "name": "Bageshri",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S G2 M1 D2 N2 S'",
+      "avarohanam": "S' N2 D2 M1 P G2 M1 R2 S"
+    },
+    {
+      "name": "Bahudari",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S G3 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 P M1 G3 S"
+    },
+    {
+      "name": "Begada",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S G3 R2 G3 M1 P D2 P S'",
+      "avarohanam": "S' N3 D2 P M1 G3 R2"
+    },
+    {
+      "name": "Behag",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S G3 M1 P N3 D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M2 G3 M1 G3 R2 S"
+    },
+    {
+      "name": "Bhairavi",
+      "type": "Janya",
+      "parent_raga": "Natabhairavi",
+      "arohanam": "S G2 R2 G2 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G2 R2 S"
+    },
+    {
+      "name": "Bhavapriya",
+      "type": "Melakarta",
+      "mela_number": 44,
+      "arohanam": "S R1 G2 M2 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M2 G2 R1 S"
+    },
+    {
+      "name": "Bhoopalam",
+      "type": "Janya",
+      "parent_raga": "Thodi",
+      "arohanam": "S R1 G2 P D1 S'",
+      "avarohanam": "S' D1 P G2 R1 S"
+    },
+    {
+      "name": "Bilahari",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S R2 G3 P D2 S'",
+      "avarohanam": "S' N3 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Bowli",
+      "type": "Janya",
+      "parent_raga": "Mayamalavagowlai",
+      "arohanam": "S R1 G3 P D1 S'",
+      "avarohanam": "S' N3 D1 P G3 R1 S"
+    },
+    {
+      "name": "Brindavana Saranga",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P N3 S'",
+      "avarohanam": "S' N2 P M1 R2 G2 S"
+    },
+    {
+      "name": "Chakravakam",
+      "type": "Melakarta",
+      "mela_number": 16,
+      "arohanam": "S R1 G3 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 R1 S"
+    },
+    {
+      "name": "Chala Nattai",
+      "type": "Melakarta",
+      "mela_number": 36,
+      "arohanam": "S R3 G3 M1 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M1 G3 R3 S"
+    },
+    {
+      "name": "Chandrajyoti",
+      "type": "Janya",
+      "parent_raga": "Pavani",
+      "arohanam": "S R1 G1 M2 P D2 S'",
+      "avarohanam": "S' D2 P M2 G1 R1 S"
+    },
+    {
+      "name": "Chandrakauns",
+      "type": "Janya",
+      "parent_raga": "Keeravani",
+      "arohanam": "S G2 M1 D1 N3 S'",
+      "avarohanam": "S' N3 D1 M1 G2 S"
+    },
+    {
+      "name": "Charukesi",
+      "type": "Melakarta",
+      "mela_number": 26,
+      "arohanam": "S R2 G3 M1 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G3 R2 S"
+    },
+    {
+      "name": "Chithrambari",
+      "type": "Melakarta",
+      "mela_number": 66,
+      "arohanam": "S R2 G3 M2 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M2 G3 R2 S"
+    },
+    {
+      "name": "Darbar",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 S D2 P M1 R2 G2 G2 R2 S"
+    },
+    {
+      "name": "Darbari Kanada",
+      "type": "Janya",
+      "parent_raga": "Natabhairavi",
+      "arohanam": "S R2 G2 M1 P D1 N2 S'",
+      "avarohanam": "S' D1 N2 P M1 P G2 M1 R2 S"
+    },
+    {
+      "name": "Desh",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 M1 P N3 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Deva Manohari",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 N2 P M1 R2 S"
+    },
+    {
+      "name": "Devagandhari",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S R2 M1 P D2 S'",
+      "avarohanam": "S' N3 D2 N2 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Dhanyasi",
+      "type": "Janya",
+      "parent_raga": "Thodi",
+      "arohanam": "S G2 M1 P N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G2 R1 S"
+    },
+    {
+      "name": "Dharmavati",
+      "type": "Melakarta",
+      "mela_number": 59,
+      "arohanam": "S R2 G2 M2 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M2 G2 R2 S"
+    },
+    {
+      "name": "Dhatuvardhani",
+      "type": "Melakarta",
+      "mela_number": 69,
+      "arohanam": "S R3 G3 M2 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M2 G3 R3 S"
+    },
+    {
+      "name": "Dhavalambari",
+      "type": "Melakarta",
+      "mela_number": 49,
+      "arohanam": "S R1 G3 M2 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M2 G3 R1 S"
+    },
+    {
+      "name": "Dhenuka",
+      "type": "Melakarta",
+      "mela_number": 9,
+      "arohanam": "S R1 G2 M1 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M1 G2 R1 S"
+    },
+    {
+      "name": "Divyamani",
+      "type": "Melakarta",
+      "mela_number": 48,
+      "arohanam": "S R1 G2 M2 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M2 G2 R1 S"
+    },
+    {
+      "name": "Dwijavanti",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 G3 M1 P D2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 M1 R2 G2 R2 S"
+    },
+    {
+      "name": "Gamanashrama",
+      "type": "Melakarta",
+      "mela_number": 53,
+      "arohanam": "S R1 G3 M2 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M2 G3 R1 S"
+    },
+    {
+      "name": "Gambheera Nattai",
+      "type": "Janya",
+      "parent_raga": "Chala Nattai",
+      "arohanam": "S G3 M1 P N3 S'",
+      "avarohanam": "S' N3 P M1 G3 S"
+    },
+    {
+      "name": "Ganamoorthi",
+      "type": "Melakarta",
+      "mela_number": 3,
+      "arohanam": "S R1 G1 M1 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M1 G1 R1 S"
+    },
+    {
+      "name": "Gangeyabhushani",
+      "type": "Melakarta",
+      "mela_number": 33,
+      "arohanam": "S R3 G3 M1 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M1 G3 R3 S"
+    },
+    {
+      "name": "Gavambhodi",
+      "type": "Melakarta",
+      "mela_number": 43,
+      "arohanam": "S R1 G2 M2 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M2 G2 R1 S"
+    },
+    {
+      "name": "Gayakapriya",
+      "type": "Melakarta",
+      "mela_number": 13,
+      "arohanam": "S R1 G3 M1 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M1 G3 R1 S"
+    },
+    {
+      "name": "Gowlai",
+      "type": "Janya",
+      "parent_raga": "Mayamalavagowlai",
+      "arohanam": "S R1 M1 P N3 S'",
+      "avarohanam": "S' N3 P M1 G3 M1 R1 G3 M1 R1 S"
+    },
+    {
+      "name": "Gowri Manohari",
+      "type": "Melakarta",
+      "mela_number": 23,
+      "arohanam": "S R2 G2 M1 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M1 G2 R2 S"
+    },
+    {
+      "name": "Hamir Kalyani",
+      "type": "Janya",
+      "parent_raga": "Kalyani",
+      "arohanam": "S P M2 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M2 M1 G3 P M1 R2 S"
+    },
+    {
+      "name": "Hamsadwani",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S R2 G3 P N3 S'",
+      "avarohanam": "S' N3 P G3 R2 S"
+    },
+    {
+      "name": "Hamsanadam",
+      "type": "Janya",
+      "parent_raga": "Neethimathi",
+      "arohanam": "S R2 M2 P N3 S'",
+      "avarohanam": "S' N3 P M2 R2 S"
+    },
+    {
+      "name": "Hamsanandi",
+      "type": "Janya",
+      "parent_raga": "Gamanashrama",
+      "arohanam": "S R1 G3 M2 D2 N3 S'",
+      "avarohanam": "S' N3 D2 M2 G3 R1 S"
+    },
+    {
+      "name": "Hari Kambhoji",
+      "type": "Melakarta",
+      "mela_number": 28,
+      "arohanam": "S R2 G3 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Hatakambari",
+      "type": "Melakarta",
+      "mela_number": 18,
+      "arohanam": "S R1 G3 M1 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M1 G3 R1 S"
+    },
+    {
+      "name": "Hemavati",
+      "type": "Melakarta",
+      "mela_number": 58,
+      "arohanam": "S R2 G2 M2 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M2 G2 R2 S"
+    },
+    {
+      "name": "Hindolam",
+      "type": "Janya",
+      "parent_raga": "Natabhairavi",
+      "arohanam": "S G2 M1 D1 N2 S'",
+      "avarohanam": "S' N2 D1 M1 G2 S"
+    },
+    {
+      "name": "Huseni",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 G2 M1 P N2 D2 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G2 R2 S"
+    },
+    {
+      "name": "Jaganmohini",
+      "type": "Janya",
+      "parent_raga": "Mayamalavagowlai",
+      "arohanam": "S G3 M1 P N3 S'",
+      "avarohanam": "S' N3 P M1 G3 R1 S"
+    },
+    {
+      "name": "Jalarnavam",
+      "type": "Melakarta",
+      "mela_number": 38,
+      "arohanam": "S R1 G1 M2 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M2 G1 R1 S"
+    },
+    {
+      "name": "Janaranjani",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S R2 G3 M1 P D2 P N3 S'",
+      "avarohanam": "S' D2 P M1 R2 S"
+    },
+    {
+      "name": "Jayanthashri",
+      "type": "Janya",
+      "parent_raga": "Natabhairavi",
+      "arohanam": "S G2 M1 D1 N2 S'",
+      "avarohanam": "S' N2 D1 M1 P M1 G2 S"
+    },
+    {
+      "name": "Jhalavarali",
+      "type": "Melakarta",
+      "mela_number": 39,
+      "arohanam": "S R1 G1 M2 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M2 G1 R1 S"
+    },
+    {
+      "name": "Jhankaradhwani",
+      "type": "Melakarta",
+      "mela_number": 19,
+      "arohanam": "S R2 G2 M1 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M1 G2 R2 S"
+    },
+    {
+      "name": "Jyoti Swarupini",
+      "type": "Melakarta",
+      "mela_number": 68,
+      "arohanam": "S R3 G3 M2 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M2 G3 R3 S"
+    },
+    {
+      "name": "Kadanakuthoohalam",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S R2 M1 D2 N3 G3 P S'",
+      "avarohanam": "S' N3 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Kalavati",
+      "type": "Janya",
+      "parent_raga": "Chakravakam",
+      "arohanam": "S R1 M1 P D2 S'",
+      "avarohanam": "S' D2 P M1 G3 S R1 D2 S"
+    },
+    {
+      "name": "Kalyana Vasantham",
+      "type": "Janya",
+      "parent_raga": "Keeravani",
+      "arohanam": "S G2 M1 D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M1 G2 R2 S"
+    },
+    {
+      "name": "Kalyani",
+      "type": "Melakarta",
+      "mela_number": 65,
+      "arohanam": "S R2 G3 M2 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M2 G3 R2 S"
+    },
+    {
+      "name": "Kamala Manohari",
+      "type": "Janya",
+      "parent_raga": "Sarasangi",
+      "arohanam": "S G3 M1 P N3 S'",
+      "avarohanam": "S' N3 D1 P M1 G3 S"
+    },
+    {
+      "name": "Kambhoji",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 G3 M1 P D2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Kanada",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 P G2 M1 D2 N2 S'",
+      "avarohanam": "S' N2 P M1 G2 M1 R2 S"
+    },
+    {
+      "name": "Kanakangi",
+      "type": "Melakarta",
+      "mela_number": 1,
+      "arohanam": "S R1 G1 M1 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M1 G1 R1 S"
+    },
+    {
+      "name": "Kannada",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S G3 M1 P M1 D2 N3 S'",
+      "avarohanam": "S' D2 P M1 G3 M1 R2 S"
+    },
+    {
+      "name": "Kannada Gowlai",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 G2 M1 P N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G2 S"
+    },
+    {
+      "name": "Kanthamani",
+      "type": "Melakarta",
+      "mela_number": 61,
+      "arohanam": "S R2 G3 M2 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M2 G3 R2 S"
+    },
+    {
+      "name": "Kapi",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P N3 S'",
+      "avarohanam": "S' N2 D2 N2 P M1 G2 R2 S"
+    },
+    {
+      "name": "Karna Ranjani",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 G2 M1 G2 P D2 S'",
+      "avarohanam": "S' N2 D2 P M1 G2 R2 S"
+    },
+    {
+      "name": "Kedara Gowlai",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 M1 P N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Kedaram",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S M1 G3 M1 P N3 S'",
+      "avarohanam": "S' N3 P M1 G3 R2 S"
+    },
+    {
+      "name": "Keeravani",
+      "type": "Melakarta",
+      "mela_number": 21,
+      "arohanam": "S R2 G2 M1 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M1 G2 R2 S"
+    },
+    {
+      "name": "Khamas",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S M1 G3 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Kharaharapriya",
+      "type": "Melakarta",
+      "mela_number": 22,
+      "arohanam": "S R2 G2 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G2 R2 S"
+    },
+    {
+      "name": "Kokilapriya",
+      "type": "Melakarta",
+      "mela_number": 11,
+      "arohanam": "S R1 G2 M1 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M1 G2 R1 S"
+    },
+    {
+      "name": "Kosalam",
+      "type": "Melakarta",
+      "mela_number": 71,
+      "arohanam": "S R3 G3 M2 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M2 G3 R3 S"
+    },
+    {
+      "name": "Kuntalavarali",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S M1 P D2 N2 D2 S'",
+      "avarohanam": "S' N2 D2 P M1 S"
+    },
+    {
+      "name": "Kurinji",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "",
+      "avarohanam": ""
+    },
+    {
+      "name": "Lalitha",
+      "type": "Janya",
+      "parent_raga": "Mayamalavagowlai",
+      "arohanam": "S R1 G3 M1 D1 N3 S'",
+      "avarohanam": "S' N3 D1 M1 G3 R1 S"
+    },
+    {
+      "name": "Lathangi",
+      "type": "Melakarta",
+      "mela_number": 63,
+      "arohanam": "S R2 G3 M2 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M2 G3 R2 S"
+    },
+    {
+      "name": "Maand",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S G3 M1 D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Madhuvanti",
+      "type": "Janya",
+      "parent_raga": "Dharmavati",
+      "arohanam": "S G2 M2 P N3 S'",
+      "avarohanam": "S' N3 D2 P M2 G2 R2 S"
+    },
+    {
+      "name": "Madhyamavati",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P N2 S'",
+      "avarohanam": "S' N2 P M1 R2 S"
+    },
+    {
+      "name": "Malahari",
+      "type": "Janya",
+      "parent_raga": "Mayamalavagowlai",
+      "arohanam": "S R1 M1 P D1 S'",
+      "avarohanam": "S' D1 P M1 G3 R1 S"
+    },
+    {
+      "name": "Malayamarutham",
+      "type": "Janya",
+      "parent_raga": "Chakravakam",
+      "arohanam": "S R1 G3 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P G3 R1 S"
+    },
+    {
+      "name": "Manavati",
+      "type": "Melakarta",
+      "mela_number": 5,
+      "arohanam": "S R1 G1 M1 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M1 G1 R1 S"
+    },
+    {
+      "name": "Mandari",
+      "type": "Janya",
+      "parent_raga": "Kamavardhini",
+      "arohanam": "S R1 G3 M2 P N3 S'",
+      "avarohanam": "S' N3 P M2 G3 R1 S"
+    },
+    {
+      "name": "Manirangu",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P N2 S'",
+      "avarohanam": "S' N2 P M1 G2 R2 S"
+    },
+    {
+      "name": "Mararanjani",
+      "type": "Melakarta",
+      "mela_number": 25,
+      "arohanam": "S R2 G3 M1 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M1 G3 R2 S"
+    },
+    {
+      "name": "Mayamalavagowlai",
+      "type": "Melakarta",
+      "mela_number": 15,
+      "arohanam": "S R1 G3 M1 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M1 G3 R1 S"
+    },
+    {
+      "name": "Mohana Kalyani",
+      "type": "Janya",
+      "parent_raga": "Kalyani",
+      "arohanam": "S R2 G3 P D2 S'",
+      "avarohanam": "S' N3 D2 P M2 G3 R2 S"
+    },
+    {
+      "name": "Mohanam",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 G3 P D2 S'",
+      "avarohanam": "S' D2 P G3 R2 S"
+    },
+    {
+      "name": "Mukhari",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P N2 D2 S'",
+      "avarohanam": "S' N2 D1 P M1 G2 R2 S"
+    },
+    {
+      "name": "Nadanamakriya",
+      "type": "Janya",
+      "parent_raga": "Mayamalavagowlai",
+      "arohanam": "",
+      "avarohanam": ""
+    },
+    {
+      "name": "Naganandini",
+      "type": "Melakarta",
+      "mela_number": 30,
+      "arohanam": "S R2 G3 M1 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M1 G3 R2 S"
+    },
+    {
+      "name": "Nagaswarali",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S G3 M1 P D2 S'",
+      "avarohanam": "S' D2 P M1 G3 S"
+    },
+    {
+      "name": "Nalinakanthi",
+      "type": "Janya",
+      "parent_raga": "Sarasangi",
+      "arohanam": "S G3 R2 M1 P N3 S'",
+      "avarohanam": "S' N3 P M1 G3 R2 S"
+    },
+    {
+      "name": "Namanarayani",
+      "type": "Melakarta",
+      "mela_number": 50,
+      "arohanam": "S R1 G3 M2 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M2 G3 R1 S"
+    },
+    {
+      "name": "Nasikabhooshani",
+      "type": "Melakarta",
+      "mela_number": 70,
+      "arohanam": "S R3 G3 M2 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M2 G3 R3 S"
+    },
+    {
+      "name": "Natabhairavi",
+      "type": "Melakarta",
+      "mela_number": 20,
+      "arohanam": "S R2 G2 M1 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G2 R2 S"
+    },
+    {
+      "name": "Natakapriya",
+      "type": "Melakarta",
+      "mela_number": 10,
+      "arohanam": "S R1 G2 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G2 R1 S"
+    },
+    {
+      "name": "Nattai",
+      "type": "Janya",
+      "parent_raga": "Chala Nattai",
+      "arohanam": "S R3 G3 M1 P D3 N3 S'",
+      "avarohanam": "S' N3 P M1 G3 M1 R3 S"
+    },
+    {
+      "name": "Nattai Kurinji",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 G3 M1 N2 D2 N2 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 M1 G3 M1 P G3 R2 S"
+    },
+    {
+      "name": "Navaneetham",
+      "type": "Melakarta",
+      "mela_number": 40,
+      "arohanam": "S R1 G1 M2 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M2 G1 R1 S"
+    },
+    {
+      "name": "Navarasa Kanada",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S G3 M1 P S'",
+      "avarohanam": "S' N2 D2 M1 G3 R2 S"
+    },
+    {
+      "name": "Nayaki",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P D2 N2 D2 P S'",
+      "avarohanam": "S' N2 S P D2 N2 D2 P M1 R2 G2 R2 S"
+    },
+    {
+      "name": "Neelambari",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S G3 M1 P N3 S'",
+      "avarohanam": "S' N3 P D2 N2 P M1 G3 R2 M1 G3 S"
+    },
+    {
+      "name": "Neethimathi",
+      "type": "Melakarta",
+      "mela_number": 60,
+      "arohanam": "S R2 G2 M2 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M2 G2 R2 S"
+    },
+    {
+      "name": "Pantuvarali",
+      "type": "Melakarta",
+      "mela_number": 51,
+      "arohanam": "S R1 G3 M2 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M2 G3 R1 S"
+    },
+    {
+      "name": "Pavani",
+      "type": "Melakarta",
+      "mela_number": 41,
+      "arohanam": "S R1 G1 M2 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M2 G1 R1 S"
+    },
+    {
+      "name": "Poornachandrika",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S R2 G3 M1 P D2 P S'",
+      "avarohanam": "S' N3 P M1 R2 G3 M1 R2 S"
+    },
+    {
+      "name": "Poorvikalyani",
+      "type": "Janya",
+      "parent_raga": "Gamanashrama",
+      "arohanam": "S R1 G3 M2 P D2 P S'",
+      "avarohanam": "S' N3 D2 P M2 G3 R1 S"
+    },
+    {
+      "name": "Punnagavarali",
+      "type": "Janya",
+      "parent_raga": "Thodi",
+      "arohanam": "",
+      "avarohanam": ""
+    },
+    {
+      "name": "Ragavardhini",
+      "type": "Melakarta",
+      "mela_number": 32,
+      "arohanam": "S R3 G3 M1 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G3 R3 S"
+    },
+    {
+      "name": "Raghupriya",
+      "type": "Melakarta",
+      "mela_number": 42,
+      "arohanam": "S R1 G1 M2 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M2 G1 R1 S"
+    },
+    {
+      "name": "Ramapriya",
+      "type": "Melakarta",
+      "mela_number": 52,
+      "arohanam": "S R1 G3 M2 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M2 G3 R1 S"
+    },
+    {
+      "name": "Ranjani",
+      "type": "Janya",
+      "parent_raga": "Dharmavati",
+      "arohanam": "S R2 G2 M2 D2 S'",
+      "avarohanam": "S' N3 D2 M2 G2 S R2 G2 S"
+    },
+    {
+      "name": "Rasikapriya",
+      "type": "Melakarta",
+      "mela_number": 72,
+      "arohanam": "S R3 G3 M2 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M2 G3 R3 S"
+    },
+    {
+      "name": "Rathipathipriya",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 G2 P N2 S'",
+      "avarohanam": "S' N2 P G2 R2 S"
+    },
+    {
+      "name": "Rathnangi",
+      "type": "Melakarta",
+      "mela_number": 2,
+      "arohanam": "S R1 G1 M1 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G1 R1 S"
+    },
+    {
+      "name": "Reethigowlai",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S G2 R2 G2 M1 N2 N2 S'",
+      "avarohanam": "S' N2 D2 M1 G2 M1 P M1 G2 R2 S"
+    },
+    {
+      "name": "Revagupti",
+      "type": "Janya",
+      "parent_raga": "Mayamalavagowlai",
+      "arohanam": "S R1 G3 P D1 S'",
+      "avarohanam": "S' D1 P G3 R1 S"
+    },
+    {
+      "name": "Revati",
+      "type": "Janya",
+      "parent_raga": "Rathnangi",
+      "arohanam": "S R1 M1 P N2 S'",
+      "avarohanam": "S' N2 P M1 R1 S"
+    },
+    {
+      "name": "Rishabhapriya",
+      "type": "Melakarta",
+      "mela_number": 62,
+      "arohanam": "S R2 G3 M2 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M2 G3 R2 S"
+    },
+    {
+      "name": "Rupavati",
+      "type": "Melakarta",
+      "mela_number": 12,
+      "arohanam": "S R1 G2 M1 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M1 G2 R1 S"
+    },
+    {
+      "name": "Sahana",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 G3 M1 P M1 D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 M1 R2 G3 R2 S"
+    },
+    {
+      "name": "Salagam",
+      "type": "Melakarta",
+      "mela_number": 37,
+      "arohanam": "S R1 G1 M2 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M2 G1 R1 S"
+    },
+    {
+      "name": "Sama",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 M1 P D2 S'",
+      "avarohanam": "S' D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Saramati",
+      "type": "Janya",
+      "parent_raga": "Natabhairavi",
+      "arohanam": "S R2 G2 M1 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 M1 G2 S"
+    },
+    {
+      "name": "Saranga",
+      "type": "Janya",
+      "parent_raga": "Kalyani",
+      "arohanam": "S P M2 P D2 N3 S'",
+      "avarohanam": "S' D2 P M2 R2 G3 M1 R2 S"
+    },
+    {
+      "name": "Sarasangi",
+      "type": "Melakarta",
+      "mela_number": 27,
+      "arohanam": "S R2 G3 M1 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M1 G3 R2 S"
+    },
+    {
+      "name": "Saraswathi",
+      "type": "Janya",
+      "parent_raga": "Vachaspati",
+      "arohanam": "S R2 M2 P D2 S'",
+      "avarohanam": "S' N2 D2 P M2 R2 S"
+    },
+    {
+      "name": "Saveri",
+      "type": "Janya",
+      "parent_raga": "Mayamalavagowlai",
+      "arohanam": "S R1 M1 P D1 S'",
+      "avarohanam": "S' N3 D1 P M1 G3 R1 S"
+    },
+    {
+      "name": "Senavati",
+      "type": "Melakarta",
+      "mela_number": 7,
+      "arohanam": "S R1 G2 M1 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M1 G2 R1 S"
+    },
+    {
+      "name": "Senjurutti",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "",
+      "avarohanam": ""
+    },
+    {
+      "name": "Shadvidamargini",
+      "type": "Melakarta",
+      "mela_number": 46,
+      "arohanam": "S R1 G2 M2 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M2 G2 R1 S"
+    },
+    {
+      "name": "Shamalangi",
+      "type": "Melakarta",
+      "mela_number": 55,
+      "arohanam": "S R2 G2 M2 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M2 G2 R2 S"
+    },
+    {
+      "name": "Shankarabaranam",
+      "type": "Melakarta",
+      "mela_number": 29,
+      "arohanam": "S R2 G3 M1 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Shanmukhapriya",
+      "type": "Melakarta",
+      "mela_number": 56,
+      "arohanam": "S R2 G2 M2 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M2 G2 R2 S"
+    },
+    {
+      "name": "Shoolini",
+      "type": "Melakarta",
+      "mela_number": 35,
+      "arohanam": "S R3 G3 M1 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M1 G3 R3 S"
+    },
+    {
+      "name": "Shri Ragam",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 M1 P N2 S'",
+      "avarohanam": "S' N2 P D2 N2 P M1 R2 G2 R2 S"
+    },
+    {
+      "name": "Simhendramadhyamam",
+      "type": "Melakarta",
+      "mela_number": 57,
+      "arohanam": "S R2 G2 M2 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M2 G2 R2 S"
+    },
+    {
+      "name": "Sindhu Bhairavi",
+      "type": "Janya",
+      "parent_raga": "Hanumatodi",
+      "arohanam": "S R1 G2 M1 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G2 R1 S"
+    },
+    {
+      "name": "Sivaranjani",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 G2 P D2 S'",
+      "avarohanam": "S' D2 P G2 R2 S"
+    },
+    {
+      "name": "Sowrashtram",
+      "type": "Janya",
+      "parent_raga": "Suryakantham",
+      "arohanam": "S R1 G3 M1 P M1 D2 N3 S'",
+      "avarohanam": "S' N3 D2 N2 D2 P M1 G3 R1 S"
+    },
+    {
+      "name": "Sriranjani",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S R2 G2 M1 D2 N2 S'",
+      "avarohanam": "S' N2 D2 M1 G2 R2 S"
+    },
+    {
+      "name": "Subha Pantuvarali",
+      "type": "Melakarta",
+      "mela_number": 45,
+      "arohanam": "S R1 G2 M2 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M2 G2 R1 S"
+    },
+    {
+      "name": "Sucharitra",
+      "type": "Melakarta",
+      "mela_number": 67,
+      "arohanam": "S R3 G3 M2 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M2 G3 R3 S"
+    },
+    {
+      "name": "Suddha Dhanyasi",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S G2 M1 P N2 S'",
+      "avarohanam": "S' N2 P M1 G2 S"
+    },
+    {
+      "name": "Suddha Saveri",
+      "type": "Janya",
+      "parent_raga": "Shankarabaranam",
+      "arohanam": "S R2 M1 P D2 S'",
+      "avarohanam": "S' D2 P M1 R2 S"
+    },
+    {
+      "name": "Sumanesaranjani",
+      "type": "Janya",
+      "parent_raga": "Shanmukhapriya",
+      "arohanam": "S G2 M2 P N2 S'",
+      "avarohanam": "S' N2 P M2 G2 S"
+    },
+    {
+      "name": "Sunadavinodini",
+      "type": "Janya",
+      "parent_raga": "Kalyani",
+      "arohanam": "S G3 M2 D2 N3 S'",
+      "avarohanam": "S' N3 D2 M2 G3 S"
+    },
+    {
+      "name": "Surutti",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 M1 P N2 D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 P M1 R2 S"
+    },
+    {
+      "name": "Surya",
+      "type": "Janya",
+      "parent_raga": "Vakulabaranam",
+      "arohanam": "S G3 M1 D1 N2 S'",
+      "avarohanam": "S' N2 D1 M1 G3 S"
+    },
+    {
+      "name": "Suryakantham",
+      "type": "Melakarta",
+      "mela_number": 17,
+      "arohanam": "S R1 G3 M1 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M1 G3 R1 S"
+    },
+    {
+      "name": "Suvarnangi",
+      "type": "Melakarta",
+      "mela_number": 47,
+      "arohanam": "S R1 G2 M2 P D2 N3 S'",
+      "avarohanam": "S' N3 D2 P M2 G2 R1 S"
+    },
+    {
+      "name": "Tanarupi",
+      "type": "Melakarta",
+      "mela_number": 6,
+      "arohanam": "S R1 G1 M1 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M1 G1 R1 S"
+    },
+    {
+      "name": "Thilang",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S G3 M1 P N3 S'",
+      "avarohanam": "S' N2 P M1 G3 S"
+    },
+    {
+      "name": "Thodi",
+      "type": "Melakarta",
+      "mela_number": 8,
+      "arohanam": "S R1 G2 M1 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G2 R1 S"
+    },
+    {
+      "name": "Vachaspati",
+      "type": "Melakarta",
+      "mela_number": 64,
+      "arohanam": "S R2 G3 M2 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M2 G3 R2 S"
+    },
+    {
+      "name": "Vagadheeswari",
+      "type": "Melakarta",
+      "mela_number": 34,
+      "arohanam": "S R3 G3 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 R3 S"
+    },
+    {
+      "name": "Vakulabaranam",
+      "type": "Melakarta",
+      "mela_number": 14,
+      "arohanam": "S R1 G3 M1 P D1 N2 S'",
+      "avarohanam": "S' N2 D1 P M1 G3 R1 S"
+    },
+    {
+      "name": "Valaji",
+      "type": "Janya",
+      "parent_raga": "Chakravakam",
+      "arohanam": "S G3 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P G3 S"
+    },
+    {
+      "name": "Vanaspati",
+      "type": "Melakarta",
+      "mela_number": 4,
+      "arohanam": "S R1 G1 M1 P D2 N2 S'",
+      "avarohanam": "S' N2 D2 P M1 G1 R1 S"
+    },
+    {
+      "name": "Varali",
+      "type": "Janya",
+      "parent_raga": "Jhalavarali",
+      "arohanam": "S G1 R1 G1 M2 P D1 N3 S'",
+      "avarohanam": "S' N3 D1 P M2 G1 R1 S"
+    },
+    {
+      "name": "Varamu",
+      "type": "Janya",
+      "parent_raga": "Karaharapriya",
+      "arohanam": "S G2 M1 D2 N2 S'",
+      "avarohanam": "S' N2 D2 M1 G2 S"
+    },
+    {
+      "name": "Varunapriya",
+      "type": "Melakarta",
+      "mela_number": 24,
+      "arohanam": "S R2 G2 M1 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M1 G2 R2 S"
+    },
+    {
+      "name": "Vasantha",
+      "type": "Janya",
+      "parent_raga": "Suryakantham",
+      "arohanam": "S M1 G3 M1 D2 N3 S'",
+      "avarohanam": "S' N3 D2 M1 G3 R1 S"
+    },
+    {
+      "name": "Vasanthi",
+      "type": "Janya",
+      "parent_raga": "Sarasangi",
+      "arohanam": "S R2 G3 P D1 S'",
+      "avarohanam": "S' D1 P G3 R2 S"
+    },
+    {
+      "name": "Vijayanagari",
+      "type": "Janya",
+      "parent_raga": "Dharmavati",
+      "arohanam": "S R2 G2 M2 P D2 S'",
+      "avarohanam": "S' D2 P M2 G2 R2 S"
+    },
+    {
+      "name": "Vishwambari",
+      "type": "Melakarta",
+      "mela_number": 54,
+      "arohanam": "S R1 G3 M2 P D3 N3 S'",
+      "avarohanam": "S' N3 D3 P M2 G3 R1 S"
+    },
+    {
+      "name": "Yadukula Kambhoji",
+      "type": "Janya",
+      "parent_raga": "Hari Kambhoji",
+      "arohanam": "S R2 M1 P D2 S'",
+      "avarohanam": "S' N2 D2 P M1 G3 R2 S"
+    },
+    {
+      "name": "Yagapriya",
+      "type": "Melakarta",
+      "mela_number": 31,
+      "arohanam": "S R3 G3 M1 P D1 N1 S'",
+      "avarohanam": "S' N1 D1 P M1 G3 R3 S"
+    },
+    {
+      "name": "Yamuna Kalyani",
+      "type": "Janya",
+      "parent_raga": "Kalyani",
+      "arohanam": "",
+      "avarohanam": ""
+    }
+  ]
+}

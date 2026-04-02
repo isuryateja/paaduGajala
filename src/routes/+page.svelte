@@ -8,12 +8,15 @@
   import { createPlaybackPianoVisualizer, mainPlayerHandlers } from '../app/services/main-player-page';
   import PlaybackNotationHighlighter from '../components/notation/PlaybackNotationHighlighter.svelte';
   import { getVisualizerMedia } from '../app/services/visualizer-state';
+  import { resolveManualPianoPointerKey } from '../app/services/manual-piano-hit-test';
   import { notationStore } from '../app/stores/notation.store';
   import { playbackStore } from '../app/stores/playback.store';
   import { settingsStore } from '../app/stores/settings.store';
   import { uiStore } from '../app/stores/ui.store';
   import { startPianoNote, stopPianoNote, releaseAllPianoNotes } from '../app/actions/piano.actions';
   import type { ActivePianoKeys } from '../domain/piano/piano.types';
+  import { filterRagas, formatRagaNotation } from '../domain/raga/raga-library';
+  import type { RagaLibraryEntry } from '../domain/raga/raga-library';
 
   type ManualOctave = '1' | '2' | '3';
 
@@ -69,25 +72,54 @@
     { note: 'd3', octave: '2', left: 72.73, label: 'D3', secondaryLabel: 'N2' },
     { note: 'r1', octave: '3', left: 90.91, label: "R1'" }
   ];
+  const blackKeyWidthPercent = 5.25;
+  const blackKeyHeightPercent = 54;
 
   let teardown = () => {};
   let releasePlaybackVisualizer = () => {};
   let droneEnabled = true;
   let reverbLevel = 42;
+  let notationPanelElement: HTMLElement | null = null;
+  let notationTextarea: HTMLTextAreaElement | null = null;
+  let pianoKeybed: HTMLDivElement | null = null;
   let playbackActiveKeys: ActivePianoKeys = {};
-  const activeManualKeys = new Set<string>();
-  const manualKeyAnimationTimers = new Map<string, ReturnType<typeof setTimeout>>();
+  let ragaSearchText = '';
+  let ragaSearchOpen = false;
+  let activeRagaIndex = 0;
+  const activeManualKeyCounts = new Map<string, number>();
+  const activeManualPointers = new Map<number, string>();
+  const maxVisibleRagas = 6;
+
+  $: matchingRagas = filterRagas(ragaSearchText).slice(0, maxVisibleRagas);
+  $: if (matchingRagas.length === 0) {
+    activeRagaIndex = -1;
+  } else if (activeRagaIndex < 0 || activeRagaIndex >= matchingRagas.length) {
+    activeRagaIndex = 0;
+  }
 
   onMount(() => {
     teardown = bootstrapApp();
     releasePlaybackVisualizer = createPlaybackPianoVisualizer((activeKeys) => {
       playbackActiveKeys = activeKeys;
     });
+
+    const handlePointerDown = (event: PointerEvent) => {
+      const target = event.target as Node | null;
+      if (notationPanelElement && target && !notationPanelElement.contains(target)) {
+        ragaSearchOpen = false;
+      }
+    };
+
+    document.addEventListener('pointerdown', handlePointerDown);
+
+    return () => {
+      document.removeEventListener('pointerdown', handlePointerDown);
+    };
   });
 
   onDestroy(() => {
-    manualKeyAnimationTimers.forEach((timer) => clearTimeout(timer));
-    manualKeyAnimationTimers.clear();
+    activeManualKeyCounts.clear();
+    activeManualPointers.clear();
     releaseAllPianoNotes();
     releasePlaybackVisualizer();
     teardown();
@@ -98,14 +130,16 @@
     $playbackStore.status === 'playing' ? 'Pause playback' : $playbackStore.status === 'paused' ? 'Resume playback' : 'Play';
   $: visualizerMedia = getVisualizerMedia($playbackStore.status, $uiStore.status);
 
-  function handleKeyDown(event: PointerEvent, note: string, octave: ManualOctave): void {
-    const key = `${note}:${octave}`;
-    const el = event.currentTarget as HTMLElement;
+  function getManualKeyId(note: string, octave: ManualOctave): string {
+    return `${note}:${octave}`;
+  }
 
-    if (activeManualKeys.has(key)) return;
-    activeManualKeys.add(key);
+  function getManualKeyElement(note: string, octave: ManualOctave): HTMLButtonElement | null {
+    if (!pianoKeybed) return null;
+    return pianoKeybed.querySelector<HTMLButtonElement>(`[data-note="${note}"][data-octave="${octave}"]`);
+  }
 
-    // Apply pressed visual state via inline styles
+  function applyManualKeyPressStyles(el: HTMLElement): void {
     const isBlack = el.classList.contains('black-key');
     if (isBlack) {
       el.style.background = '#566066';
@@ -116,30 +150,100 @@
       el.style.boxShadow = 'inset 0 4px 12px rgba(123,108,84,0.14), inset 0 -1px 0 rgba(0,0,0,0.04)';
       el.style.transform = 'translateY(2px)';
     }
-
-    void startPianoNote(note, octave);
-
-    // Clear any previous flash timer
-    const existingTimer = manualKeyAnimationTimers.get(key);
-    if (existingTimer) {
-      clearTimeout(existingTimer);
-      manualKeyAnimationTimers.delete(key);
-    }
   }
 
-  function handleKeyUp(event: PointerEvent, note: string, octave: ManualOctave): void {
-    const key = `${note}:${octave}`;
-    if (!activeManualKeys.has(key)) return;
-    activeManualKeys.delete(key);
-
-    const el = event.currentTarget as HTMLElement;
-
-    // Remove inline styles to restore default appearance
+  function clearManualKeyPressStyles(el: HTMLElement): void {
     el.style.background = '';
     el.style.boxShadow = '';
     el.style.transform = '';
+  }
 
+  function pressManualKey(note: string, octave: ManualOctave, el: HTMLElement): void {
+    const key = getManualKeyId(note, octave);
+    const existingCount = activeManualKeyCounts.get(key) ?? 0;
+    activeManualKeyCounts.set(key, existingCount + 1);
+    if (existingCount > 0) return;
+
+    applyManualKeyPressStyles(el);
+    void startPianoNote(note, octave);
+  }
+
+  function releaseManualKey(note: string, octave: ManualOctave): void {
+    const key = getManualKeyId(note, octave);
+    const existingCount = activeManualKeyCounts.get(key) ?? 0;
+    if (existingCount === 0) return;
+    if (existingCount > 1) {
+      activeManualKeyCounts.set(key, existingCount - 1);
+      return;
+    }
+
+    activeManualKeyCounts.delete(key);
+    const el = getManualKeyElement(note, octave);
+    if (el) {
+      clearManualKeyPressStyles(el);
+    }
     stopPianoNote(note, octave);
+  }
+
+  function resolveManualPointerKey(event: PointerEvent): WhiteKey | BlackKey | null {
+    if (!pianoKeybed) return null;
+
+    return resolveManualPianoPointerKey({
+      clientX: event.clientX,
+      clientY: event.clientY,
+      keybedRect: pianoKeybed.getBoundingClientRect(),
+      whiteKeys,
+      blackKeys,
+      blackKeyWidthPercent,
+      blackKeyHeightPercent
+    }) as WhiteKey | BlackKey | null;
+  }
+
+  function handleKeybedPointerDown(event: PointerEvent): void {
+    if (!pianoKeybed) return;
+    const key = resolveManualPointerKey(event);
+    if (!key) return;
+
+    const el = getManualKeyElement(key.note, key.octave);
+    if (!el) return;
+
+    activeManualPointers.set(event.pointerId, getManualKeyId(key.note, key.octave));
+    pianoKeybed.setPointerCapture(event.pointerId);
+    pressManualKey(key.note, key.octave, el);
+    event.preventDefault();
+  }
+
+  function releaseManualPointer(pointerId: number): void {
+    const key = activeManualPointers.get(pointerId);
+    if (!key) return;
+    activeManualPointers.delete(pointerId);
+    const [note, octave] = key.split(':') as [string, ManualOctave];
+    releaseManualKey(note, octave);
+  }
+
+  function handleKeybedPointerUp(event: PointerEvent): void {
+    releaseManualPointer(event.pointerId);
+  }
+
+  function handleKeybedPointerCancel(event: PointerEvent): void {
+    releaseManualPointer(event.pointerId);
+  }
+
+  function handleKeybedLostPointerCapture(event: PointerEvent): void {
+    releaseManualPointer(event.pointerId);
+  }
+
+  function handleManualKeyButtonDown(event: KeyboardEvent, note: string, octave: ManualOctave): void {
+    if (event.repeat || (event.key !== 'Enter' && event.key !== ' ')) return;
+    const el = event.currentTarget as HTMLElement;
+    pressManualKey(note, octave, el);
+    event.preventDefault();
+  }
+
+  function handleManualKeyButtonUp(event: KeyboardEvent, note: string, octave: ManualOctave): void {
+    if (event.key !== 'Enter' && event.key !== ' ') return;
+    releaseManualKey(note, octave);
+    event.preventDefault();
   }
 
   function handleTransport(): void {
@@ -154,6 +258,71 @@
     }
 
     void mainPlayerHandlers.startPlayback();
+  }
+
+  function openRagaSearch(): void {
+    ragaSearchOpen = true;
+    if (matchingRagas.length > 0 && activeRagaIndex < 0) {
+      activeRagaIndex = 0;
+    }
+  }
+
+  function updateRagaSearch(value: string): void {
+    ragaSearchText = value;
+    ragaSearchOpen = true;
+    activeRagaIndex = 0;
+  }
+
+  function clearRagaSearch(): void {
+    ragaSearchText = '';
+    ragaSearchOpen = false;
+    activeRagaIndex = 0;
+  }
+
+  function selectRaga(raga: RagaLibraryEntry): void {
+    ragaSearchText = raga.name;
+    ragaSearchOpen = false;
+    activeRagaIndex = 0;
+    mainPlayerHandlers.setNotationText(formatRagaNotation(raga));
+    notationTextarea?.focus();
+  }
+
+  function handleRagaSearchKeydown(event: KeyboardEvent): void {
+    if (event.key === 'Escape') {
+      ragaSearchOpen = false;
+      return;
+    }
+
+    if (event.key === 'ArrowDown') {
+      event.preventDefault();
+      if (!ragaSearchOpen) {
+        openRagaSearch();
+        return;
+      }
+
+      if (matchingRagas.length > 0) {
+        activeRagaIndex = (activeRagaIndex + 1 + matchingRagas.length) % matchingRagas.length;
+      }
+      return;
+    }
+
+    if (event.key === 'ArrowUp') {
+      event.preventDefault();
+      if (!ragaSearchOpen) {
+        openRagaSearch();
+        return;
+      }
+
+      if (matchingRagas.length > 0) {
+        activeRagaIndex = (activeRagaIndex - 1 + matchingRagas.length) % matchingRagas.length;
+      }
+      return;
+    }
+
+    if (event.key === 'Enter' && ragaSearchOpen && activeRagaIndex >= 0 && matchingRagas[activeRagaIndex]) {
+      event.preventDefault();
+      selectRaga(matchingRagas[activeRagaIndex]);
+    }
   }
 </script>
 
@@ -183,7 +352,7 @@
           <PlaybackNotationHighlighter nodes={$notationStore.parsed} highlightedIndex={$playbackStore.currentIndex} />
         </section>
       {:else}
-        <section class="notation-panel">
+        <section class="notation-panel" bind:this={notationPanelElement}>
           <div class="panel-header">
             <h2>Notation Input</h2>
 
@@ -198,17 +367,73 @@
                 <span class="material-symbols-outlined icon-sm">auto_awesome</span>
                 <span>Load Example</span>
               </button>
+
+              <div class="raga-search-control">
+                <div class="raga-search-input-wrap">
+                  <span class="material-symbols-outlined raga-search-icon">search</span>
+                  <input
+                    aria-controls="raga-search-results"
+                    aria-expanded={ragaSearchOpen}
+                    aria-label="Search ragas"
+                    class="raga-search-input"
+                    placeholder="Raga Search"
+                    role="combobox"
+                    type="text"
+                    value={ragaSearchText}
+                    on:click={openRagaSearch}
+                    on:focus={openRagaSearch}
+                    on:input={(event) => updateRagaSearch((event.currentTarget as HTMLInputElement).value)}
+                    on:keydown={handleRagaSearchKeydown}
+                  />
+
+                  {#if ragaSearchText}
+                    <button class="raga-search-clear" type="button" aria-label="Clear raga search" on:click={clearRagaSearch}>
+                      <span class="material-symbols-outlined">close</span>
+                    </button>
+                  {/if}
+                </div>
+              </div>
             </div>
           </div>
 
           <div class="manuscript-field">
             <label for="notation-input">Swaram Manuscript</label>
             <textarea
+              bind:this={notationTextarea}
               id="notation-input"
               placeholder="Enter swara notation (e.g., S R G M P D N S')..."
               value={$notationStore.rawText}
+              on:focus={() => {
+                ragaSearchOpen = false;
+              }}
               on:input={(event) => mainPlayerHandlers.setNotationText((event.currentTarget as HTMLTextAreaElement).value)}
             ></textarea>
+
+            {#if ragaSearchOpen}
+              <div class="raga-search-overlay" id="raga-search-results" role="listbox" aria-label="Matching ragas">
+                <div class="raga-search-results-heading">Matching Ragas</div>
+
+                {#if matchingRagas.length > 0}
+                  <div class="raga-search-results">
+                    {#each matchingRagas as raga, index}
+                      <button
+                        type="button"
+                        class:active={index === activeRagaIndex}
+                        class="raga-search-option"
+                        role="option"
+                        aria-selected={index === activeRagaIndex}
+                        on:click={() => selectRaga(raga)}
+                      >
+                        <span class="raga-option-name">{raga.name}</span>
+                        <span class="raga-option-meta">{raga.type}</span>
+                      </button>
+                    {/each}
+                  </div>
+                {:else}
+                  <div class="raga-search-empty">No ragas match "{ragaSearchText.trim()}".</div>
+                {/if}
+              </div>
+            {/if}
           </div>
 
           <div class="parse-action">
@@ -326,7 +551,14 @@
       </div>
 
       <div class="piano-frame">
-        <div class="piano-keybed">
+        <div
+          bind:this={pianoKeybed}
+          class="piano-keybed"
+          on:pointerdown={handleKeybedPointerDown}
+          on:pointerup={handleKeybedPointerUp}
+          on:pointercancel={handleKeybedPointerCancel}
+          on:lostpointercapture={handleKeybedLostPointerCapture}
+        >
           {#each whiteKeys as key}
             <button
               aria-label={key.secondaryLabel ? `${key.label} or ${key.secondaryLabel}` : key.label}
@@ -334,11 +566,12 @@
               class:divider={key.divider}
               class:playback-active={!!playbackActiveKeys[`${key.note}:${key.octave}`]}
               class="white-key"
+              data-note={key.note}
+              data-octave={key.octave}
               type="button"
-              on:pointerdown={(e) => handleKeyDown(e, key.note, key.octave)}
-              on:pointerup={(e) => handleKeyUp(e, key.note, key.octave)}
-              on:pointerleave={(e) => handleKeyUp(e, key.note, key.octave)}
-              on:pointercancel={(e) => handleKeyUp(e, key.note, key.octave)}
+              on:keydown={(e) => handleManualKeyButtonDown(e, key.note, key.octave)}
+              on:keyup={(e) => handleManualKeyButtonUp(e, key.note, key.octave)}
+              on:blur={() => releaseManualKey(key.note, key.octave)}
             >
               <span class="swara-label">{key.label}</span>
               {#if key.secondaryLabel}
@@ -353,12 +586,13 @@
               aria-pressed={!!playbackActiveKeys[`${key.note}:${key.octave}`]}
               class:playback-active={!!playbackActiveKeys[`${key.note}:${key.octave}`]}
               class="black-key"
-              style={`left:${key.left}%`}
+              data-note={key.note}
+              data-octave={key.octave}
+              style={`left:${key.left}%;width:${blackKeyWidthPercent}%;height:${blackKeyHeightPercent}%`}
               type="button"
-              on:pointerdown={(e) => handleKeyDown(e, key.note, key.octave)}
-              on:pointerup={(e) => handleKeyUp(e, key.note, key.octave)}
-              on:pointerleave={(e) => handleKeyUp(e, key.note, key.octave)}
-              on:pointercancel={(e) => handleKeyUp(e, key.note, key.octave)}
+              on:keydown={(e) => handleManualKeyButtonDown(e, key.note, key.octave)}
+              on:keyup={(e) => handleManualKeyButtonUp(e, key.note, key.octave)}
+              on:blur={() => releaseManualKey(key.note, key.octave)}
             >
               <span class="swara-label">{key.label}</span>
               {#if key.secondaryLabel}
@@ -569,6 +803,7 @@
   .utility-actions {
     display: flex;
     flex-wrap: wrap;
+    align-items: flex-start;
     gap: 0.75rem;
   }
 
@@ -598,6 +833,73 @@
 
   .manuscript-field {
     position: relative;
+  }
+
+  .raga-search-control {
+    display: flex;
+    min-width: min(22rem, 100%);
+    flex: 1 1 19rem;
+    align-items: stretch;
+  }
+
+  .raga-search-input-wrap {
+    display: flex;
+    min-height: 2.55rem;
+    width: 100%;
+    align-items: center;
+    gap: 0.45rem;
+    border: 1px solid rgba(47, 101, 120, 0.1);
+    border-radius: 0.75rem;
+    background: rgba(170, 218, 254, 0.5);
+    padding: 0.6rem 1rem;
+    box-shadow: none;
+  }
+
+  .raga-search-input-wrap:focus-within {
+    border-color: rgba(47, 101, 120, 0.42);
+    box-shadow: 0 0 0 1px rgba(47, 101, 120, 0.12);
+  }
+
+  .raga-search-icon,
+  .raga-search-clear {
+    color: rgba(47, 101, 120, 0.72);
+  }
+
+  .raga-search-icon {
+    font-size: 1rem;
+  }
+
+  .raga-search-input {
+    width: 100%;
+    border: none;
+    background: transparent;
+    color: #2f6578;
+    font-size: 0.76rem;
+    font-weight: 700;
+  }
+
+  .raga-search-input::placeholder {
+    color: #2f6578;
+    font-weight: 700;
+    opacity: 1;
+  }
+
+  .raga-search-input:focus {
+    outline: none;
+  }
+
+  .raga-search-clear {
+    display: inline-flex;
+    min-width: 1.7rem;
+    min-height: 1.7rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: rgba(111, 163, 184, 0.14);
+  }
+
+  .raga-search-clear .material-symbols-outlined {
+    font-size: 1rem;
   }
 
   .manuscript-field label {
@@ -634,6 +936,76 @@
     box-shadow:
       inset 0 2px 4px rgba(0, 0, 0, 0.08),
       0 0 0 1px rgba(47, 101, 120, 0.15);
+  }
+
+  .raga-search-overlay {
+    position: absolute;
+    top: 1.1rem;
+    right: 1.25rem;
+    z-index: 4;
+    display: grid;
+    width: min(22rem, calc(100% - 2.5rem));
+    gap: 0.8rem;
+    border: 1px solid #d7e5ee;
+    border-radius: 1.25rem;
+    background: rgba(252, 249, 242, 0.98);
+    padding: 1rem;
+    box-shadow: 0 16px 32px rgba(31, 42, 48, 0.16);
+  }
+
+  .raga-search-results-heading {
+    color: rgba(47, 101, 120, 0.62);
+    font-size: 0.62rem;
+    font-weight: 800;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+  }
+
+  .raga-search-results {
+    display: grid;
+    gap: 0.55rem;
+    max-height: 13.5rem;
+    overflow-y: auto;
+    padding-right: 0.2rem;
+  }
+
+  .raga-search-option {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    border: 1px solid rgba(235, 232, 225, 0.88);
+    border-radius: 0.8rem;
+    background: #f6f3ec;
+    padding: 0.8rem 0.9rem;
+    text-align: left;
+  }
+
+  .raga-search-option.active,
+  .raga-search-option:hover {
+    border-color: rgba(111, 163, 184, 0.45);
+    background: #dff0fa;
+  }
+
+  .raga-option-name {
+    color: #245a70;
+    font-size: 0.94rem;
+    font-weight: 700;
+  }
+
+  .raga-option-meta {
+    color: rgba(47, 101, 120, 0.62);
+    font-size: 0.68rem;
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .raga-search-empty {
+    color: rgba(47, 101, 120, 0.72);
+    font-size: 0.82rem;
+    font-weight: 700;
   }
 
   .parse-action {
@@ -927,6 +1299,7 @@
     width: 100%;
     min-width: 56rem;
     height: 100%;
+    touch-action: none;
   }
 
   .white-key,
@@ -970,11 +1343,11 @@
   }
 
   .white-key:active {
-    background: #ece5d9;
+    background: #fcf9f2;
     box-shadow:
-      inset 0 4px 12px rgba(123, 108, 84, 0.14),
-      inset 0 -1px 0 rgba(0, 0, 0, 0.04);
-    transform: translateY(2px);
+      inset 0 1px 0 rgba(255, 255, 255, 0.7),
+      inset 0 -4px 0 rgba(0, 0, 0, 0.05);
+    transform: none;
   }
 
   .white-key.playback-active {
@@ -993,8 +1366,6 @@
     align-items: center;
     justify-content: flex-end;
     gap: 0.15rem;
-    width: 6.3%;
-    height: 60%;
     padding: 0 0.2rem 0.75rem;
     border-radius: 0 0 0.45rem 0.45rem;
     background: #40484c;
@@ -1015,12 +1386,11 @@
   }
 
   .black-key:active {
-    background: #566066;
+    background: #40484c;
     box-shadow:
-      1px 2px 3px rgba(0, 0, 0, 0.16),
-      inset 0 1px 0 rgba(255, 255, 255, 0.12),
-      inset 0 -2px 3px rgba(255, 255, 255, 0.08);
-    transform: translateX(-50%) translateY(1px);
+      2px 4px 6px rgba(0, 0, 0, 0.3),
+      inset 0 -4px 4px rgba(255, 255, 255, 0.1);
+    transform: translateX(-50%);
   }
 
   .black-key.playback-active {
@@ -1236,6 +1606,16 @@
       border-radius: 1.2rem;
     }
 
+    .raga-search-control {
+      min-width: 100%;
+    }
+
+    .raga-search-overlay {
+      left: 1rem;
+      right: 1rem;
+      width: auto;
+    }
+
     .piano-frame {
       height: 14rem;
     }
@@ -1253,7 +1633,6 @@
     }
 
     .black-key {
-      width: 7.2%;
       padding-bottom: 0.5rem;
     }
 
