@@ -51,14 +51,14 @@
 
   const whiteKeys: WhiteKey[] = [
     { note: 'n1', octave: '1', label: 'N1.', secondaryLabel: 'D2.' },
-    { note: 'n', octave: '1', label: 'N3.' },
+    { note: 'n3', octave: '1', label: 'N3.' },
     { note: 's', octave: '2', label: 'S', divider: true },
     { note: 'r2', octave: '2', label: 'R2', secondaryLabel: 'G1' },
-    { note: 'g', octave: '2', label: 'G3' },
-    { note: 'm', octave: '2', label: 'M1' },
+    { note: 'g3', octave: '2', label: 'G3' },
+    { note: 'm1', octave: '2', label: 'M1' },
     { note: 'p', octave: '2', label: 'P' },
     { note: 'd2', octave: '2', label: 'D2', secondaryLabel: 'N1' },
-    { note: 'n', octave: '2', label: 'N3' },
+    { note: 'n3', octave: '2', label: 'N3' },
     { note: 's', octave: '3', label: "S'", divider: true },
     { note: 'r2', octave: '3', label: "R2'", secondaryLabel: "G1'" }
   ];
@@ -66,10 +66,10 @@
   const blackKeys: BlackKey[] = [
     { note: 'n2', octave: '1', left: 9.09, label: 'N2.', secondaryLabel: 'D3.' },
     { note: 'r1', octave: '2', left: 27.27, label: 'R1' },
-    { note: 'r3', octave: '2', left: 36.36, label: 'R3', secondaryLabel: 'G2' },
+    { note: 'g2', octave: '2', left: 36.36, label: 'G2', secondaryLabel: 'R3' },
     { note: 'm2', octave: '2', left: 54.55, label: 'M2' },
     { note: 'd1', octave: '2', left: 63.64, label: 'D1' },
-    { note: 'd3', octave: '2', left: 72.73, label: 'D3', secondaryLabel: 'N2' },
+    { note: 'n2', octave: '2', left: 72.73, label: 'N2', secondaryLabel: 'D3' },
     { note: 'r1', octave: '3', left: 90.91, label: "R1'" }
   ];
   const blackKeyWidthPercent = 5.25;

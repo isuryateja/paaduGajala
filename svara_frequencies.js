@@ -40,20 +40,20 @@ const SEMITONE_RATIO = 1.0594630943592953;
  * These ratios represent the pure harmonic relationships
  */
 const JUST_INTONATION_RATIOS = {
-  S:  { ratio: 1/1,    fraction: '1/1',    decimal: 1.000 },
-  R1: { ratio: 16/15,  fraction: '16/15',  decimal: 1.067 },  // Shuddha Rishabham
-  R2: { ratio: 9/8,    fraction: '9/8',    decimal: 1.125 },  // Chatusruti Rishabham
-  R3: { ratio: 6/5,    fraction: '6/5',    decimal: 1.200 },  // Shatshruti Rishabham
-  G2: { ratio: 81/64,  fraction: '81/64',  decimal: 1.266 },  // Sadharana Gandharam (alt)
-  G3: { ratio: 5/4,    fraction: '5/4',    decimal: 1.250 },  // Antara Gandharam
-  M1: { ratio: 4/3,    fraction: '4/3',    decimal: 1.333 },  // Shuddha Madhyamam
-  M2: { ratio: 45/32,  fraction: '45/32',  decimal: 1.406 },  // Prati Madhyamam
-  P:  { ratio: 3/2,    fraction: '3/2',    decimal: 1.500 },  // Panchamam
-  D1: { ratio: 8/5,    fraction: '8/5',    decimal: 1.600 },  // Shuddha Dhaivatam
-  D2: { ratio: 5/3,    fraction: '5/3',    decimal: 1.667 },  // Chatusruti Dhaivatam
-  D2_alt: { ratio: 27/16, fraction: '27/16', decimal: 1.688 }, // Alternative
-  N2: { ratio: 16/9,   fraction: '16/9',   decimal: 1.778 },  // Kaisiki Nishadham
-  N3: { ratio: 15/8,   fraction: '15/8',   decimal: 1.875 },  // Kakali Nishadham
+  S: { ratio: 1 / 1, fraction: '1/1', decimal: 1.000 },
+  R1: { ratio: 16 / 15, fraction: '16/15', decimal: 1.067 },  // Shuddha Rishabham
+  R2: { ratio: 9 / 8, fraction: '9/8', decimal: 1.125 },  // Chatusruti Rishabham
+  R3: { ratio: 6 / 5, fraction: '6/5', decimal: 1.200 },  // Shatshruti Rishabham
+  G2: { ratio: 81 / 64, fraction: '81/64', decimal: 1.266 },  // Sadharana Gandharam (alt)
+  G3: { ratio: 5 / 4, fraction: '5/4', decimal: 1.250 },  // Antara Gandharam
+  M1: { ratio: 4 / 3, fraction: '4/3', decimal: 1.333 },  // Shuddha Madhyamam
+  M2: { ratio: 45 / 32, fraction: '45/32', decimal: 1.406 },  // Prati Madhyamam
+  P: { ratio: 3 / 2, fraction: '3/2', decimal: 1.500 },  // Panchamam
+  D1: { ratio: 8 / 5, fraction: '8/5', decimal: 1.600 },  // Shuddha Dhaivatam
+  D2: { ratio: 5 / 3, fraction: '5/3', decimal: 1.667 },  // Chatusruti Dhaivatam
+  D2_alt: { ratio: 27 / 16, fraction: '27/16', decimal: 1.688 }, // Alternative
+  N2: { ratio: 16 / 9, fraction: '16/9', decimal: 1.778 },  // Kaisiki Nishadham
+  N3: { ratio: 15 / 8, fraction: '15/8', decimal: 1.875 },  // Kakali Nishadham
 };
 
 // ============================================================================
@@ -503,27 +503,27 @@ const NOTE_DURATIONS = {
    * Default: 500ms at 120 BPM
    */
   AKSHARA_MS: 500,
-  
+
   /**
    * One unit (eka) - full beat
    */
   EKA: 1.0,
-  
+
   /**
    * Half unit (ardha) - half beat
    */
   ARDHA: 0.5,
-  
+
   /**
    * Quarter unit (pada) - quarter beat
    */
   PADA: 0.25,
-  
+
   /**
    * Double unit (dvi) - two beats
    */
   DVI: 2.0,
-  
+
   /**
    * Quadruple unit (chatur) - four beats
    */
@@ -546,14 +546,13 @@ function getSvaraFrequency(svara, octave = 'madhya') {
     'madhya': '',
     'taara': "'"
   };
-  
   const key = svara + octaveSuffix[octave];
   const svaraData = SVARA_FREQUENCIES[key];
-  
+
   if (!svaraData) {
     throw new Error(`Unknown svara: ${svara} in octave ${octave}`);
   }
-  
+
   return svaraData.frequency;
 }
 
@@ -592,10 +591,10 @@ function getJustIntonationFrequency(svara, baseFreq = BASE_SA_FREQUENCY) {
  */
 function frequencyToSvara(frequency, octave = 'madhya') {
   const octaveKey = octave === 'mandara' ? '.' : octave === 'taara' ? "'" : '';
-  
+
   let nearestSvara = null;
   let minDiff = Infinity;
-  
+
   for (const [key, data] of Object.entries(SVARA_FREQUENCIES)) {
     if (key.endsWith(octaveKey) || (octave === 'madhya' && !key.includes('.') && !key.includes("'"))) {
       const diff = Math.abs(data.frequency - frequency);
@@ -605,7 +604,7 @@ function frequencyToSvara(frequency, octave = 'madhya') {
       }
     }
   }
-  
+
   return nearestSvara;
 }
 
@@ -624,42 +623,42 @@ const MELAKARTA_RAGAS = {
     arohana: ['S', 'R1', 'G1', 'M1', 'P', 'D1', 'N1', "S'"],
     avarohana: ["S'", 'N1', 'D1', 'P', 'M1', 'G1', 'R1', 'S']
   },
-  
+
   // Chakra 6: Rutu (M1, R2, G2, D2, N2) - parent of Shankarabharanam
   shankarabharanam: {
     name: 'Shankarabharanam',
     arohana: ['S', 'R2', 'G3', 'M1', 'P', 'D2', 'N3', "S'"],
     avarohana: ["S'", 'N3', 'D2', 'P', 'M1', 'G3', 'R2', 'S']
   },
-  
+
   // Chakra 7: Rishi (M2, R1, G1, D1, N1)
   salagam: {
     name: 'Salagam',
     arohana: ['S', 'R1', 'G1', 'M2', 'P', 'D1', 'N1', "S'"],
     avarohana: ["S'", 'N1', 'D1', 'P', 'M2', 'G1', 'R1', 'S']
   },
-  
+
   // Chakra 12: Aditya (M2, R2, G2, D2, N2) - parent of Kalyani
   kalyani: {
     name: 'Kalyani',
     arohana: ['S', 'R2', 'G3', 'M2', 'P', 'D2', 'N3', "S'"],
     avarohana: ["S'", 'N3', 'D2', 'P', 'M2', 'G3', 'R2', 'S']
   },
-  
+
   // Mayamalavagowla - important for lessons
   mayamalavagowla: {
     name: 'Mayamalavagowla',
     arohana: ['S', 'R1', 'G3', 'M1', 'P', 'D1', 'N3', "S'"],
     avarohana: ["S'", 'N3', 'D1', 'P', 'M1', 'G3', 'R1', 'S']
   },
-  
+
   // Kharaharapriya - popular raga
   kharaharapriya: {
     name: 'Kharaharapriya',
     arohana: ['S', 'R2', 'G2', 'M1', 'P', 'D2', 'N2', "S'"],
     avarohana: ["S'", 'N2', 'D2', 'P', 'M1', 'G2', 'R2', 'S']
   },
-  
+
   // Hanumatodi - popular raga
   hanumatodi: {
     name: 'Hanumatodi',

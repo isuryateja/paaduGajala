@@ -80,7 +80,6 @@ export class AudioEngine {
     if (this.config.tuning === 'equal') {
       return getSvaraFrequency(svara, octave);
     }
-
     const normalizedOctave = octave === 'mandara' ? 'mandra' : octave;
     const ratio = JUST_INTONATION_RATIOS[svara]?.ratio ?? 1;
     const octaveMultiplier = normalizedOctave === 'mandra' ? 0.5 : normalizedOctave === 'taara' ? 2 : 1;
@@ -95,7 +94,6 @@ export class AudioEngine {
     const startTime = when ?? this.audioContext.currentTime;
     const durationSeconds = duration * this.beatDuration;
     const voice = this.createVoice(this.getFrequency(svara, octave), startTime, durationSeconds, velocity, svara, octave);
-
     const emitTime = Math.max(0, (startTime - this.audioContext.currentTime) * 1000);
     setTimeout(() => {
       this.emit('noteOn', { svara, octave, frequency: voice.frequency, voiceId: voice.id, startTime, duration: durationSeconds });
@@ -112,7 +110,6 @@ export class AudioEngine {
     if (!this.isInitialized || !this.audioContext) {
       return null;
     }
-
     const startTime = when ?? this.audioContext.currentTime;
     const voice = this.createVoice(this.getFrequency(svara, octave), startTime, maxDurationSeconds, velocity, svara, octave);
     this.emit('noteOn', { svara, octave, frequency: voice.frequency, voiceId: voice.id, startTime, duration: maxDurationSeconds, sustained: true });
@@ -273,7 +270,6 @@ export class AudioEngine {
     if (!this.audioContext || !this.compressor) {
       throw new Error('Audio engine is not initialized');
     }
-
     const oscillator = this.audioContext.createOscillator();
     const envelopeGain = this.audioContext.createGain();
     const voiceGain = this.audioContext.createGain();

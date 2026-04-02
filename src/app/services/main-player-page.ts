@@ -23,32 +23,32 @@ const PLAYBACK_KEY_MAP_BY_OCTAVE: Record<OctaveName, Record<string, string>> = {
     N1: 'n1',
     D3: 'n2',
     N2: 'n2',
-    N3: 'n'
+    N3: 'n3'
   },
   mandara: {
     D2: 'n1',
     N1: 'n1',
     D3: 'n2',
     N2: 'n2',
-    N3: 'n'
+    N3: 'n3'
   },
   madhya: {
     S: 's',
     R1: 'r1',
     R2: 'r2',
     G1: 'r2',
-    R3: 'r3',
-    G2: 'r3',
-    G3: 'g',
-    M1: 'm',
+    R3: 'g2',
+    G2: 'g2',
+    G3: 'g3',
+    M1: 'm1',
     M2: 'm2',
     P: 'p',
     D1: 'd1',
     D2: 'd2',
     N1: 'd2',
-    D3: 'd3',
-    N2: 'd3',
-    N3: 'n'
+    D3: 'n2',
+    N2: 'n2',
+    N3: 'n3'
   },
   taara: {
     S: 's',
