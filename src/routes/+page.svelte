@@ -14,6 +14,7 @@
   import { settingsStore } from '../app/stores/settings.store';
   import { uiStore } from '../app/stores/ui.store';
   import { startPianoNote, stopPianoNote, releaseAllPianoNotes } from '../app/actions/piano.actions';
+  import { MAX_TEMPO } from '../domain/shared/constants';
   import type { ActivePianoKeys } from '../domain/piano/piano.types';
   import { filterRagas, formatRagaNotation } from '../domain/raga/raga-library';
   import type { RagaLibraryEntry } from '../domain/raga/raga-library';
@@ -509,7 +510,7 @@
           <input
             type="range"
             min="40"
-            max="180"
+            max={MAX_TEMPO}
             value={$settingsStore.tempo}
             on:input={(event) => mainPlayerHandlers.updateTempo(Number((event.currentTarget as HTMLInputElement).value))}
           />

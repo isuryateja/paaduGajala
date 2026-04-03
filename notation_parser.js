@@ -98,6 +98,16 @@ const RHYTHM_MARKERS = {
 };
 
 /**
+ * Sustain marker character
+ */
+const SUSTAIN_MARKER = '_';
+
+/**
+ * Beat rest marker character
+ */
+const BEAT_REST_MARKER = ',';
+
+/**
  * Whitespace characters to ignore during parsing
  */
 const WHITESPACE_CHARS = /\s/;
@@ -222,6 +232,8 @@ function normalizeInput(text) {
 const TOKEN_TYPES = {
     SVARA: 'svara',
     RHYTHM_MARKER: 'rhythm_marker',
+    SUSTAIN_UNIT: 'sustain_unit',
+    BEAT_REST: 'beat_rest',
     NEWLINE: 'newline',
     WHITESPACE: 'whitespace',
     UNKNOWN: 'unknown'
@@ -248,6 +260,7 @@ function tokenize(text) {
                 type: TOKEN_TYPES.RHYTHM_MARKER,
                 value: '||',
                 subtype: 'double',
+                boundaryKind: 'phrase',
                 position: i
             });
             i += 2;
@@ -260,6 +273,27 @@ function tokenize(text) {
                 type: TOKEN_TYPES.RHYTHM_MARKER,
                 value: '|',
                 subtype: 'single',
+                boundaryKind: 'beat',
+                position: i
+            });
+            i++;
+            continue;
+        }
+
+        if (char === SUSTAIN_MARKER) {
+            tokens.push({
+                type: TOKEN_TYPES.SUSTAIN_UNIT,
+                value: SUSTAIN_MARKER,
+                position: i
+            });
+            i++;
+            continue;
+        }
+
+        if (char === BEAT_REST_MARKER) {
+            tokens.push({
+                type: TOKEN_TYPES.BEAT_REST,
+                value: BEAT_REST_MARKER,
                 position: i
             });
             i++;
@@ -406,8 +440,21 @@ function extractSvara(text, startIndex) {
  *     type: 'rhythm_marker',
  *     marker: '|',
  *     subtype: 'single',
+ *     boundaryKind: 'beat',
  *     line: 1,
  *     position: 10
+ *   },
+ *   {
+ *     type: 'sustain_unit',
+ *     units: 1,
+ *     line: 1,
+ *     position: 12
+ *   },
+ *   {
+ *     type: 'beat_rest',
+ *     beats: 1,
+ *     line: 1,
+ *     position: 14
  *   }
  * ]
  */
@@ -456,9 +503,29 @@ function parseNotation(text, options = {}) {
                     type: 'rhythm_marker',
                     marker: token.value,
                     subtype: token.subtype,
+                    boundaryKind: token.boundaryKind,
                     line: currentLine,
                     position: token.position
                 });
+                break;
+
+            case TOKEN_TYPES.SUSTAIN_UNIT:
+                notes.push({
+                    type: 'sustain_unit',
+                    units: 1,
+                    line: currentLine,
+                    position: token.position
+                });
+                break;
+
+            case TOKEN_TYPES.BEAT_REST:
+                notes.push({
+                    type: 'beat_rest',
+                    beats: 1,
+                    line: currentLine,
+                    position: token.position
+                });
+                lastSvaraIndex = -1;
                 break;
                 
             case TOKEN_TYPES.NEWLINE:
@@ -537,7 +604,35 @@ function parseNotationByLines(text) {
  */
 function parseSvarasOnly(text) {
     const notes = parseNotation(text);
-    return notes.filter(note => note.type === 'svara');
+    const svaras = [];
+    let activeSvara = null;
+
+    for (const note of notes) {
+        if (note.type === 'svara') {
+            const svara = { ...note };
+            svaras.push(svara);
+            activeSvara = svara;
+            continue;
+        }
+
+        if (note.type === 'sustain_unit') {
+            if (activeSvara) {
+                activeSvara.duration += note.units || 1;
+            }
+            continue;
+        }
+
+        if (note.type === 'beat_rest') {
+            activeSvara = null;
+            continue;
+        }
+
+        if (note.type === 'rhythm_marker' || note.type === 'newline') {
+            activeSvara = null;
+        }
+    }
+
+    return svaras;
 }
 
 /**
@@ -625,6 +720,11 @@ function notationToString(notes, options = {}) {
                 result += separator;
             }
             result += note.marker;
+        } else if (note.type === 'beat_rest') {
+            if (result && !result.endsWith('\n') && !result.endsWith(separator)) {
+                result += separator;
+            }
+            result += BEAT_REST_MARKER;
         } else if (note.type === 'newline') {
             result += '\n';
             currentLine++;

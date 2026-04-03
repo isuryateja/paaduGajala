@@ -1,6 +1,7 @@
 import { get } from 'svelte/store';
 import { AudioEngine } from '../../domain/audio/audio-engine';
-import type { SequenceNote } from '../../domain/audio/audio.types';
+import type { SequenceItem } from '../../domain/audio/audio.types';
+import { buildTimedNotationSequence } from '../../domain/notation/notation.sequence';
 import { playbackStore } from '../stores/playback.store';
 import { notationStore } from '../stores/notation.store';
 import { settingsStore } from '../stores/settings.store';
@@ -9,18 +10,16 @@ import { pushToast, setStatus } from '../stores/ui.store';
 export const audioEngine = new AudioEngine();
 let playbackBindingsInitialized = false;
 let suppressReadyResetOnSequenceEnd = false;
-let pausedPlayback: { notes: SequenceNote[]; tempo: number } | null = null;
+let pausedPlayback: { items: SequenceItem[]; tempo: number; sequenceLength: number } | null = null;
 
-function createSequenceNotes(): SequenceNote[] {
+function createPlaybackSequence(): { items: SequenceItem[]; sequenceLength: number } {
   const { parsed } = get(notationStore);
-  return parsed
-    .filter((node) => node.type === 'svara')
-    .map((node, index) => ({
-      svara: node.svara,
-      octave: node.octave,
-      duration: node.duration,
-      originalIndex: index
-    }));
+  const { items, sequenceLength } = buildTimedNotationSequence(parsed);
+  return { items, sequenceLength };
+}
+
+function findResumeItemIndex(items: SequenceItem[], resumeIndex: number): number {
+  return items.findIndex((item) => item.type === 'svara' && (item.originalIndex ?? -1) >= resumeIndex);
 }
 
 function initializePlaybackBindings(): void {
@@ -62,8 +61,8 @@ export async function ensureAudioReady(): Promise<void> {
 }
 
 export async function startPlayback(): Promise<void> {
-  const notes = createSequenceNotes();
-  if (notes.length === 0) {
+  const { items, sequenceLength } = createPlaybackSequence();
+  if (sequenceLength === 0) {
     setStatus({ tone: 'warning', text: 'Parse notation before playback' });
     pushToast('Please parse notation first', 'warning');
     return;
@@ -73,11 +72,11 @@ export async function startPlayback(): Promise<void> {
   const { tempo } = get(settingsStore);
 
   pausedPlayback = null;
-  audioEngine.playSequence(notes, tempo);
+  audioEngine.playSequence(items, tempo);
   playbackStore.set({
     status: 'playing',
     currentIndex: -1,
-    sequenceLength: notes.length
+    sequenceLength
   });
   setStatus({ tone: 'info', text: 'Playing' });
 }
@@ -88,18 +87,20 @@ export function pausePlayback(): void {
     return;
   }
 
-  const notes = createSequenceNotes();
+  const { items, sequenceLength } = createPlaybackSequence();
   const resumeIndex = Math.max(state.currentIndex, 0);
-  const remainingNotes = notes.slice(resumeIndex);
+  const resumeItemIndex = findResumeItemIndex(items, resumeIndex);
+  const remainingItems = resumeItemIndex >= 0 ? items.slice(resumeItemIndex) : [];
 
-  if (remainingNotes.length === 0) {
+  if (remainingItems.length === 0) {
     stopPlayback();
     return;
   }
 
   pausedPlayback = {
-    notes: remainingNotes,
-    tempo: get(settingsStore).tempo
+    items: remainingItems,
+    tempo: get(settingsStore).tempo,
+    sequenceLength
   };
 
   suppressReadyResetOnSequenceEnd = true;
@@ -108,27 +109,27 @@ export function pausePlayback(): void {
     ...current,
     status: 'paused',
     currentIndex: current.currentIndex,
-    sequenceLength: notes.length
+    sequenceLength
   }));
   setStatus({ tone: 'info', text: 'Paused' });
   pushToast('Playback paused', 'info');
 }
 
 export async function resumePlayback(): Promise<void> {
-  if (!pausedPlayback || pausedPlayback.notes.length === 0) {
+  if (!pausedPlayback || pausedPlayback.items.length === 0) {
     await startPlayback();
     return;
   }
 
   await ensureAudioReady();
-  const { notes, tempo } = pausedPlayback;
+  const { items, tempo, sequenceLength } = pausedPlayback;
   pausedPlayback = null;
 
-  audioEngine.playSequence(notes, tempo);
+  audioEngine.playSequence(items, tempo);
   playbackStore.update((state) => ({
     ...state,
     status: 'playing',
-    sequenceLength: notes.length
+    sequenceLength
   }));
   setStatus({ tone: 'info', text: 'Playing' });
 }

@@ -1,11 +1,19 @@
-import { DEFAULT_TEMPO, DEFAULT_TUNING, DEFAULT_VOLUME, DEFAULT_WAVEFORM } from '../shared/constants';
+import { DEFAULT_TEMPO, DEFAULT_TUNING, DEFAULT_VOLUME, DEFAULT_WAVEFORM, MAX_TEMPO, MIN_TEMPO } from '../shared/constants';
 import { clamp } from '../../lib/utils/clamp';
 import { createId } from '../../lib/ids/create-id';
 import { BASE_SA_FREQUENCY, JUST_INTONATION_RATIOS, getSvaraFrequency } from '../pitch/svara-frequencies';
 import type { OctaveName, TuningMode, WaveformType } from '../shared/types';
-import type { AudioEngineConfig, AudioVoice, SequenceNote, SequenceState } from './audio.types';
+import type { AudioEngineConfig, AudioVoice, SequenceBoundary, SequenceItem, SequenceNote, SequenceSilence, SequenceState } from './audio.types';
 
 type EngineEvent = 'noteOn' | 'noteOff' | 'noteIndex' | 'sequenceStart' | 'sequenceEnd' | 'ready';
+
+function isSequenceBoundary(item: SequenceItem): item is SequenceBoundary {
+  return item.type === 'boundary';
+}
+
+function isSequenceSilence(item: SequenceItem): item is SequenceSilence {
+  return item.type === 'silence';
+}
 
 export class AudioEngine {
   audioContext: AudioContext | null = null;
@@ -131,7 +139,7 @@ export class AudioEngine {
     return true;
   }
 
-  playSequence(notes: SequenceNote[], tempo: number = DEFAULT_TEMPO, options: { loop?: boolean; loopCount?: number } = {}): SequenceState | null {
+  playSequence(notes: SequenceItem[], tempo: number = DEFAULT_TEMPO, options: { loop?: boolean; loopCount?: number } = {}): SequenceState | null {
     if (!this.isInitialized || !this.audioContext) {
       return null;
     }
@@ -161,15 +169,31 @@ export class AudioEngine {
       }
 
       let cursor = this.audioContext.currentTime;
+      let hasScheduledPlayableContent = false;
+
       for (let index = 0; index < notes.length; index += 1) {
         const note = notes[index];
+        if (isSequenceBoundary(note)) {
+          if (note.boundaryKind === 'phrase' && hasScheduledPlayableContent) {
+            cursor += this.beatDuration;
+          }
+          continue;
+        }
+
+        if (isSequenceSilence(note)) {
+          cursor += note.duration * this.beatDuration;
+          continue;
+        }
+
         if (note.rest) {
+          hasScheduledPlayableContent = true;
           cursor += (note.duration ?? 1) * this.beatDuration;
           continue;
         }
 
         this.scheduleSequenceNoteIndex(note, cursor, index);
         this.playSvara(note.svara, note.octave ?? 'madhya', note.duration ?? 1, note.velocity ?? 1, cursor);
+        hasScheduledPlayableContent = true;
         cursor += (note.duration ?? 1) * this.beatDuration;
       }
 
@@ -213,7 +237,7 @@ export class AudioEngine {
   }
 
   setTempo(bpm: number): void {
-    this.tempo = clamp(bpm, 30, 300);
+    this.tempo = clamp(bpm, MIN_TEMPO, MAX_TEMPO);
     this.beatDuration = 60 / this.tempo;
   }
 

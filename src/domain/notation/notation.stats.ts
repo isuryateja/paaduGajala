@@ -1,5 +1,6 @@
 import * as legacyNotationModule from '../../../notation_parser.js';
-import { parseSvarasOnly } from './notation.parser';
+import { parseNotation, parseSvarasOnly } from './notation.parser';
+import { buildTimedNotationSequence } from './notation.sequence';
 
 type LegacyStats = {
   totalNotes: number;
@@ -21,7 +22,7 @@ export function getNotationStats(text: string): LegacyStats {
 
 export function getNotationPreviewStats(text: string, tempo: number): { totalBeats: number; durationSeconds: number; octavesUsed: number } {
   const svaras = parseSvarasOnly(text);
-  const totalBeats = svaras.reduce((sum, note) => sum + (note.duration || 1), 0);
+  const totalBeats = buildTimedNotationSequence(parseNotation(text)).totalUnits;
   const octavesUsed = new Set(svaras.map((note) => note.octave)).size;
 
   return {

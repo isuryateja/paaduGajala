@@ -1,12 +1,15 @@
 import { get } from 'svelte/store';
 import { AudioEnginePresets } from '../../domain/audio/audio.presets';
+import { MAX_TEMPO, MIN_TEMPO } from '../../domain/shared/constants';
+import { clamp } from '../../lib/utils/clamp';
 import { settingsStore } from '../stores/settings.store';
 import { audioEngine } from './playback.actions';
 import { pushToast } from '../stores/ui.store';
 
 export function updateTempo(tempo: number): void {
-  settingsStore.update((state) => ({ ...state, tempo }));
-  audioEngine.setTempo(tempo);
+  const nextTempo = clamp(tempo, MIN_TEMPO, MAX_TEMPO);
+  settingsStore.update((state) => ({ ...state, tempo: nextTempo }));
+  audioEngine.setTempo(nextTempo);
 }
 
 export function updateVolume(volume: number): void {
