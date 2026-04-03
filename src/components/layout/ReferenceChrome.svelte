@@ -1,5 +1,5 @@
 <script lang="ts">
-  export let activeTab: 'swara-to-sruti' | 'sruti-to-swara' | 'theory' = 'swara-to-sruti';
+  export let activeTab: 'swara-to-sruti' | 'sruti-to-swara' | 'theory' | 'nada-vinodam' = 'swara-to-sruti';
 
   const navItems = [
     { id: 'swara-to-sruti', href: '/', label: 'Swara to Sruti' },
