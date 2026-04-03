@@ -62,6 +62,24 @@ export function buildPreviewNotationTokens(nodes: ParsedNotationNode[]): Preview
       continue;
     }
 
+    if (node.type === 'sustain_unit') {
+      previewTokens.push({
+        type: 'sustain_unit',
+        text: '_',
+        position: node.position
+      });
+      continue;
+    }
+
+    if (node.type === 'beat_rest') {
+      previewTokens.push({
+        type: 'beat_rest',
+        text: ',',
+        position: node.position
+      });
+      continue;
+    }
+
     if (node.type === 'newline') {
       previewTokens.push({
         type: 'newline',

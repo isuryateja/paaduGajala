@@ -20,8 +20,8 @@
     <p>
       paaduGajala is a browser-only Carnatic music notation player. there is no backend, no server, no
       database. everything lives in the browser. the user types (or loads) notation in English svara
-      shorthand, the app parses it into a structured AST, resolves each svara to a frequency, and
-      drives the Web Audio API to produce sound.
+      shorthand, the app parses it into a structured AST, resolves that AST into a timed playback
+      sequence, maps each svara to a frequency, and drives the Web Audio API to produce sound.
     </p>
     <p>
       the stack: <strong>SvelteKit + Vite</strong> for the app shell, <strong>Svelte 5</strong>
@@ -42,7 +42,9 @@
       <div class="flow-row" style="margin-top: 0.75rem;">
         <div class="box">ParsedNotationNode[]</div>
         <div class="arrow">→</div>
-        <div class="box accent">frequency resolver</div>
+        <div class="box accent">timed sequence builder</div>
+        <div class="arrow">→</div>
+        <div class="box">SequenceItem[]</div>
         <div class="arrow">→</div>
         <div class="box accent">AudioEngine</div>
         <div class="arrow">→</div>
@@ -146,7 +148,10 @@
     <p>
       rhythm is marked with <code>|</code> (single danda — beat separator) and <code>||</code>
       (double danda — end of phrase/line). Unicode dandas (। ॥) are also accepted. whitespace and
-      tabs between svaras is ignored. each newline starts a new line-group.
+      tabs between svaras is ignored. <code>_</code> means one timing unit of sustain: if it follows
+      a svara in the same region it extends that note, otherwise it becomes silence. <code>,</code>
+      means one explicit beat-rest: always a full beat of silence at the current tempo. each newline
+      starts a new line-group.
     </p>
 
     <p>example notation:</p>
@@ -220,6 +225,8 @@ G3    G3    M1    M1 |   P     P    |    D1    D1    ||</pre>
     <ol>
       <li>double rhythm marker (<code>||</code> or <code>॥</code>) — consumes 2 chars</li>
       <li>single rhythm marker (<code>|</code> or <code>।</code>)</li>
+      <li>sustain unit <code>_</code></li>
+      <li>beat rest <code>,</code></li>
       <li>newline <code>\n</code></li>
       <li>whitespace</li>
       <li><code>extractSvara()</code> — tries to build a svara token:
@@ -233,15 +240,16 @@ G3    G3    M1    M1 |   P     P    |    D1    D1    ||</pre>
       <li>unknown char — emitted as-is for validation warnings</li>
     </ol>
 
-    <p>token types emitted: <code>svara | rhythm_marker | newline | whitespace | unknown</code></p>
+    <p>token types emitted: <code>svara | rhythm_marker | sustain_unit | beat_rest | newline | whitespace | unknown</code></p>
 
     <h3>phase 2 — parser</h3>
     <p>
       the parser walks the token stream and produces <code>ParsedNotationNode[]</code>. each svara
       token becomes a <code>ParsedSvara</code> node. rhythm markers are attached to the
       <em>preceding svara</em> as <code>beatMarker</code> and also emitted as standalone
-      <code>RhythmMarkerNode</code> entries (for visualisation). newlines emit a
-      <code>NewlineNode</code> and reset the line counter.
+      <code>RhythmMarkerNode</code> entries (for visualisation). <code>_</code> becomes a
+      <code>SustainUnitNode</code>; <code>,</code> becomes a <code>BeatRestNode</code>.
+      newlines emit a <code>NewlineNode</code> and reset the line counter.
     </p>
 
     <div class="code-block">
@@ -265,10 +273,11 @@ G3    G3    M1    M1 |   P     P    |    D1    D1    ||</pre>
       </thead>
       <tbody>
         <tr><td><code>parseNotation(text)</code></td><td><code>ParsedNotationNode[]</code></td><td>full AST — playback + visualisation</td></tr>
-        <tr><td><code>parseSvarasOnly(text)</code></td><td><code>ParsedSvara[]</code></td><td>quick svara count, validation check</td></tr>
+        <tr><td><code>parseSvarasOnly(text)</code></td><td><code>ParsedSvara[]</code></td><td>quick svara count, validation check, sustain-folded svara durations</td></tr>
         <tr><td><code>parseNotationByLines(text)</code></td><td><code>ParsedSvara[][]</code></td><td>line-by-line stats</td></tr>
         <tr><td><code>tokenize(text)</code></td><td><code>NotationToken[]</code></td><td>raw token stream for debugging</td></tr>
         <tr><td><code>buildPreviewNotationTokens(nodes)</code></td><td><code>PreviewNotationToken[]</code></td><td>renders the styled notation preview in the UI</td></tr>
+        <tr><td><code>buildTimedNotationSequence(nodes)</code></td><td><code>&#123; items, sequenceLength, totalUnits &#125;</code></td><td>turns parsed notation into timed notes, boundaries, and silence for playback</td></tr>
       </tbody>
     </table>
 
@@ -277,7 +286,9 @@ G3    G3    M1    M1 |   P     P    |    D1    D1    ||</pre>
       <code>validateNotation(text)</code> runs the tokenizer and checks: (a) at least one valid
       svara exists, (b) any unknown tokens get surfaced as warnings. it returns a
       <code>NotationValidationResult</code> with a <code>valid</code> boolean and an
-      <code>issues[]</code> array. validation runs before any parse in <code>parseCurrentNotation()</code>.
+      <code>issues[]</code> array. <code>_</code> and <code>,</code> are valid syntax, but they do
+      not count as playable notation by themselves. validation runs before any parse in
+      <code>parseCurrentNotation()</code>.
     </p>
   </section>
 
@@ -413,16 +424,22 @@ S'  (taara)  = 523.25 Hz  ← C5</pre>
 
     <h3>sequence playback</h3>
     <p>
-      <code>playSequence(notes, tempo)</code> schedules all notes ahead-of-time using
-      <code>audioContext.currentTime</code> as a cursor. this avoids setInterval jitter — audio
-      scheduling is sample-accurate. for each note:
+      <code>playSequence(notes, tempo)</code> consumes a <code>SequenceItem[]</code> stream, not
+      just raw svaras. those items come from <code>buildTimedNotationSequence()</code> and can be:
+      playable svaras, structural boundaries, or silence segments. the engine schedules everything
+      ahead-of-time using <code>audioContext.currentTime</code> as a cursor. this avoids
+      setInterval jitter — audio scheduling is sample-accurate.
     </p>
     <ol>
-      <li>a <code>scheduleSequenceNoteIndex</code> call plants a <code>setTimeout</code> timed to
-        emit a <code>noteIndex</code> event when the note starts playing (used to light up the
-        correct svara in the notation preview)</li>
-      <li><code>playSvara(…, when: cursor)</code> creates the voice at the scheduled audio time</li>
-      <li>the cursor advances by <code>duration × beatDuration</code></li>
+      <li>if the item is a svara, <code>scheduleSequenceNoteIndex</code> plants a timeout to emit a
+        <code>noteIndex</code> event when that note starts, then <code>playSvara(…, when: cursor)</code>
+        creates the voice at the scheduled audio time</li>
+      <li>if the item is a beat boundary <code>|</code>, the cursor does not move</li>
+      <li>if the item is a phrase boundary <code>||</code>, the cursor advances by one beat after
+        preceding musical content</li>
+      <li>if the item is <code>silence</code>, the cursor advances by <code>duration × beatDuration</code>;
+        these silence items come from leading/post-boundary <code>_</code> and from explicit
+        comma rests <code>,</code></li>
     </ol>
     <p>
       <code>beatDuration = 60 / tempo</code> (seconds per beat). default tempo is 120 BPM.
@@ -566,7 +583,8 @@ key-id format:  "&#123;shortName&#125;:&#123;octaveIndex&#125;"
       </li>
       <li>"Play" button → <code>startPlayback()</code>:
         <ul>
-          <li><code>createSequenceNotes()</code> — filters <code>parsed</code> for type=svara → <code>SequenceNote[]</code></li>
+          <li><code>buildTimedNotationSequence(parsed)</code> — resolves the AST into
+            <code>SequenceItem[]</code> with svaras, boundaries, and silence</li>
           <li><code>audioEngine.init()</code> — creates AudioContext on first play (browser policy)</li>
           <li><code>audioEngine.playSequence(notes, tempo)</code> — schedules all notes</li>
           <li><code>playbackStore</code> set to status=playing</li>
@@ -596,9 +614,10 @@ key-id format:  "&#123;shortName&#125;:&#123;octaveIndex&#125;"
         API and clean themselves up via <code>onended</code>. there is no voice-stealing system.
       </li>
       <li>
-        <strong>duration is always 1 akshara</strong> — the parser sets <code>duration: 1</code>
-        for every svara. the notation syntax does not yet express held notes (e.g. a svara worth
-        2 beats). this is a planned extension.
+        <strong>base svara duration starts at 1 unit, but playback is now timing-aware</strong> —
+        the parser still creates svaras with <code>duration: 1</code> as the base shape, but the
+        timed sequence layer can extend notes with <code>_</code>, insert explicit beat rests with
+        <code>,</code>, and add phrase pauses for <code>||</code>.
       </li>
       <li>
         <strong>no gamakam</strong> — ornaments (gamakam, meend, kan svaras) are not modelled.

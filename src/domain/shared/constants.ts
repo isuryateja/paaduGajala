@@ -1,6 +1,8 @@
 import type { PlaybackStatus, StatusState } from './types';
 
 export const DEFAULT_TEMPO = 120;
+export const MIN_TEMPO = 30;
+export const MAX_TEMPO = 300;
 export const DEFAULT_VOLUME = 0.7;
 export const DEFAULT_WAVEFORM = 'triangle' as const;
 export const DEFAULT_TUNING = 'equal' as const;

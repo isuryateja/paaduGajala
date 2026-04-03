@@ -26,4 +26,20 @@ describe('notation stats', () => {
     expect(previewStats.durationSeconds).toBe(2.5);
     expect(previewStats.octavesUsed).toBe(2);
   });
+
+  it('includes sustain-driven note extension and leading silence in preview duration', () => {
+    const previewStats = getNotationPreviewStats('_ _ S R1 | G3 _ ||', 60);
+
+    expect(previewStats.totalBeats).toBe(6);
+    expect(previewStats.durationSeconds).toBe(6);
+    expect(previewStats.octavesUsed).toBe(1);
+  });
+
+  it('includes beat rests in preview duration using tempo-scaled beat counts', () => {
+    const previewStats = getNotationPreviewStats('S , , R1 || , G3', 120);
+
+    expect(previewStats.totalBeats).toBe(6);
+    expect(previewStats.durationSeconds).toBe(3);
+    expect(previewStats.octavesUsed).toBe(1);
+  });
 });

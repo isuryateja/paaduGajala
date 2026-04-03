@@ -30,7 +30,7 @@
               <sup>.</sup>
             {/if}
           </span>
-        {:else if token.type === 'rhythm_marker'}
+        {:else if token.type === 'rhythm_marker' || token.type === 'sustain_unit' || token.type === 'beat_rest'}
           <span class="marker">{token.text}</span>
         {:else if token.type === 'newline'}
           <br />

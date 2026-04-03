@@ -29,6 +29,7 @@ export interface AudioVoice {
 }
 
 export interface SequenceNote {
+  type?: 'svara';
   svara: string;
   octave?: OctaveName;
   duration?: number;
@@ -37,8 +38,23 @@ export interface SequenceNote {
   originalIndex?: number;
 }
 
+export interface SequenceBoundary {
+  type: 'boundary';
+  boundaryKind: 'beat' | 'phrase';
+  marker: '|' | '||';
+  originalIndex?: number;
+}
+
+export interface SequenceSilence {
+  type: 'silence';
+  duration: number;
+  originalIndex?: number;
+}
+
+export type SequenceItem = SequenceNote | SequenceBoundary | SequenceSilence;
+
 export interface SequenceState {
-  notes: SequenceNote[];
+  notes: SequenceItem[];
   tempo: number;
   loop: boolean;
   loopCount: number;

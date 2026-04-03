@@ -17,4 +17,32 @@ describe('notation validation', () => {
     expect(result.issues.some((issue) => issue.message.includes('Unknown character'))).toBe(true);
     expect(result.issues.some((issue) => issue.message === 'No svara notation found in input')).toBe(true);
   });
+
+  it('accepts sustain markers as valid notation syntax', () => {
+    const result = validateNotation('_ _ S ||');
+
+    expect(result.valid).toBe(true);
+    expect(result.issues.some((issue) => issue.message.includes('Unknown character'))).toBe(false);
+  });
+
+  it('accepts beat rests as valid notation syntax', () => {
+    const result = validateNotation(', S , R1');
+
+    expect(result.valid).toBe(true);
+    expect(result.issues.some((issue) => issue.message.includes('Unknown character'))).toBe(false);
+  });
+
+  it('does not treat sustain-only input as playable notation', () => {
+    const result = validateNotation('_ _ _');
+
+    expect(result.valid).toBe(false);
+    expect(result.issues).toEqual([expect.objectContaining({ message: 'No svara notation found in input' })]);
+  });
+
+  it('does not treat rest-only input as playable notation', () => {
+    const result = validateNotation(', ,');
+
+    expect(result.valid).toBe(false);
+    expect(result.issues).toEqual([expect.objectContaining({ message: 'No svara notation found in input' })]);
+  });
 });
