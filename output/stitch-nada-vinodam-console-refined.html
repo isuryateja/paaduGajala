@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="light" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Paadu Gajala | Nāda Vinōdam</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;700;900&amp;family=Public+Sans:wght@300;400;600&amp;family=Montserrat:wght@600;700;800;900&amp;family=Inter:wght@300;400;500;600&amp;family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    "colors": {
+                        "secondary-container": "#aadafe",
+                        "on-error-container": "#93000a",
+                        "surface-bright": "#fcf9f2",
+                        "on-surface-variant": "#40484c",
+                        "primary-container": "#6fa3b8",
+                        "on-secondary-fixed-variant": "#134b69",
+                        "primary": "#2f6578",
+                        "on-error": "#ffffff",
+                        "on-primary-fixed-variant": "#0f4d5f",
+                        "tertiary-container": "#dc8662",
+                        "on-secondary-container": "#2e607f",
+                        "surface-tint": "#2f6578",
+                        "outline": "#71787c",
+                        "on-background": "#1c1c18",
+                        "primary-fixed": "#b9eaff",
+                        "primary-fixed-dim": "#9acee4",
+                        "secondary-fixed-dim": "#9cccef",
+                        "surface-variant": "#e5e2db",
+                        "surface-container-high": "#ebe8e1",
+                        "on-secondary-fixed": "#001e2e",
+                        "on-tertiary-fixed": "#370e00",
+                        "tertiary-fixed": "#ffdbce",
+                        "on-primary-container": "#003848",
+                        "surface-container": "#f1eee7",
+                        "error": "#ba1a1a",
+                        "surface-dim": "#dcdad3",
+                        "tertiary": "#924a2c",
+                        "on-primary-fixed": "#001f29",
+                        "error-container": "#ffdad6",
+                        "on-tertiary-fixed-variant": "#743417",
+                        "on-surface": "#1c1c18",
+                        "secondary": "#316382",
+                        "tertiary-fixed-dim": "#ffb598",
+                        "on-tertiary": "#ffffff",
+                        "surface": "#fcf9f2",
+                        "inverse-primary": "#9acee4",
+                        "inverse-on-surface": "#f3f0e9",
+                        "secondary-fixed": "#c7e7ff",
+                        "on-secondary": "#ffffff",
+                        "surface-container-lowest": "#ffffff",
+                        "surface-container-low": "#f6f3ec",
+                        "surface-container-highest": "#e5e2db",
+                        "outline-variant": "#c0c8cc",
+                        "on-tertiary-container": "#5c2105",
+                        "inverse-surface": "#31312c",
+                        "background": "#fcf9f2",
+                        "on-primary": "#ffffff"
+                    },
+                    "borderRadius": {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "full": "9999px"
+                    },
+                    "fontFamily": {
+                        "headline": ["Montserrat", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                        "label": ["Inter", "sans-serif"]
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .noise-texture {
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            opacity: 0.05;
+        }
+        .knob-shadow {
+            box-shadow: inset 0 2px 4px rgba(255,255,255,0.3), 0 4px 8px rgba(0,0,0,0.4);
+        }
+        .console-depth {
+            box-shadow: inset 0 0 60px rgba(0,0,0,0.1), 0 20px 50px -10px rgba(0,0,0,0.3);
+        }
+        .meter-glow {
+            box-shadow: 0 0 15px rgba(111, 163, 184, 0.4);
+        }
+        .digital-glow {
+            text-shadow: 0 0 8px rgba(111, 163, 184, 0.6);
+        }
+    </style>
+</head>
+<body class="bg-surface font-body text-on-surface min-h-screen flex flex-col">
+<!-- TopAppBar - Exactly like SCREEN_37 -->
+<header class="bg-[#fcf9f2] dark:bg-stone-900 sticky top-0 z-50 border-b border-surface-container">
+<div class="flex justify-between items-center w-full px-6 py-5 max-w-7xl mx-auto">
+<div class="text-2xl font-black text-[#2f6578] dark:text-[#6fa3b8] uppercase font-headline tracking-tighter">
+<img alt="Paadu Gajala Logo" class="w-auto object-contain h-16" src="https://lh3.googleusercontent.com/aida/ADBb0ugM-mMGrekTsOcOIWZdGYSOi-FuDQzAugbF5xtuA4jdGSeF8Mr2juO2fdB6w0n3ZrxnOoNyviMXOWCt3dtvyk493sMaYEwgX9TTlP-Cm_-xFGx6qjtHVsGAOf0-G7oTjiXOy2oa_vWPQTbeud81_WTDGxSEomX8DIadoGYxntFRjVuzmQZGJDHg95HPl9zjAp7-SELu7RfaKBSMfCyCnTVRzfC8YRo_FcnQEImWZYn6TykzriftwZnMAkr48Bndo277U-ridwnP-A"/>
+</div>
+<nav class="hidden md:flex items-center gap-10">
+<a class="text-[#2f6578] dark:text-[#6fa3b8] font-headline font-bold text-sm tracking-wide hover:text-[#924a2c] transition-colors" href="#">Swara to Śruti</a>
+<a class="text-[#2f6578]/60 dark:text-[#6fa3b8]/60 font-headline font-bold text-sm tracking-wide hover:text-[#924a2c] transition-colors" href="#">Śruti to Swara</a>
+<a class="text-[#2f6578]/60 dark:text-[#6fa3b8]/60 font-headline font-bold text-sm tracking-wide hover:text-[#924a2c] transition-colors" href="#">Theory</a>
+</nav>
+<div class="flex items-center gap-4">
+<button class="material-symbols-outlined text-[#2f6578] text-2xl">account_circle</button>
+</div>
+</div>
+</header>
+<main class="flex-grow flex flex-col items-center justify-center p-8 relative overflow-hidden">
+<div class="w-full max-w-6xl z-10">
+<div class="mb-12 text-center md:text-left">
+<h1 class="font-headline text-5xl font-black text-primary tracking-tighter uppercase mb-2">Nāda Vinōdam</h1>
+<p class="text-on-surface-variant font-medium tracking-wide">Model GAJ-1974 | Analog Frequency Diagnostic Tool</p>
+</div>
+<!-- The Console -->
+<div class="bg-[#C5C7C9] rounded-[2rem] p-1 console-depth relative border-t-8 border-l-4 border-r-4 border-white/20">
+<div class="noise-texture absolute inset-0 pointer-events-none rounded-[2rem]"></div>
+<div class="bg-gradient-to-br from-[#d1d3d5] to-[#b0b2b4] rounded-[1.8rem] p-10 grid grid-cols-12 gap-10 border border-black/10">
+<!-- Left Side: Controls -->
+<div class="col-span-12 lg:col-span-6 flex flex-col gap-8">
+<div class="flex items-center gap-6 bg-stone-200/40 p-6 rounded-2xl border border-white/40 shadow-inner">
+<!-- Frequency Knob (Large) -->
+<div class="flex flex-col items-center flex-shrink-0">
+<div class="relative w-28 h-28 rounded-full bg-gradient-to-b from-stone-400 to-stone-600 knob-shadow p-2 flex items-center justify-center">
+<div class="w-full h-full rounded-full bg-stone-300 border-b-4 border-stone-500 flex items-center justify-center relative rotate-[-45deg]">
+<div class="absolute top-2 w-1.5 h-4 bg-[#3E6F8E] rounded-full"></div>
+</div>
+</div>
+<span class="mt-4 text-[10px] font-black uppercase tracking-[0.2em] text-stone-700">Frequency</span>
+</div>
+<!-- Gain Knob (Small) -->
+<div class="flex flex-col items-center flex-shrink-0">
+<div class="relative w-16 h-16 rounded-full bg-gradient-to-b from-stone-400 to-stone-600 knob-shadow p-1 flex items-center justify-center">
+<div class="w-full h-full rounded-full bg-stone-300 border-b-2 border-stone-500 flex items-center justify-center relative rotate-[20deg]">
+<div class="absolute top-1 w-1 h-3 bg-[#A65A3A] rounded-full"></div>
+</div>
+</div>
+<span class="mt-3 text-[10px] font-black uppercase tracking-[0.2em] text-stone-700">Gain</span>
+</div>
+<!-- Envelope Sliders -->
+<div class="flex flex-col flex-grow justify-center gap-4">
+<div class="space-y-1">
+<div class="flex justify-between items-center px-1">
+<span class="text-[9px] font-bold text-stone-600 uppercase tracking-widest">Attack</span>
+</div>
+<input class="w-full h-1.5 bg-stone-400/50 rounded-full appearance-none cursor-pointer accent-[#3E6F8E]" type="range"/>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between items-center px-1">
+<span class="text-[9px] font-bold text-stone-600 uppercase tracking-widest">Release</span>
+</div>
+<input class="w-full h-1.5 bg-stone-400/50 rounded-full appearance-none cursor-pointer accent-[#3E6F8E]" type="range"/>
+</div>
+</div>
+</div>
+<!-- Waveform Selection -->
+<div class="p-6 bg-stone-200/50 rounded-2xl border border-white/40 shadow-sm">
+<label class="text-[9px] font-black text-stone-500 uppercase tracking-[0.3em] block text-center mb-6">Waveform Selection</label>
+<div class="flex justify-between items-center px-4">
+<button class="flex flex-col items-center gap-2 group">
+<div class="w-4 h-4 rounded-full border-2 border-stone-400 group-hover:border-[#3E6F8E] bg-white transition-all shadow-inner"></div>
+<span class="text-[9px] font-bold text-stone-600 uppercase">Sine</span>
+</button>
+<button class="flex flex-col items-center gap-2 group">
+<div class="w-4 h-4 rounded-full border-2 border-[#A65A3A] bg-[#A65A3A] shadow-[0_0_8px_rgba(166,90,58,0.5)]"></div>
+<span class="text-[9px] font-bold text-[#A65A3A] uppercase">Square</span>
+</button>
+<button class="flex flex-col items-center gap-2 group">
+<div class="w-4 h-4 rounded-full border-2 border-stone-400 group-hover:border-[#3E6F8E] bg-white transition-all shadow-inner"></div>
+<span class="text-[9px] font-bold text-stone-600 uppercase">Saw</span>
+</button>
+<button class="flex flex-col items-center gap-2 group">
+<div class="w-4 h-4 rounded-full border-2 border-stone-400 group-hover:border-[#3E6F8E] bg-white transition-all shadow-inner"></div>
+<span class="text-[9px] font-bold text-stone-600 uppercase">Tri</span>
+</button>
+</div>
+</div>
+<!-- Playback Buttons -->
+<div class="flex flex-col items-center gap-6 mt-2">
+<!-- Play Button -->
+<button class="w-32 h-32 rounded-2xl bg-gradient-to-b from-[#3E6F8E] to-[#204257] p-1 active:translate-y-1 shadow-[0_8px_16px_rgba(0,0,0,0.3)] transition-all">
+<div class="w-full h-full rounded-xl bg-[#3E6F8E] flex flex-col items-center justify-center border-t-2 border-white/20">
+<span class="material-symbols-outlined text-white text-3xl mb-1" style="font-variation-settings: 'FILL' 1;">play_arrow</span>
+<span class="text-white font-black text-[10px] tracking-widest">PLAY</span>
+</div>
+</button>
+<!-- Infinite Sustain Toggle -->
+<div class="flex flex-col items-center gap-2">
+<span class="text-[9px] font-black text-stone-600 uppercase tracking-[0.2em]">Infinite Sustain</span>
+<label class="relative inline-flex items-center cursor-pointer group">
+<input class="sr-only peer" type="checkbox"/>
+<div class="w-14 h-7 bg-stone-400 rounded-full shadow-inner border border-black/10 peer-checked:bg-[#A65A3A] transition-colors duration-300 relative">
+<!-- Track Detail -->
+<div class="absolute inset-1 rounded-full bg-black/10 shadow-inner"></div>
+<!-- Knob -->
+<div class="absolute top-0.5 left-0.5 w-6 h-6 bg-gradient-to-b from-stone-100 to-stone-300 rounded-full shadow-[0_2px_4px_rgba(0,0,0,0.4)] border border-white/20 transition-transform duration-300 peer-checked:translate-x-7 flex items-center justify-center">
+<div class="w-0.5 h-3 bg-stone-400 rounded-full"></div>
+</div>
+</div>
+</label>
+</div>
+</div>
+</div>
+<!-- Right Side: Visual Feedback -->
+<div class="col-span-12 lg:col-span-6 flex flex-col gap-6">
+<!-- Digital Display Area -->
+<div class="bg-stone-900 rounded-xl p-6 border-4 border-stone-700 shadow-inner flex flex-col gap-4">
+<div class="flex justify-between items-center">
+<span class="text-[10px] text-primary-container font-bold tracking-widest uppercase">Digital Readout</span>
+<div class="w-2 h-2 rounded-full bg-green-500 animate-pulse"></div>
+</div>
+<div class="grid grid-cols-2 gap-4">
+<div class="bg-stone-950/80 p-4 rounded-lg border border-white/5 flex flex-col items-center justify-center min-h-[100px]">
+<span class="text-[10px] text-stone-500 font-bold uppercase mb-1">Frequency</span>
+<span class="text-3xl font-mono text-primary-container digital-glow">261.63 <small class="text-sm">Hz</small></span>
+</div>
+<div class="bg-stone-950/80 p-4 rounded-lg border border-white/5 flex flex-col items-center justify-center min-h-[100px]">
+<span class="text-[10px] text-stone-500 font-bold uppercase mb-1">Svara Map</span>
+<span class="text-4xl font-black text-[#A65A3A] digital-glow font-headline">S</span>
+</div>
+</div>
+</div>
+<!-- Oscilloscope -->
+<div class="bg-stone-900 rounded-xl p-4 border-4 border-stone-700 shadow-inner h-48 flex flex-col">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[9px] text-primary-container/70 font-bold tracking-widest uppercase">Oscilloscope-Alpha</span>
+</div>
+<div class="flex-grow flex items-center justify-center relative overflow-hidden bg-stone-950/50 rounded-lg">
+<svg class="w-full h-full stroke-[#6FA3B8] fill-none opacity-80" viewbox="0 0 200 60">
+<path class="animate-wave" d="M0 30 Q 25 0, 50 30 T 100 30 T 150 30 T 200 30" stroke-width="2"></path>
+</svg>
+</div>
+</div>
+<!-- Signal Meter -->
+<div class="bg-stone-800/80 rounded-xl p-5 border-2 border-black/20 shadow-inner">
+<label class="text-[9px] font-bold text-stone-500 uppercase tracking-widest mb-3 block">Signal Peak (VU)</label>
+<div class="flex gap-2 h-10 items-end">
+<div class="w-full h-[20%] bg-[#6FA3B8]/40 rounded-sm"></div>
+<div class="w-full h-[40%] bg-[#6FA3B8]/60 rounded-sm"></div>
+<div class="w-full h-[80%] bg-[#6FA3B8] rounded-sm meter-glow"></div>
+<div class="w-full h-[95%] bg-[#A65A3A] rounded-sm shadow-[0_0_8px_#A65A3A]"></div>
+<div class="w-full h-[60%] bg-[#6FA3B8] rounded-sm"></div>
+<div class="w-full h-[30%] bg-[#6FA3B8]/50 rounded-sm"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Console Detail -->
+<div class="px-10 py-4 flex justify-between items-center bg-[#b0b2b4] rounded-b-[1.8rem] border-t border-black/10">
+<div class="flex items-center gap-6">
+<div class="w-3 h-3 rounded-full bg-stone-700 shadow-inner"></div>
+<span class="text-[9px] font-bold text-stone-600 uppercase tracking-widest">Diagnostic Output: Active</span>
+</div>
+<div class="text-[9px] font-bold text-stone-600 uppercase tracking-widest">
+                        Designated for: <span class="text-stone-800">Swaram Express Rail Division</span>
+</div>
+</div>
+</div>
+<!-- Descriptive Section -->
+<div class="mt-16 grid grid-cols-1 md:grid-cols-3 gap-12">
+<div class="space-y-4">
+<div class="h-1 w-12 bg-[#A65A3A]"></div>
+<h3 class="font-headline font-bold text-lg uppercase tracking-tight text-primary">Analog Integrity</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Our engine uses a proprietary jitter-free oscillator circuit, mimicking the vacuum tube warmth of early 70s broadcast consoles.</p>
+</div>
+<div class="space-y-4">
+<div class="h-1 w-12 bg-[#6FA3B8]"></div>
+<h3 class="font-headline font-bold text-lg uppercase tracking-tight text-primary">Rhythmic Precision</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Adjust temporal alignment down to the micro-level. Ideal for testing complex Thalam patterns and sequences.</p>
+</div>
+<div class="space-y-4">
+<div class="h-1 w-12 bg-secondary-container"></div>
+<h3 class="font-headline font-bold text-lg uppercase tracking-tight text-primary">Legacy Export</h3>
+<p class="text-sm text-on-surface-variant leading-relaxed">Direct output to high-fidelity magnetic tape simulators or digital workstation buffers. Pure audio, zero latency.</p>
+</div>
+</div>
+</div>
+</main>
+<!-- Footer - As in original but consistent with brand -->
+<footer class="bg-[#f6f3ec] dark:bg-stone-900 border-t border-surface-container py-12 mt-12">
+<div class="flex flex-col md:flex-row justify-between items-center px-8 gap-8 max-w-7xl mx-auto">
+<div class="text-xl font-black text-[#2f6578] font-headline uppercase tracking-tighter">పాడు గజాల</div>
+<div class="flex flex-wrap justify-center gap-10">
+<a class="text-[#2f6578]/60 hover:text-[#2f6578] text-[11px] font-bold uppercase tracking-widest transition-colors" href="#">Terms of Berth</a>
+<a class="text-[#2f6578]/60 hover:text-[#2f6578] text-[11px] font-bold uppercase tracking-widest transition-colors" href="#">Privacy Policy</a>
+<a class="text-[#2f6578]/60 hover:text-[#2f6578] text-[11px] font-bold uppercase tracking-widest transition-colors" href="#">Contact Station Master</a>
+</div>
+<div class="text-[#2f6578]/40 text-[10px] font-bold uppercase tracking-[0.2em]">© 1994 The Rhythmic Rail Conservatory</div>
+</div>
+</footer>
+</body></html>

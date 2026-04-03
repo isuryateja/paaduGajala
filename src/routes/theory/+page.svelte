@@ -21,6 +21,12 @@
   ];
 
   const maxQuickSequence = 4;
+  const nadaWaveforms = [
+    { label: 'Sine', active: false },
+    { label: 'Square', active: true },
+    { label: 'Saw', active: false },
+    { label: 'Tri', active: false }
+  ];
 
   let quickSequence = $state<string[]>(['S', 'R', 'G']);
 
@@ -152,6 +158,103 @@
         <span>Quick row</span>
         <span>Core swaras</span>
         <span>Full route: Arohanam + Avarohanam</span>
+      </div>
+    </section>
+
+    <section class="lab-preview">
+      <div class="lab-copy">
+        <p class="eyebrow">Sound Lab</p>
+        <h2>Nāda Vinōdam</h2>
+        <p class="lede">
+          A compact analog console preview for testing pitch, gain, waveform color, and live svara mapping before you open the full sound lab.
+        </p>
+
+        <div class="hero-notes">
+          <div>
+            <span class="note-label">What it does</span>
+            <p>Lets you preview the synthesis surface with a tactile mini-console right from the Theory workspace.</p>
+          </div>
+          <div>
+            <span class="note-label">What opens next</span>
+            <p>The full lab adds live playback, oscilloscope diagnostics, and continuous frequency shaping.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="widget-shell">
+        <div class="widget-rim nada-rim" aria-hidden="true"></div>
+        <section class="quick-widget nada-widget">
+          <div class="widget-header">
+            <div>
+              <h2>Nāda Vinōdam</h2>
+              <p>Quick Lab</p>
+            </div>
+          </div>
+
+          <div class="nada-topline">
+            <div class="nada-knob-bank" aria-hidden="true">
+              <div class="theory-knob large">
+                <span class="theory-indicator"></span>
+              </div>
+              <div class="theory-knob compact gain">
+                <span class="theory-indicator"></span>
+              </div>
+            </div>
+
+            <div class="nada-readout">
+              <span class="nada-readout-label">Digital Readout</span>
+              <div class="nada-readout-grid">
+                <div>
+                  <span class="nada-readout-key">Frequency</span>
+                  <strong>261.63</strong>
+                  <small>Hz</small>
+                </div>
+                <div>
+                  <span class="nada-readout-key">Svara</span>
+                  <strong class="accent">S</strong>
+                  <small>Madhya</small>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="nada-controls">
+            <div class="nada-mini-sliders" aria-hidden="true">
+              <div class="mini-slider">
+                <span>Attack</span>
+                <div class="track"><span class="thumb attack"></span></div>
+              </div>
+              <div class="mini-slider">
+                <span>Release</span>
+                <div class="track"><span class="thumb release"></span></div>
+              </div>
+            </div>
+
+            <div class="nada-waveform-row" aria-label="Waveform preview">
+              {#each nadaWaveforms as waveform}
+                <div class:active={waveform.active} class="waveform-chip">
+                  <span class="waveform-dot"></span>
+                  <span>{waveform.label}</span>
+                </div>
+              {/each}
+            </div>
+
+            <div class="nada-footer-row">
+              <div class="mini-scope" aria-hidden="true">
+                <span class="scope-line"></span>
+              </div>
+              <div class="mini-sustain">
+                <span>Infinite Sustain</span>
+                <span class="mini-toggle"><span></span></span>
+              </div>
+            </div>
+          </div>
+
+          <a class="widget-cta nada-cta" href="/nada-vinodam">
+            <span>Open Sound Lab</span>
+            <span class="material-symbols-outlined">tune</span>
+          </a>
+        </section>
       </div>
     </section>
   </section>
@@ -492,9 +595,330 @@
     font-weight: 700;
   }
 
+  .lab-preview {
+    display: grid;
+    gap: 2rem;
+    align-items: center;
+    padding-top: 0.5rem;
+  }
+
+  .lab-copy {
+    display: grid;
+    gap: 1rem;
+  }
+
+  .lab-copy h2 {
+    color: #2f6578;
+    font-family: 'Montserrat', sans-serif;
+    font-size: clamp(2.6rem, 6vw, 4.25rem);
+    font-weight: 900;
+    letter-spacing: -0.08em;
+    line-height: 0.92;
+    text-transform: uppercase;
+    max-width: 9ch;
+  }
+
+  .nada-rim {
+    background: linear-gradient(180deg, #924a2c, #dc8662);
+  }
+
+  .nada-widget {
+    width: min(100%, 32rem);
+    gap: 1.1rem;
+    padding: 1.4rem;
+    background:
+      radial-gradient(circle at top left, rgba(255, 255, 255, 0.42), transparent 35%),
+      linear-gradient(180deg, #d8d9db 0%, #b7b9bb 100%);
+    box-shadow: 0 28px 60px rgba(31, 42, 48, 0.14);
+  }
+
+  .nada-widget::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.68' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+    opacity: 0.03;
+    pointer-events: none;
+  }
+
+  .nada-topline,
+  .nada-controls {
+    display: grid;
+    gap: 0.9rem;
+  }
+
+  .nada-knob-bank {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0.55rem 0.2rem 0;
+  }
+
+  .theory-knob {
+    position: relative;
+    border-radius: 999px;
+    background: linear-gradient(180deg, rgba(226, 228, 230, 0.98), rgba(126, 131, 135, 0.96));
+    box-shadow:
+      inset 0 2px 0 rgba(255, 255, 255, 0.52),
+      0 10px 24px rgba(31, 42, 48, 0.18);
+  }
+
+  .theory-knob.large {
+    width: 5.8rem;
+    height: 5.8rem;
+  }
+
+  .theory-knob.compact {
+    width: 3rem;
+    height: 3rem;
+  }
+
+  .theory-knob::before {
+    content: '';
+    position: absolute;
+    inset: 0.45rem;
+    border-radius: inherit;
+    background:
+      radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.82), transparent 35%),
+      linear-gradient(180deg, rgba(215, 217, 219, 0.98), rgba(160, 164, 167, 0.95));
+    box-shadow:
+      inset 0 -4px 6px rgba(44, 48, 52, 0.18),
+      inset 0 1px 2px rgba(255, 255, 255, 0.35);
+  }
+
+  .theory-knob.compact::before {
+    inset: 0.25rem;
+  }
+
+  .theory-indicator {
+    position: absolute;
+    top: 0.6rem;
+    left: 50%;
+    z-index: 1;
+    width: 0.24rem;
+    height: 1.1rem;
+    border-radius: 999px;
+    background: #3e6f8e;
+    transform: translateX(-50%) rotate(-58deg);
+    transform-origin: center 2.25rem;
+    box-shadow: 0 0 10px rgba(62, 111, 142, 0.25);
+  }
+
+  .theory-knob.compact .theory-indicator {
+    height: 0.72rem;
+    background: #a65a3a;
+    transform-origin: center 1.15rem;
+    transform: translateX(-50%) rotate(18deg);
+  }
+
+  .nada-readout {
+    display: grid;
+    gap: 0.65rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    background: linear-gradient(180deg, #181816, #22211f);
+    box-shadow: inset 0 10px 24px rgba(0, 0, 0, 0.28);
+  }
+
+  .nada-readout-label,
+  .nada-readout-key,
+  .mini-slider span,
+  .waveform-chip span:last-child,
+  .mini-sustain span:first-child {
+    font-size: 0.58rem;
+    font-weight: 900;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .nada-readout-label,
+  .nada-readout-key {
+    color: rgba(154, 206, 228, 0.72);
+  }
+
+  .nada-readout-grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .nada-readout-grid > div {
+    display: grid;
+    justify-items: start;
+    gap: 0.18rem;
+    padding: 0.9rem;
+    border-radius: 0.9rem;
+    background: rgba(8, 8, 8, 0.4);
+  }
+
+  .nada-readout-grid strong {
+    color: #6fa3b8;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    font-weight: 900;
+    letter-spacing: -0.08em;
+    line-height: 0.9;
+  }
+
+  .nada-readout-grid strong.accent {
+    color: #a65a3a;
+  }
+
+  .nada-readout-grid small {
+    color: rgba(154, 206, 228, 0.68);
+    font-size: 0.7rem;
+    font-weight: 700;
+  }
+
+  .nada-mini-sliders {
+    display: grid;
+    gap: 0.65rem;
+    padding: 0.85rem 0.95rem;
+    border-radius: 1rem;
+    background: rgba(246, 243, 236, 0.5);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.3);
+  }
+
+  .mini-slider {
+    display: grid;
+    gap: 0.35rem;
+  }
+
+  .mini-slider span {
+    color: #71787c;
+  }
+
+  .track {
+    position: relative;
+    height: 0.55rem;
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.76);
+    box-shadow: inset 0 0 0 1px rgba(113, 120, 124, 0.2);
+  }
+
+  .thumb {
+    position: absolute;
+    top: 50%;
+    width: 1rem;
+    height: 1rem;
+    border-radius: 999px;
+    background: #3e6f8e;
+    transform: translate(-50%, -50%);
+  }
+
+  .thumb.attack {
+    left: 78%;
+  }
+
+  .thumb.release {
+    left: 28%;
+  }
+
+  .nada-waveform-row {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 0.6rem;
+    padding: 0.9rem 0.95rem;
+    border-radius: 1rem;
+    background: rgba(246, 243, 236, 0.42);
+    box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.24);
+  }
+
+  .waveform-chip {
+    display: grid;
+    justify-items: center;
+    gap: 0.35rem;
+    color: #71787c;
+  }
+
+  .waveform-dot {
+    width: 0.95rem;
+    height: 0.95rem;
+    border-radius: 999px;
+    border: 2px solid rgba(113, 120, 124, 0.35);
+    background: rgba(255, 255, 255, 0.76);
+  }
+
+  .waveform-chip.active {
+    color: #924a2c;
+  }
+
+  .waveform-chip.active .waveform-dot {
+    border-color: #924a2c;
+    background: #924a2c;
+    box-shadow: 0 0 12px rgba(146, 74, 44, 0.28);
+  }
+
+  .nada-footer-row {
+    display: grid;
+    gap: 0.7rem;
+    align-items: center;
+  }
+
+  .mini-scope {
+    position: relative;
+    height: 3.5rem;
+    border-radius: 0.9rem;
+    background:
+      linear-gradient(rgba(111, 163, 184, 0.06) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(111, 163, 184, 0.06) 1px, transparent 1px),
+      linear-gradient(180deg, #181816, #21211f);
+    background-size: 12.5% 20%, 12.5% 20%, auto;
+    box-shadow: inset 0 10px 22px rgba(0, 0, 0, 0.26);
+    overflow: hidden;
+  }
+
+  .scope-line {
+    position: absolute;
+    inset: 50% 0 auto;
+    height: 2px;
+    background: linear-gradient(90deg, rgba(111, 163, 184, 0.65), rgba(111, 163, 184, 0.9), rgba(111, 163, 184, 0.65));
+    box-shadow: 0 0 10px rgba(111, 163, 184, 0.3);
+    transform: translateY(-50%);
+  }
+
+  .mini-sustain {
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    align-items: center;
+    color: #71787c;
+    padding: 0 0.15rem;
+  }
+
+  .mini-toggle {
+    position: relative;
+    width: 3.2rem;
+    height: 1.5rem;
+    border-radius: 999px;
+    background: #924a2c;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.22);
+  }
+
+  .mini-toggle span {
+    position: absolute;
+    top: 0.16rem;
+    left: 1.72rem;
+    width: 1.2rem;
+    height: 1.2rem;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #f1f2f4, #bfc3c7);
+    box-shadow: 0 2px 6px rgba(31, 42, 48, 0.2);
+  }
+
+  .nada-cta {
+    background: linear-gradient(135deg, #2f6578 0%, #204257 100%);
+    box-shadow: 0 18px 30px rgba(47, 101, 120, 0.2);
+  }
+
   @media (min-width: 960px) {
     .theory-hero {
       grid-template-columns: minmax(0, 1.1fr) minmax(20rem, 24rem);
+      gap: 3rem;
+    }
+
+    .lab-preview {
+      grid-template-columns: minmax(0, 1.05fr) minmax(21rem, 32rem);
       gap: 3rem;
     }
 
@@ -519,6 +943,10 @@
 
     .section-header {
       align-items: flex-start;
+    }
+
+    .nada-waveform-row {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
     }
   }
 </style>

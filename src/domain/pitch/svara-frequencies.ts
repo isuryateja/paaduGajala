@@ -17,6 +17,11 @@ type LegacyPitchModule = {
 
 const legacyPitch = legacyPitchModule as unknown as LegacyPitchModule;
 
+function toLegacyOctaveName(octave: string): string {
+  const normalized = normalizeOctaveName(octave);
+  return normalized === 'mandra' ? 'mandara' : normalized;
+}
+
 export const REFERENCE_A4 = legacyPitch.REFERENCE_A4;
 export const BASE_SA_FREQUENCY = legacyPitch.BASE_SA_FREQUENCY;
 export const SEMITONE_RATIO = legacyPitch.SEMITONE_RATIO;
@@ -24,7 +29,7 @@ export const JUST_INTONATION_RATIOS = legacyPitch.JUST_INTONATION_RATIOS;
 export const SVARA_FREQUENCIES = legacyPitch.SVARA_FREQUENCIES;
 
 export function getSvaraFrequency(svara: string, octave: string = 'madhya'): number {
-  return legacyPitch.getSvaraFrequency(normalizeSvaraName(svara), normalizeOctaveName(octave));
+  return legacyPitch.getSvaraFrequency(normalizeSvaraName(svara), toLegacyOctaveName(octave));
 }
 
 export function getSvaraKey(svara: string, octave: string = 'madhya'): string {
