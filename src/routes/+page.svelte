@@ -618,7 +618,7 @@
         <a href="/">Contact Station Master</a>
       </div>
 
-      <div class="footer-meta">© 1994 The Rhythmic Rail Conservatory</div>
+      <div class="footer-meta">Designed with love by Masooria</div>
     </div>
   </footer>
 
