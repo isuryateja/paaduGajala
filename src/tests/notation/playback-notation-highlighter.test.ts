@@ -12,6 +12,9 @@ describe('playback notation highlighter source', () => {
     expect(source).toContain('buildPreviewNotationTokens');
     expect(source).toContain('scrollIntoView');
     expect(source).toContain('data-note-index={token.noteIndex}');
+    expect(source).toContain("token.type === 'vega_group'");
+    expect(source).toContain("groupedToken.type === 'svara'");
+    expect(source).toContain('data-note-index={groupedToken.noteIndex}');
     expect(source).toContain("behavior: 'smooth'");
   });
 });

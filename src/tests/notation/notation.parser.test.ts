@@ -112,4 +112,101 @@ describe('notation parser', () => {
       expect.objectContaining({ text: 'G3', noteIndex: 2 })
     ]);
   });
+
+  it('parses Vega groups as one grouped beat while preserving inner svara order', () => {
+    const parsed = parseNotation('S [R2 G2 R2 S] P');
+    const groupedNode = parsed.find((node) => node.type === 'vega_group');
+
+    expect(groupedNode).toMatchObject({
+      type: 'vega_group',
+      tokens: [
+        expect.objectContaining({ type: 'svara', svara: 'R2' }),
+        expect.objectContaining({ type: 'svara', svara: 'G2' }),
+        expect.objectContaining({ type: 'svara', svara: 'R2' }),
+        expect.objectContaining({ type: 'svara', svara: 'S' })
+      ],
+      subdivisions: 4,
+      totalDuration: 1
+    });
+    expect(groupedNode?.type === 'vega_group' ? groupedNode.notes : []).toEqual([
+      expect.objectContaining({ svara: 'R2', duration: 0.25 }),
+      expect.objectContaining({ svara: 'G2', duration: 0.25 }),
+      expect.objectContaining({ svara: 'R2', duration: 0.25 }),
+      expect.objectContaining({ svara: 'S', duration: 0.25 })
+    ]);
+  });
+
+  it('flattens Vega-group svaras into svara-only views without extending the group tail', () => {
+    const svaras = parseSvarasOnly('S [R2 G2] _ P');
+
+    expect(svaras).toEqual([
+      expect.objectContaining({ svara: 'S', duration: 1 }),
+      expect.objectContaining({ svara: 'R2', duration: 0.5 }),
+      expect.objectContaining({ svara: 'G2', duration: 0.5 }),
+      expect.objectContaining({ svara: 'P', duration: 1 })
+    ]);
+  });
+
+  it('keeps Vega groups visually grouped in preview output while preserving linear note indexes', () => {
+    const preview = buildPreviewNotationTokens(parseNotation('S [R2 G2] P'));
+    const groupedToken = preview.find((token) => token.type === 'vega_group');
+
+    expect(groupedToken).toMatchObject({
+      type: 'vega_group',
+      tokens: [
+        expect.objectContaining({ text: 'R2', noteIndex: 1 }),
+        expect.objectContaining({ text: 'G2', noteIndex: 2 })
+      ]
+    });
+    expect(preview.filter((token) => token.type === 'svara')).toEqual([
+      expect.objectContaining({ text: 'S', noteIndex: 0 }),
+      expect.objectContaining({ text: 'P', noteIndex: 3 })
+    ]);
+  });
+
+  it('parses grouped sustain tokens and resolves them into playable Vega notes', () => {
+    const parsed = parseNotation('[R2 _ G2 _]');
+    const groupedNode = parsed.find((node) => node.type === 'vega_group');
+
+    expect(groupedNode).toMatchObject({
+      type: 'vega_group',
+      tokens: [
+        expect.objectContaining({ type: 'svara', svara: 'R2' }),
+        expect.objectContaining({ type: 'sustain_unit', units: 1 }),
+        expect.objectContaining({ type: 'svara', svara: 'G2' }),
+        expect.objectContaining({ type: 'sustain_unit', units: 1 })
+      ],
+      subdivisions: 4,
+      totalDuration: 1
+    });
+    expect(groupedNode?.type === 'vega_group' ? groupedNode.notes : []).toEqual([
+      expect.objectContaining({ svara: 'R2', duration: 0.5 }),
+      expect.objectContaining({ svara: 'G2', duration: 0.5 })
+    ]);
+  });
+
+  it('flattens grouped sustain into svara-only views without exposing grouped underscores', () => {
+    const svaras = parseSvarasOnly('S [R2 _ G2 _] P');
+
+    expect(svaras).toEqual([
+      expect.objectContaining({ svara: 'S', duration: 1 }),
+      expect.objectContaining({ svara: 'R2', duration: 0.5 }),
+      expect.objectContaining({ svara: 'G2', duration: 0.5 }),
+      expect.objectContaining({ svara: 'P', duration: 1 })
+    ]);
+  });
+
+  it('keeps grouped sustain visible in preview output without assigning it a note index', () => {
+    const preview = buildPreviewNotationTokens(parseNotation('S [R2 _ G2] P'));
+    const groupedToken = preview.find((token) => token.type === 'vega_group');
+
+    expect(groupedToken).toMatchObject({
+      type: 'vega_group',
+      tokens: [
+        expect.objectContaining({ type: 'svara', text: 'R2', noteIndex: 1 }),
+        expect.objectContaining({ type: 'sustain_unit', text: '_' }),
+        expect.objectContaining({ type: 'svara', text: 'G2', noteIndex: 2 })
+      ]
+    });
+  });
 });

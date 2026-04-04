@@ -30,6 +30,25 @@
               <sup>.</sup>
             {/if}
           </span>
+        {:else if token.type === 'vega_group'}
+          <span class="vega-group">
+            <span class="vega-bracket">[</span>
+            {#each token.tokens as groupedToken}
+              {#if groupedToken.type === 'svara'}
+                <span class:active={highlightedIndex === groupedToken.noteIndex} class="token token--vega">
+                  {groupedToken.text}
+                  {#if groupedToken.octaveDisplay === 'sub'}
+                    <sub>.</sub>
+                  {:else if groupedToken.octaveDisplay === 'sup'}
+                    <sup>.</sup>
+                  {/if}
+                </span>
+              {:else if groupedToken.type === 'sustain_unit'}
+                <span class="marker marker--vega">{groupedToken.text}</span>
+              {/if}
+            {/each}
+            <span class="vega-bracket">]</span>
+          </span>
         {:else if token.type === 'rhythm_marker' || token.type === 'sustain_unit' || token.type === 'beat_rest'}
           <span class="marker">{token.text}</span>
         {:else if token.type === 'newline'}
@@ -71,6 +90,22 @@
     margin: 0.15rem 0.35rem 0.15rem 0;
   }
 
+  .vega-group {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.15rem;
+    margin: 0.15rem 0.35rem 0.15rem 0;
+    padding: 0.12rem 0.22rem;
+    border-radius: 0.9rem;
+    background: color-mix(in srgb, var(--accent-secondary-soft) 45%, transparent);
+    box-shadow: inset 0 0 0 1px var(--line-soft);
+  }
+
+  .vega-bracket {
+    color: var(--accent-secondary);
+    font-weight: 900;
+  }
+
   .token {
     padding: 0.16rem 0.55rem;
     border-radius: 999px;
@@ -85,9 +120,18 @@
     transform: translateY(-1px);
   }
 
+  .token--vega {
+    margin: 0;
+    padding: 0.12rem 0.42rem;
+  }
+
   .marker {
     color: var(--accent-secondary);
     font-weight: 800;
+  }
+
+  .marker--vega {
+    margin: 0;
   }
 
   .empty {

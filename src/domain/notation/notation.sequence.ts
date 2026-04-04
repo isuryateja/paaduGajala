@@ -29,20 +29,32 @@ export function buildTimedNotationSequence(nodes: ParsedNotationNode[]): TimedNo
     totalUnits += duration;
   }
 
+  function addSvara(noteNode: { svara: string; octave: SequenceNote['octave']; duration: number }): void {
+    const note: SequenceNote = {
+      type: 'svara' as const,
+      svara: noteNode.svara,
+      octave: noteNode.octave,
+      duration: noteNode.duration,
+      originalIndex: noteIndex
+    };
+
+    items.push(note);
+    activeNote = note;
+    noteIndex += 1;
+    totalUnits += noteNode.duration;
+  }
+
   for (const node of nodes) {
     if (node.type === 'svara') {
-      const note: SequenceNote = {
-        type: 'svara',
-        svara: node.svara,
-        octave: node.octave,
-        duration: node.duration,
-        originalIndex: noteIndex
-      };
+      addSvara(node);
+      continue;
+    }
 
-      items.push(note);
-      activeNote = note;
-      noteIndex += 1;
-      totalUnits += node.duration;
+    if (node.type === 'vega_group') {
+      for (const groupedNote of node.notes) {
+        addSvara(groupedNote);
+      }
+      activeNote = null;
       continue;
     }
 
@@ -50,7 +62,17 @@ export function buildTimedNotationSequence(nodes: ParsedNotationNode[]): TimedNo
       const durationUnits = node.units ?? 1;
 
       if (activeNote) {
-        activeNote.duration = (activeNote.duration ?? 1) + durationUnits;
+        const currentActiveNote = activeNote as SequenceNote;
+        const updatedNote: SequenceNote = {
+          type: 'svara' as const,
+          svara: currentActiveNote.svara,
+          octave: currentActiveNote.octave,
+          duration: (currentActiveNote.duration ?? 1) + durationUnits,
+          originalIndex: currentActiveNote.originalIndex
+        };
+
+        activeNote = updatedNote;
+        items[items.length - 1] = updatedNote;
         totalUnits += durationUnits;
       } else {
         addSilence(durationUnits);

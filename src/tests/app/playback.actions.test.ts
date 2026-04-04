@@ -203,6 +203,112 @@ describe('playback actions', () => {
     expect(get(playbackStore)).toMatchObject({ status: 'playing', sequenceLength: 3 });
   });
 
+  it('expands Vega groups into fractional playback notes when starting playback', async () => {
+    notationStore.set({
+      source: 'manual',
+      rawText: 'S [R2 G2] _ P',
+      parsed: [
+        { type: 'svara', svara: 'S', octave: 'madhya', duration: 1, beatMarker: null, line: 1, position: 0 },
+        {
+          type: 'vega_group',
+          tokens: [
+            { type: 'svara', svara: 'R2', octave: 'madhya', duration: 1, beatMarker: null, line: 1, position: 3 },
+            { type: 'svara', svara: 'G2', octave: 'madhya', duration: 1, beatMarker: null, line: 1, position: 6 }
+          ],
+          notes: [
+            { type: 'svara', svara: 'R2', octave: 'madhya', duration: 0.5, beatMarker: null, line: 1, position: 3 },
+            { type: 'svara', svara: 'G2', octave: 'madhya', duration: 0.5, beatMarker: null, line: 1, position: 6 }
+          ],
+          subdivisions: 2,
+          totalDuration: 1,
+          line: 1,
+          position: 2,
+          endPosition: 8
+        },
+        { type: 'sustain_unit', units: 1, line: 1, position: 10 },
+        { type: 'svara', svara: 'P', octave: 'madhya', duration: 1, beatMarker: null, line: 1, position: 12 }
+      ],
+      validation: { valid: true, issues: [] },
+      stats: null
+    });
+
+    vi.spyOn(audioEngine, 'init').mockResolvedValue(true);
+    const playSequenceSpy = vi.spyOn(audioEngine, 'playSequence').mockReturnValue({
+      notes: [],
+      tempo: 120,
+      loop: false,
+      loopCount: 1,
+      currentIndex: 0,
+      isPlaying: true,
+      cancel: () => {}
+    });
+
+    await startPlayback();
+
+    expect(playSequenceSpy).toHaveBeenCalledWith(
+      [
+        expect.objectContaining({ type: 'svara', svara: 'S', duration: 1, originalIndex: 0 }),
+        expect.objectContaining({ type: 'svara', svara: 'R2', duration: 0.5, originalIndex: 1 }),
+        expect.objectContaining({ type: 'svara', svara: 'G2', duration: 0.5, originalIndex: 2 }),
+        expect.objectContaining({ type: 'silence', duration: 1 }),
+        expect.objectContaining({ type: 'svara', svara: 'P', duration: 1, originalIndex: 3 })
+      ],
+      120
+    );
+    expect(get(playbackStore)).toMatchObject({ status: 'playing', sequenceLength: 4 });
+  });
+
+  it('uses resolved grouped sustain durations when starting playback', async () => {
+    notationStore.set({
+      source: 'manual',
+      rawText: '[R2 _ G2 _]',
+      parsed: [
+        {
+          type: 'vega_group',
+          tokens: [
+            { type: 'svara', svara: 'R2', octave: 'madhya', duration: 1, beatMarker: null, line: 1, position: 1 },
+            { type: 'sustain_unit', units: 1, line: 1, position: 4 },
+            { type: 'svara', svara: 'G2', octave: 'madhya', duration: 1, beatMarker: null, line: 1, position: 6 },
+            { type: 'sustain_unit', units: 1, line: 1, position: 9 }
+          ],
+          notes: [
+            { type: 'svara', svara: 'R2', octave: 'madhya', duration: 0.5, beatMarker: null, line: 1, position: 1 },
+            { type: 'svara', svara: 'G2', octave: 'madhya', duration: 0.5, beatMarker: null, line: 1, position: 6 }
+          ],
+          subdivisions: 4,
+          totalDuration: 1,
+          line: 1,
+          position: 0,
+          endPosition: 10
+        }
+      ],
+      validation: { valid: true, issues: [] },
+      stats: null
+    });
+
+    vi.spyOn(audioEngine, 'init').mockResolvedValue(true);
+    const playSequenceSpy = vi.spyOn(audioEngine, 'playSequence').mockReturnValue({
+      notes: [],
+      tempo: 120,
+      loop: false,
+      loopCount: 1,
+      currentIndex: 0,
+      isPlaying: true,
+      cancel: () => {}
+    });
+
+    await startPlayback();
+
+    expect(playSequenceSpy).toHaveBeenCalledWith(
+      [
+        expect.objectContaining({ type: 'svara', svara: 'R2', duration: 0.5, originalIndex: 0 }),
+        expect.objectContaining({ type: 'svara', svara: 'G2', duration: 0.5, originalIndex: 1 })
+      ],
+      120
+    );
+    expect(get(playbackStore)).toMatchObject({ status: 'playing', sequenceLength: 2 });
+  });
+
   it('resumes playback from the paused note list', async () => {
     const initSpy = vi.spyOn(audioEngine, 'init').mockResolvedValue(true);
     const playSequenceSpy = vi.spyOn(audioEngine, 'playSequence').mockReturnValue({

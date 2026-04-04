@@ -1,5 +1,12 @@
 import * as legacyNotationModule from '../../../notation_parser.js';
-import type { NotationToken, ParsedNotationNode, ParsedSvara, PreviewNotationToken } from './notation.types';
+import type {
+  NotationToken,
+  ParsedNotationNode,
+  ParsedSvara,
+  PreviewNotationToken,
+  PreviewSustainToken,
+  PreviewSvaraToken
+} from './notation.types';
 
 type LegacyNotationModule = {
   parseNotation: (text: string, options?: Record<string, unknown>) => ParsedNotationNode[];
@@ -40,16 +47,44 @@ export function buildPreviewNotationTokens(nodes: ParsedNotationNode[]): Preview
   let noteIndex = 0;
   const previewTokens: PreviewNotationToken[] = [];
 
+  function createPreviewSvaraToken(node: ParsedSvara): PreviewSvaraToken {
+    const previewSvara: PreviewSvaraToken = {
+      type: 'svara',
+      text: node.svara,
+      octaveDisplay: node.octave === 'mandra' ? 'sub' : node.octave === 'taara' ? 'sup' : null,
+      noteIndex,
+      position: node.position
+    };
+    noteIndex += 1;
+    return previewSvara;
+  }
+
+  function createPreviewSustainToken(position: number): PreviewSustainToken {
+    return {
+      type: 'sustain_unit',
+      text: '_',
+      position
+    };
+  }
+
   for (const node of nodes) {
     if (node.type === 'svara') {
+      previewTokens.push(createPreviewSvaraToken(node));
+      continue;
+    }
+
+    if (node.type === 'vega_group') {
       previewTokens.push({
-        type: 'svara',
-        text: node.svara,
-        octaveDisplay: node.octave === 'mandra' ? 'sub' : node.octave === 'taara' ? 'sup' : null,
-        noteIndex,
-        position: node.position
+        type: 'vega_group',
+        tokens:
+          node.tokens?.map((groupedToken) =>
+            groupedToken.type === 'svara'
+              ? createPreviewSvaraToken(groupedToken)
+              : createPreviewSustainToken(groupedToken.position)
+          ) ?? node.notes.map((groupedNote) => createPreviewSvaraToken(groupedNote)),
+        position: node.position,
+        endPosition: node.endPosition
       });
-      noteIndex += 1;
       continue;
     }
 
@@ -63,11 +98,7 @@ export function buildPreviewNotationTokens(nodes: ParsedNotationNode[]): Preview
     }
 
     if (node.type === 'sustain_unit') {
-      previewTokens.push({
-        type: 'sustain_unit',
-        text: '_',
-        position: node.position
-      });
+      previewTokens.push(createPreviewSustainToken(node.position));
       continue;
     }
 

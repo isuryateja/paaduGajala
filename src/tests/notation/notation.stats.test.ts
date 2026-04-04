@@ -42,4 +42,16 @@ describe('notation stats', () => {
     expect(previewStats.durationSeconds).toBe(3);
     expect(previewStats.octavesUsed).toBe(1);
   });
+
+  it('counts Vega groups as one beat while still counting inner svaras', () => {
+    const stats = getNotationStats('S [R2 G2 R2 S] P');
+    const previewStats = getNotationPreviewStats('S [R2 G2 R2 S] P', 120);
+
+    expect(stats.totalNotes).toBe(6);
+    expect(stats.svaraCounts.R2).toBe(2);
+    expect(stats.svaraCounts.G2).toBe(1);
+    expect(stats.svaraCounts.S).toBe(2);
+    expect(previewStats.totalBeats).toBe(3);
+    expect(previewStats.durationSeconds).toBe(1.5);
+  });
 });
