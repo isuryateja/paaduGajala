@@ -108,6 +108,14 @@ const SUSTAIN_MARKER = '_';
 const BEAT_REST_MARKER = ',';
 
 /**
+ * Vega group delimiter characters
+ */
+const VEGA_GROUP_MARKERS = {
+    START: '[',
+    END: ']'
+};
+
+/**
  * Whitespace characters to ignore during parsing
  */
 const WHITESPACE_CHARS = /\s/;
@@ -234,6 +242,8 @@ const TOKEN_TYPES = {
     RHYTHM_MARKER: 'rhythm_marker',
     SUSTAIN_UNIT: 'sustain_unit',
     BEAT_REST: 'beat_rest',
+    VEGA_GROUP_START: 'vega_group_start',
+    VEGA_GROUP_END: 'vega_group_end',
     NEWLINE: 'newline',
     WHITESPACE: 'whitespace',
     UNKNOWN: 'unknown'
@@ -294,6 +304,26 @@ function tokenize(text) {
             tokens.push({
                 type: TOKEN_TYPES.BEAT_REST,
                 value: BEAT_REST_MARKER,
+                position: i
+            });
+            i++;
+            continue;
+        }
+
+        if (char === VEGA_GROUP_MARKERS.START) {
+            tokens.push({
+                type: TOKEN_TYPES.VEGA_GROUP_START,
+                value: VEGA_GROUP_MARKERS.START,
+                position: i
+            });
+            i++;
+            continue;
+        }
+
+        if (char === VEGA_GROUP_MARKERS.END) {
+            tokens.push({
+                type: TOKEN_TYPES.VEGA_GROUP_END,
+                value: VEGA_GROUP_MARKERS.END,
                 position: i
             });
             i++;
@@ -472,22 +502,69 @@ function parseNotation(text, options = {}) {
     const notes = [];
     let currentLine = 1;
     let lastSvaraIndex = -1;  // Track last svara for attaching rhythm markers
+
+    function createParsedSvara(token, duration = defaultDuration) {
+        return {
+            type: 'svara',
+            svara: token.svara,
+            svaraName: SVARA_NOTATION[token.svara],
+            octave: token.octave,
+            duration,
+            beatMarker: null,
+            line: currentLine,
+            position: token.position
+        };
+    }
+
+    function createParsedSustain(token) {
+        return {
+            type: 'sustain_unit',
+            units: 1,
+            line: currentLine,
+            position: token.position
+        };
+    }
+
+    function resolveVegaGroupNotes(groupedTokens, groupDuration = defaultDuration) {
+        if (groupedTokens.length === 0) {
+            return [];
+        }
+
+        const slotDuration = groupDuration / groupedTokens.length;
+        const resolvedNotes = [];
+        let activeNote = null;
+
+        for (const groupedToken of groupedTokens) {
+            if (groupedToken.type === 'svara') {
+                if (activeNote) {
+                    resolvedNotes.push(activeNote);
+                }
+
+                activeNote = {
+                    ...groupedToken,
+                    duration: slotDuration
+                };
+                continue;
+            }
+
+            if (groupedToken.type === 'sustain_unit' && activeNote) {
+                activeNote.duration += slotDuration;
+            }
+        }
+
+        if (activeNote) {
+            resolvedNotes.push(activeNote);
+        }
+
+        return resolvedNotes;
+    }
     
     for (let i = 0; i < tokens.length; i++) {
         const token = tokens[i];
         
         switch (token.type) {
             case TOKEN_TYPES.SVARA:
-                const note = {
-                    type: 'svara',
-                    svara: token.svara,
-                    svaraName: SVARA_NOTATION[token.svara],
-                    octave: token.octave,
-                    duration: defaultDuration,
-                    beatMarker: null,
-                    line: currentLine,
-                    position: token.position
-                };
+                const note = createParsedSvara(token);
                 notes.push(note);
                 lastSvaraIndex = notes.length - 1;
                 break;
@@ -510,12 +587,7 @@ function parseNotation(text, options = {}) {
                 break;
 
             case TOKEN_TYPES.SUSTAIN_UNIT:
-                notes.push({
-                    type: 'sustain_unit',
-                    units: 1,
-                    line: currentLine,
-                    position: token.position
-                });
+                notes.push(createParsedSustain(token));
                 break;
 
             case TOKEN_TYPES.BEAT_REST:
@@ -527,6 +599,64 @@ function parseNotation(text, options = {}) {
                 });
                 lastSvaraIndex = -1;
                 break;
+
+            case TOKEN_TYPES.VEGA_GROUP_START: {
+                const groupTokens = [];
+                let groupEndToken = null;
+                let groupIsValid = true;
+                let groupedSvaraSeen = false;
+
+                for (let j = i + 1; j < tokens.length; j++) {
+                    const innerToken = tokens[j];
+
+                    if (innerToken.type === TOKEN_TYPES.VEGA_GROUP_END) {
+                        groupEndToken = innerToken;
+                        i = j;
+                        break;
+                    }
+
+                    if (innerToken.type === TOKEN_TYPES.WHITESPACE) {
+                        continue;
+                    }
+
+                    if (innerToken.type === TOKEN_TYPES.SVARA) {
+                        groupTokens.push(createParsedSvara(innerToken));
+                        groupedSvaraSeen = true;
+                    } else if (innerToken.type === TOKEN_TYPES.SUSTAIN_UNIT && groupedSvaraSeen) {
+                        groupTokens.push(createParsedSustain(innerToken));
+                    } else {
+                        groupIsValid = false;
+                    }
+                }
+
+                if (!groupEndToken || !groupIsValid || groupTokens.length === 0) {
+                    if (includeUnknown) {
+                        notes.push({
+                            type: 'unknown',
+                            value: token.value,
+                            line: currentLine,
+                            position: token.position
+                        });
+                    }
+                    lastSvaraIndex = -1;
+                    break;
+                }
+
+                const groupDuration = defaultDuration;
+
+                notes.push({
+                    type: 'vega_group',
+                    tokens: groupTokens,
+                    notes: resolveVegaGroupNotes(groupTokens, groupDuration),
+                    subdivisions: groupTokens.length,
+                    totalDuration: groupDuration,
+                    line: currentLine,
+                    position: token.position,
+                    endPosition: groupEndToken.position
+                });
+                lastSvaraIndex = -1;
+                break;
+            }
                 
             case TOKEN_TYPES.NEWLINE:
                 currentLine++;
@@ -584,7 +714,7 @@ function parseNotationByLines(text) {
                 lines.push([...currentLine]);
                 currentLine = [];
             }
-        } else if (note.type === 'svara') {
+        } else if (note.type === 'svara' || note.type === 'vega_group') {
             currentLine.push(note);
         }
     }
@@ -615,6 +745,14 @@ function parseSvarasOnly(text) {
             continue;
         }
 
+        if (note.type === 'vega_group') {
+            for (const groupedNote of note.notes) {
+                svaras.push({ ...groupedNote });
+            }
+            activeSvara = null;
+            continue;
+        }
+
         if (note.type === 'sustain_unit') {
             if (activeSvara) {
                 activeSvara.duration += note.units || 1;
@@ -642,7 +780,7 @@ function parseSvarasOnly(text) {
  */
 function getNotationStats(text) {
     const notes = parseNotation(text);
-    const svaras = notes.filter(n => n.type === 'svara');
+    const svaras = parseSvarasOnly(text);
     
     const stats = {
         totalNotes: svaras.length,
@@ -725,6 +863,17 @@ function notationToString(notes, options = {}) {
                 result += separator;
             }
             result += BEAT_REST_MARKER;
+        } else if (note.type === 'vega_group') {
+            if (result && !result.endsWith('\n') && !result.endsWith(separator)) {
+                result += separator;
+            }
+            result += VEGA_GROUP_MARKERS.START;
+            result += (note.tokens || note.notes)
+                .map((groupedToken) => groupedToken.type === 'sustain_unit'
+                    ? SUSTAIN_MARKER
+                    : notationToString([groupedToken], options))
+                .join(separator);
+            result += VEGA_GROUP_MARKERS.END;
         } else if (note.type === 'newline') {
             result += '\n';
             currentLine++;
@@ -772,19 +921,91 @@ function validateNotation(text) {
     
     let hasSvara = false;
     let hasRhythmMarker = false;
+    let activeVegaGroup = null;
     
     for (const token of tokens) {
         if (token.type === TOKEN_TYPES.SVARA) {
             hasSvara = true;
+            if (activeVegaGroup) {
+                activeVegaGroup.svaraCount += 1;
+                activeVegaGroup.hasGroupedSvara = true;
+            }
         } else if (token.type === TOKEN_TYPES.RHYTHM_MARKER) {
             hasRhythmMarker = true;
+            if (activeVegaGroup && !activeVegaGroup.invalidReason) {
+                activeVegaGroup.invalidReason = 'Only svaras and sustain are allowed inside a Vega group';
+            }
         } else if (token.type === TOKEN_TYPES.UNKNOWN) {
             issues.push({
                 type: 'warning',
                 message: `Unknown character at position ${token.position}: "${token.value}"`,
                 position: token.position
             });
+            if (activeVegaGroup && !activeVegaGroup.invalidReason) {
+                activeVegaGroup.invalidReason = 'Unknown characters are not allowed inside a Vega group';
+            }
+        } else if (token.type === TOKEN_TYPES.SUSTAIN_UNIT) {
+            if (activeVegaGroup && !activeVegaGroup.hasGroupedSvara && !activeVegaGroup.invalidReason) {
+                activeVegaGroup.invalidReason = 'Sustain inside a Vega group requires a prior grouped svara';
+            }
+        } else if (token.type === TOKEN_TYPES.BEAT_REST) {
+            if (activeVegaGroup && !activeVegaGroup.invalidReason) {
+                activeVegaGroup.invalidReason = 'Only svaras and sustain are allowed inside a Vega group';
+            }
+        } else if (token.type === TOKEN_TYPES.NEWLINE) {
+            if (activeVegaGroup && !activeVegaGroup.invalidReason) {
+                activeVegaGroup.invalidReason = 'Vega groups cannot span multiple lines';
+            }
+        } else if (token.type === TOKEN_TYPES.VEGA_GROUP_START) {
+            if (!activeVegaGroup) {
+                activeVegaGroup = {
+                    startPosition: token.position,
+                    svaraCount: 0,
+                    hasGroupedSvara: false,
+                    invalidReason: null,
+                    nestedDepth: 0
+                };
+            } else {
+                activeVegaGroup.nestedDepth += 1;
+                if (!activeVegaGroup.invalidReason) {
+                    activeVegaGroup.invalidReason = 'Nested Vega groups are not supported';
+                }
+            }
+        } else if (token.type === TOKEN_TYPES.VEGA_GROUP_END) {
+            if (!activeVegaGroup) {
+                issues.push({
+                    type: 'error',
+                    message: `Unmatched Vega group closing bracket at position ${token.position}`,
+                    position: token.position
+                });
+            } else if (activeVegaGroup.nestedDepth > 0) {
+                activeVegaGroup.nestedDepth -= 1;
+            } else {
+                if (activeVegaGroup.invalidReason) {
+                    issues.push({
+                        type: 'error',
+                        message: `Invalid Vega group at position ${activeVegaGroup.startPosition}: ${activeVegaGroup.invalidReason}`,
+                        position: activeVegaGroup.startPosition
+                    });
+                } else if (activeVegaGroup.svaraCount === 0) {
+                    issues.push({
+                        type: 'error',
+                        message: `Empty Vega group at position ${activeVegaGroup.startPosition}`,
+                        position: activeVegaGroup.startPosition
+                    });
+                }
+
+                activeVegaGroup = null;
+            }
         }
+    }
+
+    if (activeVegaGroup) {
+        issues.push({
+            type: 'error',
+            message: `Unclosed Vega group starting at position ${activeVegaGroup.startPosition}`,
+            position: activeVegaGroup.startPosition
+        });
     }
     
     if (!hasSvara) {

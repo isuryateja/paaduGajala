@@ -1,7 +1,16 @@
 import type { OctaveName } from '../shared/types';
 
 export interface NotationToken {
-  type: 'svara' | 'rhythm_marker' | 'sustain_unit' | 'beat_rest' | 'newline' | 'whitespace' | 'unknown';
+  type:
+    | 'svara'
+    | 'rhythm_marker'
+    | 'sustain_unit'
+    | 'beat_rest'
+    | 'vega_group_start'
+    | 'vega_group_end'
+    | 'newline'
+    | 'whitespace'
+    | 'unknown';
   value?: string;
   svara?: string;
   octave?: OctaveName;
@@ -44,6 +53,17 @@ export interface BeatRestNode {
   beats: number;
   line: number;
   position: number;
+}
+
+export interface VegaGroupNode {
+  type: 'vega_group';
+  tokens: Array<ParsedSvara | SustainUnitNode>;
+  notes: ParsedSvara[];
+  subdivisions: number;
+  totalDuration: number;
+  line: number;
+  position: number;
+  endPosition: number;
 }
 
 export interface NewlineNode {
@@ -91,6 +111,13 @@ export interface PreviewBeatRestToken {
   position: number;
 }
 
+export interface PreviewVegaGroupToken {
+  type: 'vega_group';
+  tokens: Array<PreviewSvaraToken | PreviewSustainToken>;
+  position: number;
+  endPosition: number;
+}
+
 export interface PreviewNewlineToken {
   type: 'newline';
   position: number;
@@ -101,6 +128,7 @@ export type PreviewNotationToken =
   | PreviewRhythmToken
   | PreviewSustainToken
   | PreviewBeatRestToken
+  | PreviewVegaGroupToken
   | PreviewNewlineToken;
 
 export type ParsedNotationNode =
@@ -108,6 +136,7 @@ export type ParsedNotationNode =
   | RhythmMarkerNode
   | SustainUnitNode
   | BeatRestNode
+  | VegaGroupNode
   | NewlineNode
   | WhitespaceNode
   | UnknownNode;

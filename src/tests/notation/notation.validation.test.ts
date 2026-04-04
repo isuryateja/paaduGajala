@@ -45,4 +45,51 @@ describe('notation validation', () => {
     expect(result.valid).toBe(false);
     expect(result.issues).toEqual([expect.objectContaining({ message: 'No svara notation found in input' })]);
   });
+
+  it('accepts Vega groups containing only svaras', () => {
+    const result = validateNotation('[R2 G2 R2 S] P');
+
+    expect(result.valid).toBe(true);
+    expect(result.issues).toEqual([]);
+  });
+
+  it('rejects empty, nested, mixed-token, and unclosed Vega groups', () => {
+    expect(validateNotation('[]').issues).toEqual(
+      expect.arrayContaining([expect.objectContaining({ message: expect.stringContaining('Empty Vega group') })])
+    );
+    expect(validateNotation('[R2 [G2 R2] S]').issues).toEqual(
+      expect.arrayContaining([expect.objectContaining({ message: expect.stringContaining('Nested Vega groups are not supported') })])
+    );
+    expect(validateNotation('[R2 , G2]').issues).toEqual(
+      expect.arrayContaining([expect.objectContaining({ message: expect.stringContaining('Only svaras and sustain are allowed inside a Vega group') })])
+    );
+    expect(validateNotation('[R2 G2').issues).toEqual(
+      expect.arrayContaining([expect.objectContaining({ message: expect.stringContaining('Unclosed Vega group') })])
+    );
+  });
+
+  it('accepts grouped sustain only after a grouped svara', () => {
+    const result = validateNotation('[R2 _ G2 _]');
+
+    expect(result.valid).toBe(true);
+    expect(result.issues).toEqual([]);
+  });
+
+  it('rejects grouped sustain without a prior grouped svara', () => {
+    expect(validateNotation('[_]').issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ message: expect.stringContaining('requires a prior grouped svara') })
+      ])
+    );
+    expect(validateNotation('[_ R2]').issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ message: expect.stringContaining('requires a prior grouped svara') })
+      ])
+    );
+    expect(validateNotation('[_ _ R2]').issues).toEqual(
+      expect.arrayContaining([
+        expect.objectContaining({ message: expect.stringContaining('requires a prior grouped svara') })
+      ])
+    );
+  });
 });

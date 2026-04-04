@@ -146,4 +146,27 @@ describe('audio sequence events', () => {
 
     expect(playSvaraSpy).toHaveBeenNthCalledWith(2, 'R1', 'madhya', 1, 1, 4);
   });
+
+  it('schedules fractional-duration sequence notes inside a single beat window', () => {
+    const engine = new AudioEngine();
+
+    engine.isInitialized = true;
+    engine.audioContext = { currentTime: 0 } as AudioContext;
+    const playSvaraSpy = vi.spyOn(engine, 'playSvara').mockReturnValue(null);
+
+    engine.playSequence(
+      [
+        { type: 'svara', svara: 'R2', duration: 0.25, originalIndex: 0 },
+        { type: 'svara', svara: 'G2', duration: 0.25, originalIndex: 1 },
+        { type: 'svara', svara: 'R2', duration: 0.25, originalIndex: 2 },
+        { type: 'svara', svara: 'S', duration: 0.25, originalIndex: 3 }
+      ],
+      120
+    );
+
+    expect(playSvaraSpy).toHaveBeenNthCalledWith(1, 'R2', 'madhya', 0.25, 1, 0);
+    expect(playSvaraSpy).toHaveBeenNthCalledWith(2, 'G2', 'madhya', 0.25, 1, 0.125);
+    expect(playSvaraSpy).toHaveBeenNthCalledWith(3, 'R2', 'madhya', 0.25, 1, 0.25);
+    expect(playSvaraSpy).toHaveBeenNthCalledWith(4, 'S', 'madhya', 0.25, 1, 0.375);
+  });
 });
