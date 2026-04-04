@@ -1,10 +1,16 @@
 <script lang="ts">
-  export let activeTab: 'swara-to-sruti' | 'sruti-to-swara' | 'theory' | 'nada-vinodam' = 'swara-to-sruti';
+  export let activeTab:
+    | 'swara-to-sruti'
+    | 'sruti-to-swara'
+    | 'theory'
+    | 'nada-vinodam'
+    | 'svara-grantham' = 'swara-to-sruti';
 
   const navItems = [
     { id: 'swara-to-sruti', href: '/', label: 'Swara to Sruti' },
     { id: 'sruti-to-swara', href: '/sruti-to-swara', label: 'Sruti to Swara' },
-    { id: 'theory', href: '/theory', label: 'Theory' }
+    { id: 'theory', href: '/theory', label: 'Theory' },
+    { id: 'svara-grantham', href: '/svara-grantham', label: 'Svara Grantham' }
   ] as const;
 </script>
 
@@ -60,7 +66,11 @@
       <span class="material-symbols-outlined">music_note</span>
       <span>Ragas</span>
     </div>
-    <div class="mobile-item">
+    <a href="/svara-grantham" class:active={activeTab === 'svara-grantham'} class="mobile-item">
+      <span class="material-symbols-outlined">menu_book</span>
+      <span>Library</span>
+    </a>
+    <div class="mobile-item profile-item">
       <span class="material-symbols-outlined">person</span>
       <span>Profile</span>
     </div>
@@ -124,7 +134,7 @@
   .desktop-nav {
     display: none;
     align-items: center;
-    gap: 2.5rem;
+    gap: 1.7rem;
   }
 
   .desktop-link {
@@ -231,6 +241,14 @@
     padding: 0.5rem 0.8rem;
   }
 
+  .mobile-item.active {
+    color: #fcf9f2;
+  }
+
+  .profile-item {
+    opacity: 0.72;
+  }
+
   .mobile-item span:last-child {
     font-family: 'Montserrat', sans-serif;
     font-size: 0.56rem;
@@ -283,6 +301,19 @@
 
     .footer-brand-logo {
       height: 4rem;
+    }
+  }
+
+  @media (max-width: 767px) {
+    .mobile-dock {
+      padding-left: 0.75rem;
+      padding-right: 0.75rem;
+    }
+
+    .mobile-item {
+      min-width: 0;
+      padding-left: 0.4rem;
+      padding-right: 0.4rem;
     }
   }
 </style>
