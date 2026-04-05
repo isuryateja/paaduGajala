@@ -9,8 +9,8 @@ describe('audio configuration', () => {
 
   it('clamps tempo changes', () => {
     const engine = new AudioEngine();
-    engine.setTempo(500);
-    expect(engine.tempo).toBe(300);
+    engine.setTempo(700);
+    expect(engine.tempo).toBe(600);
   });
 
   it('stops active voices immediately when stopping all audio', () => {

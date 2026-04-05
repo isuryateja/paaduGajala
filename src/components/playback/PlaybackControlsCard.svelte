@@ -1,5 +1,6 @@
 <script lang="ts">
   import RangeControl from '../common/RangeControl.svelte';
+  import { MAX_TEMPO } from '../../domain/shared/constants';
 
   export let playing = false;
   export let paused = false;
@@ -30,7 +31,7 @@
   </div>
 
   <div class="grid">
-    <RangeControl label="Tempo" min={60} max={200} value={tempo} suffix=" BPM" onInput={onTempo} />
+    <RangeControl label="Tempo" min={60} max={MAX_TEMPO} value={tempo} suffix=" BPM" onInput={onTempo} />
     <RangeControl label="Volume" min={0} max={100} value={volume} suffix="%" onInput={onVolume} />
   </div>
 </section>

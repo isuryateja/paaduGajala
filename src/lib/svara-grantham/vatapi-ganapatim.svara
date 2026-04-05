@@ -1,17 +1,12 @@
 ---
 id: vatapi-ganapatim
-name: Vatapi Ganapatim
+name: Vatapi G3anapatim
 raga: Hamsadhwani
 tala: Adi Tala
 notation_format: pg_v1
 ---
 PALLAVI
-S R2 G3 P | N3 S' N3 P | G3 R2 S , ||
+G3 _ _ _ _ _ R2 _ _ _ S _ S R2 S N3. | P̣ _ R2 _ _ _ N3. _ | R2 _ _ _ S N3. S R2 
+G3 _ S R2 G3 _ R2 _ _ _ S _ S R2 S N3. | P̣ _ R2 _ _ _ N3. _ R2 _ _ _ S N3. S R2 ||
 
-ANUPALLAVI
-R2 G3 P N3 | S' N3 P G3 | R2 S R2 G3 ||
-
-CHARANAM
-P G3 R2 S | R2 G3 P N3 | S' N3 P G3 ||
-
-R2 G3 P , | N3 S' N3 P | G3 R2 S , ||
+G3 P G3 G3 R2 S R2 G3 R2 R2 S N3. G3 R2 S N3. | P̣ _ R2 _ _ _ N3. _ R2 _ _ _ S N3. S R2 ||

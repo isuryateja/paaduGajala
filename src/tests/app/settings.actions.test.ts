@@ -18,9 +18,9 @@ describe('settings actions', () => {
   it('clamps tempo updates to the supported range', () => {
     const setTempoSpy = vi.spyOn(audioEngine, 'setTempo').mockImplementation(() => {});
 
-    updateTempo(500);
+    updateTempo(700);
 
-    expect(get(settingsStore).tempo).toBe(300);
-    expect(setTempoSpy).toHaveBeenCalledWith(300);
+    expect(get(settingsStore).tempo).toBe(600);
+    expect(setTempoSpy).toHaveBeenCalledWith(600);
   });
 });
