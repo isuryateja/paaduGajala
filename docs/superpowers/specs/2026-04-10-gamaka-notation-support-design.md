@@ -89,6 +89,7 @@ type MotionNode = {
     ascentRatio: number;        // 0.75
     descentRatio: number;       // 0.25
   };
+  sourceText: string;    // exactly as authored, for preview token text
   line: number;
   position: number;
   endPosition: number;
@@ -238,7 +239,10 @@ private scheduleMotion(item: SequenceMotion, startTime: number): void {
   const glideStart = startTime + item.holdBeats * this.beatDuration;
   const glideEnd = startTime + totalSeconds;
 
-  // Create one voice for the full duration at startFreq
+  // Create one voice for the full duration at startFreq.
+  // createVoice() sets oscillator.frequency.value = startFreq.
+  // The subsequent setValueAtTime/linearRampToValueAtTime calls below take
+  // precedence over the static .value once the automation timeline is active.
   const voice = this.createVoice(startFreq, startTime, totalSeconds, 1, item.start.svara, item.start.octave);
 
   // Automate frequency
