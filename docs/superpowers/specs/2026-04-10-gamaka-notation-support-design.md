@@ -1,7 +1,7 @@
 # Gamaka Notation Support — Design
 
-**Date:** 2026-04-10  
-**Spec ref:** specs/012-gamaka-notation-support/spec.md  
+**Date:** 2026-04-10
+**Spec ref:** specs/012-gamaka-notation-support/spec.md
 **Status:** Approved
 
 ---
@@ -273,7 +273,7 @@ private scheduleMotion(item: SequenceMotion, startTime: number): void {
 `ParsedNotationCard.svelte` adds a `motion` branch in the token loop. Each syntax type gets a distinct visual style:
 
 - `compact_glide` — tight pill with slash glyph
-- `spaced_glide` — wider pill with spaced slash glyph  
+- `spaced_glide` — wider pill with spaced slash glyph
 - `hold_glide` — pill with underscore-slash glyph
 - `ornamented_settle` — pill with tilde glyph
 

@@ -15,6 +15,7 @@
   import { uiStore } from '../app/stores/ui.store';
   import { startPianoNote, stopPianoNote, releaseAllPianoNotes } from '../app/actions/piano.actions';
   import { MAX_TEMPO } from '../domain/shared/constants';
+  import type { ReverbPreset } from '../domain/audio/audio.types';
   import type { ActivePianoKeys } from '../domain/piano/piano.types';
   import { filterRagas, formatRagaNotation } from '../domain/raga/raga-library';
   import type { RagaLibraryEntry } from '../domain/raga/raga-library';
@@ -40,7 +41,8 @@
   const navItems = [
     { href: '/', label: 'Swara to Sruti', active: true },
     { href: '/sruti-to-swara', label: 'Sruti to Swara', active: false },
-    { href: '/theory', label: 'Theory', active: false }
+    { href: '/theory', label: 'Theory', active: false },
+    { href: '/svara-grantham', label: 'Svara Grantham', active: false }
   ];
 
   const instrumentOptions = [
@@ -48,6 +50,12 @@
     { value: 'flute', label: 'Bamboo Flute' },
     { value: 'violin', label: 'Solo Violin' },
     { value: 'harmonium', label: 'Harmonium' }
+  ];
+
+  const reverbPresetOptions: { value: ReverbPreset; label: string }[] = [
+    { value: 'room', label: 'Room' },
+    { value: 'hall', label: 'Hall' },
+    { value: 'concert', label: 'Concert' }
   ];
 
   const whiteKeys: WhiteKey[] = [
@@ -79,7 +87,6 @@
   let teardown = () => {};
   let releasePlaybackVisualizer = () => {};
   let droneEnabled = true;
-  let reverbLevel = 42;
   let notationPanelElement: HTMLElement | null = null;
   let notationTextarea: HTMLTextAreaElement | null = null;
   let pianoKeybed: HTMLDivElement | null = null;
@@ -479,18 +486,35 @@
           <div class="field-stack">
             <div class="range-header">
               <label class="micro-label" for="reverb-range">Reverb</label>
-              <span class="range-chip">{reverbLevel}%</span>
+              <span class="range-chip">{Math.round($settingsStore.reverbMix * 100)}%</span>
             </div>
             <input
               id="reverb-range"
               type="range"
               min="0"
               max="100"
-              value={reverbLevel}
-              on:input={(event) => {
-                reverbLevel = Number((event.currentTarget as HTMLInputElement).value);
-              }}
+              value={Math.round($settingsStore.reverbMix * 100)}
+              on:input={(event) =>
+                mainPlayerHandlers.updateReverbMix(
+                  Number((event.currentTarget as HTMLInputElement).value) / 100
+                )}
             />
+          </div>
+
+          <div class="field-stack">
+            <label class="micro-label" for="reverb-preset-select">Space</label>
+            <select
+              id="reverb-preset-select"
+              value={$settingsStore.reverbPreset}
+              on:change={(event) =>
+                mainPlayerHandlers.updateReverbPreset(
+                  (event.currentTarget as HTMLSelectElement).value as ReverbPreset
+                )}
+            >
+              {#each reverbPresetOptions as option}
+                <option value={option.value}>{option.label}</option>
+              {/each}
+            </select>
           </div>
         </div>
       </section>
@@ -555,6 +579,8 @@
         <div
           bind:this={pianoKeybed}
           class="piano-keybed"
+          role="group"
+          aria-label="Virtual swara piano keybed"
           on:pointerdown={handleKeybedPointerDown}
           on:pointerup={handleKeybedPointerUp}
           on:pointercancel={handleKeybedPointerCancel}
@@ -618,7 +644,7 @@
         <a href="/">Contact Station Master</a>
       </div>
 
-      <div class="footer-meta">Designed with love by Masooria</div>
+      <div class="footer-meta">Designed with love by Nemigna</div>
     </div>
   </footer>
 
@@ -635,6 +661,10 @@
       <span class="material-symbols-outlined">music_note</span>
       <span>Ragas</span>
     </div>
+    <a href="/svara-grantham" class="mobile-item">
+      <span class="material-symbols-outlined">menu_book</span>
+      <span>Library</span>
+    </a>
     <div class="mobile-item">
       <span class="material-symbols-outlined">person</span>
       <span>Profile</span>

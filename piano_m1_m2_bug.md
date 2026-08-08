@@ -1,6 +1,6 @@
 # M1 / M2 Piano Key Hit-Area Bug — Engineering Details
 
-**File:** `src/routes/+page.svelte`  
+**File:** `src/routes/+page.svelte`
 **Section:** Virtual Swara Piano (`piano-keybed`)
 
 ---
@@ -13,9 +13,9 @@
 | M2 black key | 621.9 | 681.5 | 59.6 |
 | **Overlap zone** | **621.9** | **651.1** | **~29 px** |
 
-- **11 white keys**, each `flex: 1` → each ~103 px at typical viewport.  
-- M2 `left: 54.55%` = `6/11 × 100%` = the **exact boundary** between M1 and P.  
-- CSS `transform: translateX(-50%)` centres the element at its `left` point, so M2's centre is at 54.55 % of keybed width — right on the M1/P seam.  
+- **11 white keys**, each `flex: 1` → each ~103 px at typical viewport.
+- M2 `left: 54.55%` = `6/11 × 100%` = the **exact boundary** between M1 and P.
+- CSS `transform: translateX(-50%)` centres the element at its `left` point, so M2's centre is at 54.55 % of keybed width — right on the M1/P seam.
 - M2 visual half-width = `5.25% / 2 = 2.625%` ≈ 29.8 px → it bleeds **~29 px left into M1** and **~30 px right into P**.
 
 ---
@@ -44,7 +44,7 @@ Each button has its **own** `on:pointerdown/up/leave/cancel` handler:
 ### The hit-test chain
 The browser dispatches a `pointerdown` to the topmost element whose **bounding box** contains the cursor:
 
-- M2 `z-index: 10`, `position: absolute` → renders above white keys.  
+- M2 `z-index: 10`, `position: absolute` → renders above white keys.
 - In the 29 px overlap zone (x ≈ 621–651) **the bounding box of M2 covers that area**. The browser sends the event to M2, not M1.
 - Outcome: user taps what they perceive as M1 (right third of the white key), but **only M2 fires**.
 
@@ -57,8 +57,8 @@ Users see M2 light up while intending to press M1. Because M2 steals the event, 
 
 ## What Does NOT Cause the Bug
 
-- No event bubbling between sibling buttons (siblings don't receive each other's bubbled events).  
-- `activeManualKeys` (a `Set`) is correct — no double-fire of the same key.  
+- No event bubbling between sibling buttons (siblings don't receive each other's bubbled events).
+- `activeManualKeys` (a `Set`) is correct — no double-fire of the same key.
 - The `pointerleave` release path is not involved in the wrong-key-fires scenario.
 
 ---

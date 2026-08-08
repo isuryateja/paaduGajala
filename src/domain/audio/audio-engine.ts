@@ -1,9 +1,38 @@
-import { DEFAULT_TEMPO, DEFAULT_TUNING, DEFAULT_VOLUME, DEFAULT_WAVEFORM, MAX_TEMPO, MIN_TEMPO } from '../shared/constants';
+import {
+  DEFAULT_REVERB_MIX,
+  DEFAULT_REVERB_PRESET,
+  DEFAULT_TEMPO,
+  DEFAULT_TUNING,
+  DEFAULT_VOLUME,
+  DEFAULT_WAVEFORM,
+  MAX_TEMPO,
+  MIN_TEMPO
+} from '../shared/constants';
 import { clamp } from '../../lib/utils/clamp';
 import { createId } from '../../lib/ids/create-id';
 import { BASE_SA_FREQUENCY, JUST_INTONATION_RATIOS, getSvaraFrequency } from '../pitch/svara-frequencies';
 import type { OctaveName, TuningMode, WaveformType } from '../shared/types';
-import type { AudioEngineConfig, AudioVoice, SequenceBoundary, SequenceItem, SequenceNote, SequenceSilence, SequenceState } from './audio.types';
+import type {
+  AudioEngineConfig,
+  AudioVoice,
+  ReverbPreset,
+  SequenceBoundary,
+  SequenceItem,
+  SequenceNote,
+  SequenceSilence,
+  SequenceState,
+  VoiceType
+} from './audio.types';
+import { REVERB_PRESETS } from './audio.types';
+import { createReverbImpulse } from './reverb';
+import { createVoiceByType } from './voices';
+
+/**
+ * Click-safe IR swap timing (PGF-012).
+ * Wet is held at 0 for HOLD, then ramps back over RESTORE — never duck+restore at the same `currentTime`.
+ */
+export const REVERB_IR_SWAP_HOLD_SECONDS = 0.012;
+export const REVERB_IR_SWAP_RESTORE_SECONDS = 0.02;
 
 type EngineEvent = 'noteOn' | 'noteOff' | 'noteIndex' | 'sequenceStart' | 'sequenceEnd' | 'ready';
 
@@ -20,6 +49,13 @@ export class AudioEngine {
   isInitialized = false;
   masterGain: GainNode | null = null;
   compressor: DynamicsCompressorNode | null = null;
+  /** Shared mix bus — all voices land here (P2A-04); splits dry + reverb send. */
+  voiceBus: GainNode | null = null;
+  /** Unity send into the convolver (mix is applied on wet/dry gains). */
+  sendGain: GainNode | null = null;
+  dryGain: GainNode | null = null;
+  wetGain: GainNode | null = null;
+  convolver: ConvolverNode | null = null;
   activeVoices = new Map<string, AudioVoice>();
   currentSequence: SequenceState | null = null;
   sequenceTimeout: ReturnType<typeof setTimeout> | null = null;
@@ -47,7 +83,11 @@ export class AudioEngine {
       },
       masterVolume: options.masterVolume ?? DEFAULT_VOLUME,
       tuning: options.tuning ?? DEFAULT_TUNING,
-      baseFrequency: options.baseFrequency ?? BASE_SA_FREQUENCY
+      baseFrequency: options.baseFrequency ?? BASE_SA_FREQUENCY,
+      voiceType: options.voiceType ?? 'pure',
+      // P2B-03 ship default: light room wet; set mix 0 for dry-identical Phase A path.
+      reverbMix: clamp(options.reverbMix ?? DEFAULT_REVERB_MIX, 0, 1),
+      reverbPreset: options.reverbPreset ?? DEFAULT_REVERB_PRESET
     };
   }
 
@@ -64,9 +104,8 @@ export class AudioEngine {
     this.audioContext = new AudioContextClass({ latencyHint: 'interactive', sampleRate: 44100 });
     this.masterGain = this.audioContext.createGain();
     this.masterGain.gain.value = this.config.masterVolume;
-    this.compressor = this.audioContext.createDynamicsCompressor();
-    this.compressor.connect(this.masterGain);
     this.masterGain.connect(this.audioContext.destination);
+    this.buildReverbGraph();
 
     if (this.audioContext.state === 'suspended') {
       await this.audioContext.resume();
@@ -75,6 +114,70 @@ export class AudioEngine {
     this.isInitialized = true;
     this.emit('ready', { audioContext: this.audioContext });
     return true;
+  }
+
+  /**
+   * Shared convolution reverb bus (P2A-03):
+   *   voiceBus → compressor → dryGain → master
+   *   voiceBus → sendGain → convolver → wetGain → master
+   *
+   * Voice routing onto `voiceBus` lands in P2A-04; graph is ready at mix 0 (silent wet).
+   */
+  private buildReverbGraph(): void {
+    if (!this.audioContext || !this.masterGain) {
+      return;
+    }
+
+    this.voiceBus = this.audioContext.createGain();
+    this.voiceBus.gain.value = 1;
+
+    this.compressor = this.audioContext.createDynamicsCompressor();
+    this.dryGain = this.audioContext.createGain();
+
+    this.sendGain = this.audioContext.createGain();
+    this.sendGain.gain.value = 1;
+    this.convolver = this.audioContext.createConvolver();
+    this.wetGain = this.audioContext.createGain();
+
+    // Dry path
+    this.voiceBus.connect(this.compressor);
+    this.compressor.connect(this.dryGain);
+    this.dryGain.connect(this.masterGain);
+
+    // Wet / reverb send path
+    this.voiceBus.connect(this.sendGain);
+    this.sendGain.connect(this.convolver);
+    this.convolver.connect(this.wetGain);
+    this.wetGain.connect(this.masterGain);
+
+    this.loadReverbImpulse();
+    this.applyReverbMixGains();
+  }
+
+  private loadReverbImpulse(): void {
+    if (!this.audioContext || !this.convolver) {
+      return;
+    }
+    this.convolver.buffer = createReverbImpulse(this.audioContext, this.config.reverbPreset);
+  }
+
+  /** Linear crossfade: mix 0 = fully dry (Phase A sound-identical), mix 1 = fully wet. */
+  private applyReverbMixGains(): void {
+    const mix = this.config.reverbMix;
+    const dry = 1 - mix;
+    const now = this.audioContext?.currentTime;
+    if (this.wetGain) {
+      this.wetGain.gain.value = mix;
+      if (now !== undefined) {
+        this.wetGain.gain.setValueAtTime(mix, now);
+      }
+    }
+    if (this.dryGain) {
+      this.dryGain.gain.value = dry;
+      if (now !== undefined) {
+        this.dryGain.gain.setValueAtTime(dry, now);
+      }
+    }
   }
 
   on(event: EngineEvent, callback: (data: unknown) => void): () => void {
@@ -252,8 +355,64 @@ export class AudioEngine {
     this.config.envelope = { ...this.config.envelope, ...envelope };
   }
 
+  /**
+   * Manual waveform picker path: set waveform and force pure single-osc voice.
+   * Instrument presets re-apply `voiceType` after calling this (see applyPreset).
+   */
   setWaveform(waveform: WaveformType): void {
     this.config.waveform = waveform;
+    this.config.voiceType = 'pure';
+  }
+
+  setVoiceType(voiceType: VoiceType): void {
+    this.config.voiceType = voiceType;
+  }
+
+  /**
+   * Wet reverb send (0..1). Clamped. Updates wet/dry gains when the graph exists.
+   */
+  setReverbMix(mix: number): void {
+    this.config.reverbMix = clamp(mix, 0, 1);
+    this.applyReverbMixGains();
+  }
+
+  /**
+   * Select IR preset and reload the convolver buffer when initialized.
+   * Same-preset is a no-op (avoids buffer thrash / clicks).
+   *
+   * Click-safe swap (PGF-012): duck wet immediately, hold muted while `convolver.buffer`
+   * is replaced, then ramp wet back to the current mix over a short restore window.
+   * Dry gain is left alone so the dry path stays continuous through the swap.
+   */
+  setReverbPreset(preset: ReverbPreset): void {
+    if (!REVERB_PRESETS.includes(preset)) {
+      return;
+    }
+    if (preset === this.config.reverbPreset) {
+      return;
+    }
+    this.config.reverbPreset = preset;
+    if (!this.audioContext || !this.convolver) {
+      return;
+    }
+
+    const now = this.audioContext.currentTime;
+    const mix = this.config.reverbMix;
+    const restoreStart = now + REVERB_IR_SWAP_HOLD_SECONDS;
+    const restoreEnd = restoreStart + REVERB_IR_SWAP_RESTORE_SECONDS;
+
+    if (this.wetGain) {
+      const wetParam = this.wetGain.gain;
+      wetParam.cancelScheduledValues(now);
+      // Instant duck + explicit hold so restore cannot land at the same automation time.
+      wetParam.setValueAtTime(0, now);
+      wetParam.value = 0;
+      wetParam.setValueAtTime(0, restoreStart);
+      wetParam.linearRampToValueAtTime(mix, restoreEnd);
+    }
+
+    this.loadReverbImpulse();
+    // Do not call applyReverbMixGains() — that would re-raise wet at `now` and cancel the hold.
   }
 
   setTuning(tuning: TuningMode): void {
@@ -291,67 +450,35 @@ export class AudioEngine {
     svara: string,
     octave: OctaveName
   ): AudioVoice {
-    if (!this.audioContext || !this.compressor) {
+    // All voices land on voiceBus so they feed dry + reverb send (P2A-04).
+    if (!this.audioContext || !this.voiceBus) {
       throw new Error('Audio engine is not initialized');
     }
-    const oscillator = this.audioContext.createOscillator();
-    const envelopeGain = this.audioContext.createGain();
-    const voiceGain = this.audioContext.createGain();
+
     const id = createId('voice');
-
-    oscillator.type = this.config.waveform;
-    oscillator.frequency.value = frequency;
-    voiceGain.gain.value = clamp(velocity, 0, 1);
-
-    const attackEnd = startTime + this.config.envelope.attack;
-    const decayEnd = attackEnd + this.config.envelope.decay;
-    envelopeGain.gain.setValueAtTime(0.0001, startTime);
-    envelopeGain.gain.linearRampToValueAtTime(1, attackEnd);
-    envelopeGain.gain.linearRampToValueAtTime(this.config.envelope.sustain, decayEnd);
-
-    oscillator.connect(envelopeGain);
-    envelopeGain.connect(voiceGain);
-    voiceGain.connect(this.compressor);
-
-    const stop = (when: number = startTime + durationSeconds) => {
-      const currentTime = this.audioContext?.currentTime ?? when;
-      const releaseStart = Math.max(when, currentTime);
-
-      if (releaseStart <= startTime) {
-        envelopeGain.gain.cancelScheduledValues(startTime);
-        envelopeGain.gain.setValueAtTime(0.0001, startTime);
-        oscillator.stop(startTime);
-        return;
+    // Unimplemented instrument types fall back to pure inside the dispatcher (Phase B).
+    const voice = createVoiceByType(
+      this.config.voiceType,
+      {
+        audioContext: this.audioContext,
+        destination: this.voiceBus,
+        envelope: this.config.envelope,
+        waveform: this.config.waveform,
+        onEnded: (voiceId) => {
+          this.activeVoices.delete(voiceId);
+        }
+      },
+      {
+        id,
+        frequency,
+        startTime,
+        durationSeconds,
+        velocity,
+        svara,
+        octave
       }
+    );
 
-      envelopeGain.gain.cancelScheduledValues(releaseStart);
-      envelopeGain.gain.setValueAtTime(envelopeGain.gain.value || this.config.envelope.sustain, releaseStart);
-      envelopeGain.gain.linearRampToValueAtTime(0.0001, releaseStart + this.config.envelope.release);
-      oscillator.stop(releaseStart + this.config.envelope.release);
-    };
-
-    const voice: AudioVoice = {
-      id,
-      oscillator,
-      envelopeGain,
-      voiceGain,
-      frequency,
-      svara,
-      octave,
-      startTime,
-      duration: durationSeconds,
-      stop
-    };
-
-    oscillator.onended = () => {
-      this.activeVoices.delete(id);
-      oscillator.disconnect();
-      envelopeGain.disconnect();
-      voiceGain.disconnect();
-    };
-
-    oscillator.start(startTime);
-    stop(startTime + durationSeconds);
     this.activeVoices.set(id, voice);
     return voice;
   }

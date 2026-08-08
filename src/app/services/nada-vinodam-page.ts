@@ -16,6 +16,12 @@ const DEFAULT_ONE_SHOT_DURATION_MS = 1000;
 const SCOPE_SAMPLE_POINTS = 48;
 const METER_SEGMENTS = 6;
 
+/**
+ * Environment-safe timer handle (DOM `number` or Node `Timeout`).
+ * Prefer global `setTimeout`/`clearTimeout` so ReturnType stays consistent (PGF-003).
+ */
+export type TimerHandle = ReturnType<typeof setTimeout>;
+
 export interface NadaVinodamPageController {
   state: Writable<NadaVinodamState>;
   oscilloscopePath: Writable<string>;
@@ -36,8 +42,8 @@ export interface NadaVinodamPageDependencies {
   mapFrequency: (frequencyHz: number) => FrequencySvaraMatch;
   requestFrame: (callback: FrameRequestCallback) => number;
   cancelFrame: (handle: number) => void;
-  scheduleTimeout: (callback: () => void, delayMs: number) => ReturnType<typeof window.setTimeout>;
-  clearScheduledTimeout: (handle: ReturnType<typeof window.setTimeout>) => void;
+  scheduleTimeout: (callback: () => void, delayMs: number) => TimerHandle;
+  clearScheduledTimeout: (handle: TimerHandle) => void;
   onVisibilityChange: typeof onVisibilityChange;
   onWindowBlur: typeof onWindowBlur;
 }
@@ -114,15 +120,15 @@ export function createNadaVinodamPageController(
     mapFrequency: mapFrequencyToClosestSvara,
     requestFrame: (callback) => window.requestAnimationFrame(callback),
     cancelFrame: (handle) => window.cancelAnimationFrame(handle),
-    scheduleTimeout: (callback, delayMs) => window.setTimeout(callback, delayMs),
-    clearScheduledTimeout: (handle) => window.clearTimeout(handle),
+    scheduleTimeout: (callback, delayMs) => setTimeout(callback, delayMs),
+    clearScheduledTimeout: (handle) => clearTimeout(handle),
     onVisibilityChange,
     onWindowBlur
   }
 ): NadaVinodamPageController {
   let currentState = createInitialState();
   let animationFrame: number | null = null;
-  let autoStopTimer: ReturnType<typeof window.setTimeout> | null = null;
+  let autoStopTimer: TimerHandle | null = null;
   let isStarting = false;
 
   const state = writable<NadaVinodamState>(currentState);

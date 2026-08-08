@@ -571,7 +571,7 @@ function tryParseMotion(tokens, svaraIndex, currentLine) {
         while (i < tokens.length && tokens[i].type === TOKEN_TYPES.WHITESPACE) i++;
     }
 
-    // After optional underscores, need a "/" 
+    // After optional underscores, need a "/"
     if (i >= tokens.length || tokens[i].type !== TOKEN_TYPES.MOTION_OPERATOR) return null;
 
     i++; // skip "/"

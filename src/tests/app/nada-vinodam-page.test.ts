@@ -95,7 +95,7 @@ describe('nada vinodam page controller', () => {
     const synth = createMockSynth();
     const cancelFrame = vi.fn();
     const clearScheduledTimeout = vi.fn();
-    let handleVisibilityChange = (_hidden: boolean) => {};
+    let handleVisibilityChange: (hidden: boolean) => void = () => {};
     const controller = createNadaVinodamPageController({
       createSynth: () => synth,
       mapFrequency: () => ({
@@ -121,6 +121,8 @@ describe('nada vinodam page controller', () => {
     });
     const teardown = controller.mount();
 
+    // One-shot mode schedules an auto-stop timer; sustain mode does not (PGF-008).
+    controller.setSustainEnabled(false);
     await controller.togglePlayback();
     handleVisibilityChange(true);
 
@@ -136,5 +138,38 @@ describe('nada vinodam page controller', () => {
 
     expect(synth.destroy).toHaveBeenCalledTimes(1);
     unsubscribe();
+  });
+
+  it('does not schedule an auto-stop timer while sustain is enabled (PGF-008)', async () => {
+    const scheduleTimeout = vi.fn().mockReturnValue(12);
+    const clearScheduledTimeout = vi.fn();
+    let handleVisibilityChange: (hidden: boolean) => void = () => {};
+    const controller = createNadaVinodamPageController({
+      createSynth: () => createMockSynth(),
+      mapFrequency: () => ({
+        svara: 'S',
+        octave: 'madhya',
+        referenceFrequencyHz: 261.63,
+        deltaHz: 0
+      }),
+      requestFrame: vi.fn().mockReturnValue(7),
+      cancelFrame: vi.fn(),
+      scheduleTimeout,
+      clearScheduledTimeout,
+      onVisibilityChange: (callback) => {
+        handleVisibilityChange = callback;
+        return () => {};
+      },
+      onWindowBlur: () => () => {}
+    });
+
+    controller.mount();
+    // Default sustainEnabled is true — no one-shot timer should be armed.
+    await controller.togglePlayback();
+    expect(scheduleTimeout).not.toHaveBeenCalled();
+
+    handleVisibilityChange(true);
+    // stopPlayback still runs; clear is a no-op when no timer was stored.
+    expect(clearScheduledTimeout).not.toHaveBeenCalled();
   });
 });

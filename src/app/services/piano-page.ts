@@ -58,7 +58,8 @@ export function createPianoPageController(
       }
 
       shouldStop = true;
-      const { [keyId]: _released, ...remainingKeys } = current;
+      const remainingKeys = { ...current };
+      delete remainingKeys[keyId];
       return remainingKeys;
     });
 

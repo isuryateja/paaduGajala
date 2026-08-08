@@ -6,7 +6,7 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 ## Detailed Raga Information
 
-  
+
 
 ### Abheri
 
@@ -19,15 +19,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Abhogi
 
-  
+
 
 - **Type**: Janya
 
@@ -37,15 +37,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Ahiri
 
-  
+
 
 - **Type**: Janya
 
@@ -55,15 +55,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M1 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Amrithavarshini
 
-  
+
 
 - **Type**: Janya
 
@@ -73,15 +73,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M2 G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Ananda Bhairavi
 
-  
+
 
 - **Type**: Janya
 
@@ -91,15 +91,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Andolika
 
-  
+
 
 - **Type**: Janya
 
@@ -109,15 +109,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Arabhi
 
-  
+
 
 - **Type**: Janya
 
@@ -127,15 +127,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Asaveri
 
-  
+
 
 - **Type**: Janya
 
@@ -145,15 +145,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 S P D1 P M1 G2 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Atana
 
-  
+
 
 - **Type**: Janya
 
@@ -163,15 +163,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 S D2 P M1 R2 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Bageshri
 
-  
+
 
 - **Type**: Janya
 
@@ -181,15 +181,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 M1 P G2 M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Bahudari
 
-  
+
 
 - **Type**: Janya
 
@@ -199,15 +199,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P M1 G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Begada
 
-  
+
 
 - **Type**: Janya
 
@@ -217,15 +217,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M1 G3 R2`
 
-  
+
 
 ---
 
-  
+
 
 ### Behag
 
-  
+
 
 - **Type**: Janya
 
@@ -235,15 +235,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M2 G3 M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Bhairavi
 
-  
+
 
 - **Type**: Janya
 
@@ -253,15 +253,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Bhoopalam
 
-  
+
 
 - **Type**: Janya
 
@@ -271,15 +271,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D1 P G2 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Bilahari
 
-  
+
 
 - **Type**: Janya
 
@@ -289,15 +289,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Bowli
 
-  
+
 
 - **Type**: Janya
 
@@ -307,15 +307,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Brindavana Saranga
 
-  
+
 
 - **Type**: Janya
 
@@ -325,15 +325,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P M1 R2 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Chakravakam
 
-  
+
 
 - **Type**: Melakarta
 
@@ -343,15 +343,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Chala Nattai
 
-  
+
 
 - **Type**: Melakarta
 
@@ -361,15 +361,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D3 P M1 G3 R3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Chandrajyoti
 
-  
+
 
 - **Type**: Janya
 
@@ -379,15 +379,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P M2 G1 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Chandrakauns
 
-  
+
 
 - **Type**: Janya
 
@@ -397,15 +397,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 M1 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Charukesi
 
-  
+
 
 - **Type**: Melakarta
 
@@ -415,15 +415,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Darbar
 
-  
+
 
 - **Type**: Janya
 
@@ -433,15 +433,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 S D2 P M1 R2 G2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Darbari Kanada
 
-  
+
 
 - **Type**: Janya
 
@@ -451,15 +451,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D1 N2 P M1 P G2 M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Desh
 
-  
+
 
 - **Type**: Janya
 
@@ -469,15 +469,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Deva Manohari
 
-  
+
 
 - **Type**: Janya
 
@@ -487,15 +487,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 N2 P M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Devagandhari
 
-  
+
 
 - **Type**: Janya
 
@@ -505,15 +505,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 N2 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Dhanyasi
 
-  
+
 
 - **Type**: Janya
 
@@ -523,15 +523,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M1 G2 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Dharmavati
 
-  
+
 
 - **Type**: Melakarta
 
@@ -541,15 +541,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Dwijavanti
 
-  
+
 
 - **Type**: Janya
 
@@ -559,15 +559,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 M1 R2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Gambheera Nattai
 
-  
+
 
 - **Type**: Janya
 
@@ -577,15 +577,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M1 G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Ganamoorthi
 
-  
+
 
 - **Type**: Melakarta
 
@@ -595,15 +595,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M1 G1 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Gowlai
 
-  
+
 
 - **Type**: Janya
 
@@ -613,15 +613,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M1 G3 M1 R1 G3 M1 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Gowri Manohari
 
-  
+
 
 - **Type**: Melakarta
 
@@ -631,15 +631,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Hamir Kalyani
 
-  
+
 
 - **Type**: Janya
 
@@ -649,15 +649,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M2 M1 G3 P M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Hamsadwani
 
-  
+
 
 - **Type**: Janya
 
@@ -667,15 +667,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Hamsanadam
 
-  
+
 
 - **Type**: Janya
 
@@ -685,15 +685,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Hamsanandi
 
-  
+
 
 - **Type**: Janya
 
@@ -703,15 +703,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 M2 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Hari Kambhoji
 
-  
+
 
 - **Type**: Melakarta
 
@@ -721,15 +721,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Hemavati
 
-  
+
 
 - **Type**: Melakarta
 
@@ -739,15 +739,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Hindolam
 
-  
+
 
 - **Type**: Janya
 
@@ -757,15 +757,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 M1 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Huseni
 
-  
+
 
 - **Type**: Janya
 
@@ -775,15 +775,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Jaganmohini
 
-  
+
 
 - **Type**: Janya
 
@@ -793,15 +793,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M1 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Janaranjani
 
-  
+
 
 - **Type**: Janya
 
@@ -811,15 +811,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Jayanthashri
 
-  
+
 
 - **Type**: Janya
 
@@ -829,15 +829,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 M1 P M1 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kadanakuthoohalam
 
-  
+
 
 - **Type**: Janya
 
@@ -847,15 +847,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kalavati
 
-  
+
 
 - **Type**: Janya
 
@@ -865,15 +865,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P M1 G3 S R1 D2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kalyana Vasantham
 
-  
+
 
 - **Type**: Janya
 
@@ -883,15 +883,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kalyani
 
-  
+
 
 - **Type**: Melakarta
 
@@ -901,15 +901,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M2 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kamala Manohari
 
-  
+
 
 - **Type**: Janya
 
@@ -919,15 +919,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M1 G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kambhoji
 
-  
+
 
 - **Type**: Janya
 
@@ -937,15 +937,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kanada
 
-  
+
 
 - **Type**: Janya
 
@@ -955,15 +955,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P M1 G2 M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kannada
 
-  
+
 
 - **Type**: Janya
 
@@ -973,15 +973,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P M1 G3 M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kannada Gowlai
 
-  
+
 
 - **Type**: Janya
 
@@ -991,15 +991,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kapi
 
-  
+
 
 - **Type**: Janya
 
@@ -1009,15 +1009,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 N2 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Karna Ranjani
 
-  
+
 
 - **Type**: Janya
 
@@ -1027,15 +1027,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kedara Gowlai
 
-  
+
 
 - **Type**: Janya
 
@@ -1045,15 +1045,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kedaram
 
-  
+
 
 - **Type**: Janya
 
@@ -1063,15 +1063,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Keeravani
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1081,15 +1081,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Khamas
 
-  
+
 
 - **Type**: Janya
 
@@ -1099,15 +1099,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kharaharapriya
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1117,15 +1117,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kuntalavarali
 
-  
+
 
 - **Type**: Janya
 
@@ -1135,15 +1135,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Kurinji
 
-  
+
 
 - **Type**: Janya
 
@@ -1153,15 +1153,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): ``
 
-  
+
 
 ---
 
-  
+
 
 ### Lalitha
 
-  
+
 
 - **Type**: Janya
 
@@ -1171,15 +1171,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 M1 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Lathangi
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1189,15 +1189,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M2 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Maand
 
-  
+
 
 - **Type**: Janya
 
@@ -1207,15 +1207,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Madhuvanti
 
-  
+
 
 - **Type**: Janya
 
@@ -1225,15 +1225,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Madhyamavati
 
-  
+
 
 - **Type**: Janya
 
@@ -1243,15 +1243,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Malahari
 
-  
+
 
 - **Type**: Janya
 
@@ -1261,15 +1261,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D1 P M1 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Malayamarutham
 
-  
+
 
 - **Type**: Janya
 
@@ -1279,15 +1279,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Mandari
 
-  
+
 
 - **Type**: Janya
 
@@ -1297,15 +1297,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M2 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Manirangu
 
-  
+
 
 - **Type**: Janya
 
@@ -1315,15 +1315,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Mayamalavagowlai
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1333,15 +1333,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M1 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Mohana Kalyani
 
-  
+
 
 - **Type**: Janya
 
@@ -1351,15 +1351,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M2 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Mohanam
 
-  
+
 
 - **Type**: Janya
 
@@ -1369,15 +1369,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Mukhari
 
-  
+
 
 - **Type**: Janya
 
@@ -1387,15 +1387,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Nadanamakriya
 
-  
+
 
 - **Type**: Janya
 
@@ -1405,15 +1405,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): ``
 
-  
+
 
 ---
 
-  
+
 
 ### Nagaswarali
 
-  
+
 
 - **Type**: Janya
 
@@ -1423,15 +1423,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P M1 G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Nalinakanthi
 
-  
+
 
 - **Type**: Janya
 
@@ -1441,15 +1441,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Nasikabhooshani
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1459,15 +1459,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M2 G3 R3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Natabhairavi
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1477,15 +1477,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Nattai
 
-  
+
 
 - **Type**: Janya
 
@@ -1495,15 +1495,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M1 G3 M1 R3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Nattai Kurinji
 
-  
+
 
 - **Type**: Janya
 
@@ -1513,15 +1513,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 M1 G3 M1 P G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Navarasa Kanada
 
-  
+
 
 - **Type**: Janya
 
@@ -1531,15 +1531,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Nayaki
 
-  
+
 
 - **Type**: Janya
 
@@ -1549,15 +1549,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 S P D2 N2 D2 P M1 R2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Neelambari
 
-  
+
 
 - **Type**: Janya
 
@@ -1567,15 +1567,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P D2 N2 P M1 G3 R2 M1 G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Neethimathi
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1585,15 +1585,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D3 P M2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Pantuvarali
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1603,15 +1603,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M2 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Poornachandrika
 
-  
+
 
 - **Type**: Janya
 
@@ -1621,15 +1621,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 P M1 R2 G3 M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Poorvikalyani
 
-  
+
 
 - **Type**: Janya
 
@@ -1639,15 +1639,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M2 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Punnagavarali
 
-  
+
 
 - **Type**: Janya
 
@@ -1657,15 +1657,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): ``
 
-  
+
 
 ---
 
-  
+
 
 ### Ramapriya
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1675,15 +1675,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M2 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Ranjani
 
-  
+
 
 - **Type**: Janya
 
@@ -1693,15 +1693,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 M2 G2 S R2 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Rasikapriya
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1711,15 +1711,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D3 P M2 G3 R3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Rathipathipriya
 
-  
+
 
 - **Type**: Janya
 
@@ -1729,15 +1729,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Reethigowlai
 
-  
+
 
 - **Type**: Janya
 
@@ -1747,15 +1747,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 M1 G2 M1 P M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Revagupti
 
-  
+
 
 - **Type**: Janya
 
@@ -1765,15 +1765,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D1 P G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Revati
 
-  
+
 
 - **Type**: Janya
 
@@ -1783,15 +1783,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P M1 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Sahana
 
-  
+
 
 - **Type**: Janya
 
@@ -1801,15 +1801,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 M1 R2 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Sama
 
-  
+
 
 - **Type**: Janya
 
@@ -1819,15 +1819,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Saramati
 
-  
+
 
 - **Type**: Janya
 
@@ -1837,15 +1837,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 M1 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Saranga
 
-  
+
 
 - **Type**: Janya
 
@@ -1855,15 +1855,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P M2 R2 G3 M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Sarasangi
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1873,15 +1873,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Saraswathi
 
-  
+
 
 - **Type**: Janya
 
@@ -1891,15 +1891,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Saveri
 
-  
+
 
 - **Type**: Janya
 
@@ -1909,15 +1909,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M1 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Senjurutti
 
-  
+
 
 - **Type**: Janya
 
@@ -1927,15 +1927,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): ``
 
-  
+
 
 ---
 
-  
+
 
 ### Shankarabaranam
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1945,15 +1945,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Shanmukhapriya
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1963,15 +1963,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Shri Ragam
 
-  
+
 
 - **Type**: Janya
 
@@ -1981,15 +1981,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P D2 N2 P M1 R2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Simhendramadhyamam
 
-  
+
 
 - **Type**: Melakarta
 
@@ -1999,15 +1999,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Sindhu Bhairavi
 
-  
+
 
 - **Type**: Janya
 
@@ -2017,15 +2017,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M1 G2 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Sivaranjani
 
-  
+
 
 - **Type**: Janya
 
@@ -2035,15 +2035,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Sowrashtram
 
-  
+
 
 - **Type**: Janya
 
@@ -2053,15 +2053,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 N2 D2 P M1 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Sriranjani
 
-  
+
 
 - **Type**: Janya
 
@@ -2071,15 +2071,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 M1 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Subha Pantuvarali
 
-  
+
 
 - **Type**: Melakarta
 
@@ -2089,15 +2089,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M2 G2 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Suddha Dhanyasi
 
-  
+
 
 - **Type**: Janya
 
@@ -2107,15 +2107,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P M1 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Suddha Saveri
 
-  
+
 
 - **Type**: Janya
 
@@ -2125,15 +2125,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Sumanesaranjani
 
-  
+
 
 - **Type**: Janya
 
@@ -2143,15 +2143,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P M2 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Sunadavinodini
 
-  
+
 
 - **Type**: Janya
 
@@ -2161,15 +2161,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 M2 G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Surutti
 
-  
+
 
 - **Type**: Janya
 
@@ -2179,15 +2179,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 P M1 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Surya
 
-  
+
 
 - **Type**: Janya
 
@@ -2197,15 +2197,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 M1 G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Thilang
 
-  
+
 
 - **Type**: Janya
 
@@ -2215,15 +2215,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 P M1 G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Thodi
 
-  
+
 
 - **Type**: Melakarta
 
@@ -2233,15 +2233,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D1 P M1 G2 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Vachaspati
 
-  
+
 
 - **Type**: Melakarta
 
@@ -2251,15 +2251,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M2 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Valaji
 
-  
+
 
 - **Type**: Janya
 
@@ -2269,15 +2269,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P G3 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Varali
 
-  
+
 
 - **Type**: Janya
 
@@ -2287,15 +2287,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D1 P M2 G1 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Varamu
 
-  
+
 
 - **Type**: Janya
 
@@ -2305,15 +2305,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 M1 G2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Vasantha
 
-  
+
 
 - **Type**: Janya
 
@@ -2323,15 +2323,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N3 D2 M1 G3 R1 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Vasanthi
 
-  
+
 
 - **Type**: Janya
 
@@ -2341,15 +2341,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D1 P G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Vijayanagari
 
-  
+
 
 - **Type**: Janya
 
@@ -2359,15 +2359,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S D2 P M2 G2 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Yadukula Kambhoji
 
-  
+
 
 - **Type**: Janya
 
@@ -2377,15 +2377,15 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): `S N2 D2 P M1 G3 R2 S`
 
-  
+
 
 ---
 
-  
+
 
 ### Yamuna Kalyani
 
-  
+
 
 - **Type**: Janya
 
@@ -2395,6 +2395,6 @@ This document contains detailed information about Carnatic music ragas scraped f
 
 - **Avarohanam** (Descending): ``
 
-  
+
 
 ---

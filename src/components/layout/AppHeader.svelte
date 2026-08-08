@@ -4,7 +4,8 @@
   const tabItems = [
     { href: '/', label: 'Swara to Sruti' },
     { href: '/sruti-to-swara', label: 'Sruti to Swara' },
-    { href: '/theory', label: 'Theory' }
+    { href: '/theory', label: 'Theory' },
+    { href: '/svara-grantham', label: 'Svara Grantham' }
   ];
 
   function isActive(pathname: string, href: string): boolean {
@@ -22,6 +23,10 @@
 
     if (pathname.startsWith('/sruti-to-swara')) {
       return 'Sruti to Swara';
+    }
+
+    if (pathname.startsWith('/svara-grantham')) {
+      return 'Svara Grantham';
     }
 
     return 'Swara to Sruti';

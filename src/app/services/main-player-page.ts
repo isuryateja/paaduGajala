@@ -1,6 +1,14 @@
 import { clearNotation, loadExampleNotation, loadNotationFile, parseCurrentNotation, setNotationText } from '../actions/notation.actions';
 import { audioEngine, pausePlayback, resumePlayback, startPlayback, stopPlayback } from '../actions/playback.actions';
-import { applyPreset, updateTempo, updateTuning, updateVolume, updateWaveform } from '../actions/settings.actions';
+import {
+  applyPreset,
+  updateReverbMix,
+  updateReverbPreset,
+  updateTempo,
+  updateTuning,
+  updateVolume,
+  updateWaveform
+} from '../actions/settings.actions';
 import type { NotationState } from '../stores/notation.store';
 import type { SettingsState } from '../stores/settings.store';
 import { formatDuration } from '../../lib/utils/format-duration';
@@ -115,7 +123,8 @@ export function createPlaybackPianoVisualizer(onChange: (activeKeys: ActivePiano
       return;
     }
 
-    const { [keyId]: _released, ...remainingKeys } = activeKeys;
+    const remainingKeys = { ...activeKeys };
+    delete remainingKeys[keyId];
     activeKeys = remainingKeys;
     emitChange();
   }
@@ -172,5 +181,7 @@ export const mainPlayerHandlers = {
   updateTuning,
   updateVolume,
   updateWaveform,
+  updateReverbMix,
+  updateReverbPreset,
   handleNotationFileSelection
 };

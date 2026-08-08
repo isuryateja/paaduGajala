@@ -23,7 +23,8 @@ export function createNadaVinodamSynth(initialConfig: NadaVinodamSynthConfig): N
   let masterGain: GainNode | null = null;
   let oscillator: OscillatorNode | null = null;
   let voiceGain: GainNode | null = null;
-  let timeDomainBuffer: Float32Array | null = null;
+  // Explicit ArrayBuffer backing so getFloatTimeDomainData accepts the buffer (PGF-002).
+  let timeDomainBuffer: Float32Array<ArrayBuffer> | null = null;
   let isInitialized = false;
   let isPlaying = false;
 
@@ -38,7 +39,9 @@ export function createNadaVinodamSynth(initialConfig: NadaVinodamSynthConfig): N
     analyser = audioContext.createAnalyser();
     analyser.fftSize = 512;
     analyser.smoothingTimeConstant = 0.82;
-    timeDomainBuffer = new Float32Array(analyser.fftSize);
+    timeDomainBuffer = new Float32Array(
+      new ArrayBuffer(analyser.fftSize * Float32Array.BYTES_PER_ELEMENT)
+    );
 
     masterGain.gain.value = 1;
     analyser.connect(masterGain);
