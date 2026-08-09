@@ -49,7 +49,7 @@
         <a href="/">Contact Station Master</a>
       </div>
 
-      <div class="footer-meta">Designed with love by Masooria</div>
+      <div class="footer-meta">Designed with love by Nemigna</div>
     </div>
   </footer>
 

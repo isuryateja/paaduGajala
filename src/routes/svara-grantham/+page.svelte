@@ -50,6 +50,11 @@
     }
   });
 
+  /** Non-standard Safari/iOS attribute — set via action so Svelte HTML types stay clean (PGF-005). */
+  function disableAutocorrect(node: HTMLElement) {
+    node.setAttribute('autocorrect', 'off');
+  }
+
   function selectEntry(nextId: string): void {
     if (selectedId === nextId) {
       return;
@@ -337,7 +342,7 @@
                     spellcheck="false"
                     autocapitalize="off"
                     autocomplete="off"
-                    autocorrect="off"
+                    use:disableAutocorrect
                   ></textarea>
                 </label>
 

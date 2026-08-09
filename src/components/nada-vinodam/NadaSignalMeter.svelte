@@ -3,7 +3,7 @@
 </script>
 
 <section class="meter-panel" aria-label="Signal peak meter">
-  <label>Signal Peak (VU)</label>
+  <p class="meter-title">Signal Peak (VU)</p>
 
   <div class="meter-bars" aria-hidden="true">
     {#each levels as level, index}
@@ -25,7 +25,8 @@
     box-shadow: inset 0 2px 6px rgba(255, 255, 255, 0.08);
   }
 
-  label {
+  .meter-title {
+    margin: 0;
     color: rgba(190, 192, 194, 0.78);
     font-size: 0.58rem;
     font-weight: 900;

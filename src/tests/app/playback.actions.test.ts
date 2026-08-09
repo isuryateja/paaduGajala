@@ -33,7 +33,9 @@ describe('playback actions', () => {
       volume: 0.7,
       waveform: 'triangle',
       tuning: 'equal',
-      preset: 'veena'
+      preset: 'veena',
+      reverbMix: 0,
+      reverbPreset: 'room'
     });
 
     uiStore.set({
